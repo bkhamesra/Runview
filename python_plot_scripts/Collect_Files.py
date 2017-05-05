@@ -13,6 +13,7 @@ def checkfile(wfdir, filename, pathcheck = 'Mandatory'):
 	else if os.path.isfile(path) and pathcheck='Optional':
 		debuginfo(message)
 
+
 def copy(wfdir, outdir, filename, pathcheck = 'Mandatory'):
 	
 	try:
@@ -24,14 +25,16 @@ def copy(wfdir, outdir, filename, pathcheck = 'Mandatory'):
 	except IOError:
 		checkfile(wfdir, filename, pathcheck)
 
+
 def CollectFiles(dirpath, outdir):
 	
 	filename = dirpath.split("/")[-1]
-  	outputdir = outputdir + filepath
-	print("Output will be saved at - {} \n".format(output_dir))
+  	outputdir = os.path.join(outputdir, filepath)
+	datadir = os.path.join(outputdir,'data')
+	print("Output will be saved at - {} \n".format(datadir))
 
-	if not os.path.exists(output_dir):
-		os.makedirs(output_dir)
+	if not os.path.exists(datadir):
+		os.makedirs(datadir)
 
     	parfile = (dirpath.split('/')[-1]) + ('.par')
 	shifttracker0 = 'ShiftTracker0.asc'
@@ -49,8 +52,9 @@ def CollectFiles(dirpath, outdir):
 	filelist_opt = [ihspin0, ihspin1, ihspin3, ihspin4, runstat]
 	
 	for mfile in filelist_mand:
-		copyfile( dirpath,outputdir, mfile )
+		copyfile( dirpath,datadir, mfile )
 	
 	for ofile in filelist_opt:
-		copyfile( dirpath, outputdir, ofil, pathcheck = 'Optional')
+		copyfile( dirpath, datadir, ofil, pathcheck = 'Optional')
+
 	
