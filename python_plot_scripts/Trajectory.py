@@ -5,6 +5,7 @@ from matplotlib import pylab
 import matplotlib
 import glob
 import os
+from CommonFunctions import *
 
 #Set MatPlotLib global parameters here
 tick_label_size = 8
@@ -20,16 +21,13 @@ def func_phase(varphase):
 			varphi[i:] = varphi[i:] + np.pi
 	return varphi
 
-def writedata(data)
-
-# Impot data from files
-#datadir = "/Users/Bhavesh/Documents/Research Work/Simulation/Event_Runs/Jan_4_17_Event/Event_Runs/BBH_Jan4Event_UID2_M160/"
-#outdir = "/Users/Bhavesh/Documents/Research Work/Simulation/Event_Runs/Jan_4_17_Event/Event_Runs/BBH_Jan4Event_UID2_M160/figures/"  
-
-def Trajectory(wf_outdir):
+#def writedata(data):
 	
-	datadir = os.path.join(wf_outdir, 'data')
-	imagdir = os.path.join(wf_outdir, 'figures')
+
+def Trajectory(wfdir, outdir):
+	
+  	figdir = FigDir(wfdir, outdir)
+	datadir = DataDir(dirpath, outdir)
 
 	trajectory_BH1 = open(datadir + "ShiftTracker0.asc")
 	trajectory_BH2 = open(datadir + "ShiftTracker1.asc")
