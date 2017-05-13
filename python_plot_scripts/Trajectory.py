@@ -31,7 +31,7 @@ def writedata(outdir, data):
 def Trajectory(wfdir, outdir):
 	
   	figdir = FigDir(wfdir, outdir)
-	datadir = DataDir(dirpath, outdir)
+	datadir = DataDir(wfdir, outdir)
 
 	trajectory_BH1 = open(os.path.join(datadir, "ShiftTracker0.asc"))
 	trajectory_BH2 = open(os.path.join(datadir, "ShiftTracker1.asc"))
@@ -43,7 +43,7 @@ def Trajectory(wfdir, outdir):
 	r2 = np.array((x_bh2, y_bh2, z_bh2))
 	separation = np.linalg.norm(r2-r1, axis=0)
 	
-	phase = np.arctan(np.divide(y_BH1, x_BH1))
+	phase = np.arctan(np.divide(y_bh1, x_bh1))
 	phi = func_phase(phase)
 
 	#Output Data
@@ -53,58 +53,63 @@ def Trajectory(wfdir, outdir):
 
 	#Plot 1: x vs t and y vs t
 	
-	BH1, = plt.plot(time_BH1, x_BH1, 'g', linewidth=1, label="BH1")
-	BH2, = plt.plot(time_BH2, x_BH2, 'k--', linewidth=1, label = "BH2")
+	BH1, = plt.plot(time_bh1, x_bh1, 'g', linewidth=1, label="BH1")
+	BH2, = plt.plot(time_bh2, x_bh2, 'k--', linewidth=1, label = "BH2")
 	plt.xlabel('Time', fontsize = 12)
 	plt.ylabel('X', fontsize = 12)
-	startx,endx = plt2.get_xlim()
+	startx,endx = plt.gca().get_xlim()
 	plt.xticks(np.arange(startx, endx, 50))
 	plt.grid(True)
-	plt.legend()#[BH1,BH2],['BH1','BH2'],bbox_to_anchor=(1, 1), loc='upper left', ncol=1, borderpad=0.8)
-	plt.savefig(figdir + 'Trajectory_xvstime.png',  bbox_extra_artists=(lgd,), bbox_inches='tight', dpi = 1000)
+	lgd = plt.legend()#[BH1,BH2],['BH1','BH2'],bbox_to_anchor=(1, 1), loc='upper left', ncol=1, borderpad=0.8)
+	plt.savefig(os.path.join(figdir, 'Trajectory_xvstime.png'),  bbox_extra_artists=(lgd,), bbox_inches='tight', dpi = 1000)
 	plt.close()
 	
-	plt.plot(time_BH1,y_BH1, 'g',linewidth=1, label = "BH1")
-	plt.plot(time_BH2, y_BH2, 'k--', linewidth=1, label = "BH2")
+	plt.plot(time_bh1,y_bh1, 'g',linewidth=1, label = "BH1")
+	plt.plot(time_bh2, y_bh2, 'k--', linewidth=1, label = "BH2")
 	plt.xlabel('Time', fontsize = 12)
 	plt.ylabel('Y', fontsize=12)
-	startx,endx = plt3.get_xlim()
+	startx,endx = plt.gca().get_xlim()
 	plt.xticks(np.arange(startx, endx, 50))
 	plt.grid(True)
 	plt.legend()#[BH1,BH2],['BH1','BH2'],bbox_to_anchor=(1, 1), loc='upper left', ncol=1, borderpad=0.8)
-	plt.savefig(figdir + 'Trajectory_yvstime.png',  bbox_extra_artists=(lgd,), bbox_inches='tight', dpi = 1000)
+	plt.savefig(os.path.join(figdir ,'Trajectory_yvstime.png'),  bbox_extra_artists=(lgd,), bbox_inches='tight', dpi = 1000)
 	plt.close()
 	
 	#Plot 2: Trajectory - y vs x
 
 	fig, ax = plt.subplots()
-	bh1 = ax.plot(x_BH1,y_BH1, color='g', linewidth=1, label="BH1")
-	bh2 = ax.plot(x_BH2,y_BH2, 'k--', linewidth=1, label="BH2")
+	bh1 = ax.plot(x_bh1,y_bh1, color='g', linewidth=1, label="BH1")
+	bh2 = ax.plot(x_bh2,y_bh2, 'k--', linewidth=1, label="BH2")
 	ax.set_xlabel('X', fontsize = 12)
 	ax.set_ylabel('Y', fontsize = 12)
 	plt.legend()
-	uplt.grid(True)
-	plt.savefig(figdir+'Trajectory_xy.png',  bbox_extra_artists=(lgd,), bbox_inches='tight', dpi = 1000)
+	plt.grid(True)
+	plt.savefig(os.path.join(figdir,'Trajectory_xy.png'),  bbox_extra_artists=(lgd,), bbox_inches='tight', dpi = 1000)
 	plt.close()
 	
 	#Plot 3: Trajectory - separation vs time
 
-	plt.plot(time_BH1, separation, color='b', linewidth=1)
+	plt.plot(time_bh1, separation, color='b', linewidth=1)
 	plt.xlabel('Time', fontsize = 12)
 	plt.ylabel('Separation', fontsize = 12)
 	startx,endx = plt.gca().get_xlim()
 	plt.xticks(np.arange(startx, endx, 50))
 	plt.grid(True)
-	plt.savefig(figdir+'Trajectory_separation.png',  bbox_extra_artists=(lgd,), bbox_inches='tight', dpi = 1000)
+	plt.savefig(os.path.join(figdir,'Trajectory_separation.png'),  bbox_extra_artists=(lgd,), bbox_inches='tight', dpi = 1000)
 	plt.close()
 	
 	
 	#Plot 4: Combined
 
-	plt.plot(time_BH1, phi, color='b')
+	plt.plot(time_bh1, phi, color='b')
 	plt.xlabel('Time')
 	plt.ylabel('Phase')
 	plt.grid(True)
-	plt.savefig(figdir+'Trajectory_separation.png',  bbox_extra_artists=(lgd,), bbox_inches='tight', dpi = 1000)
+	plt.savefig(os.path.join(figdir,'Trajectory_phase.png'),  bbox_extra_artists=(lgd,), bbox_inches='tight', dpi = 1000)
 	plt.close()
-)	
+
+wfdir ='/nethome/numrel/datafiles/Waveforms/SO-series/SO_D9_q1.5_th2_135_ph1_135_m140' 
+outdir = '.'
+
+Trajectory(wfdir, outdir)
+	
