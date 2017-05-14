@@ -1,7 +1,7 @@
 # Create a directory with all the relevant files - ShiftTracker, IHSpin, HNMAss, YLM_22_75, Psi4Analysis, Runstat
 from shutil import copyfile
 import os
-from CommonFunctions import debuginfo
+from CommonFunctions import *
 
 def checkfile(wfdir, filename, pathcheck = 'Mandatory'):
 	
@@ -29,7 +29,7 @@ def copy(wfdir, outdir, filename, pathcheck = 'Mandatory'):
 def CollectFiles(dirpath, outdir):
 	
 	datadir  = DataDir(dirpath, outdir)
-	print("Output will be saved at - {} \n".format(datadir))
+	print("Relevant data will be saved at - {} \n".format(datadir))
     	parfile = (dirpath.split('/')[-1]) + ('.par')
 	shifttracker0 = 'ShiftTracker0.asc'
 	shifttracker1 = 'ShiftTracker1.asc'
@@ -39,12 +39,13 @@ def CollectFiles(dirpath, outdir):
 	ihspin3 = 'ihspin_hn_3.asc'
 	ihspin4 = 'ihspin_hn_4.asc'
 
-	psi4_ylm = ("Ylm_WEYLSCAL4::Psi4r_l2_m2_r75.00.asc")
-	psi4_Weyl = ("Ylm_WEYLSCAL4::Psi4r_l2_m2_r75.00.asc")
-	runstat = ("runstats.asc")
-	
+	psi4_ylm = "Ylm_WEYLSCAL4::Psi4r_l2_m2_r75.00.asc"
+	psi4_anal = "psi4analysis_r75.00.asc"
+	runstat = "runstats.asc"
+	bhdiag1 = "BH_diagnostics.ah1.gp"
+	bhdiag2 = "BH_diagnostics.ah2.gp"
 	filelist_mand = [parfile, shifttracker0, shifttracker1]
-	filelist_opt = [ihspin0, ihspin1, ihspin3, ihspin4, runstat, psi4_ylm, psi4_Weyl]
+	filelist_opt = [ihspin0, ihspin1, ihspin3, ihspin4, runstat, psi4_ylm, psi4_anal, bhdiag1, bhdiag2]
 	
 	for mfile in filelist_mand:
 		copy( dirpath,datadir, mfile )
@@ -53,6 +54,3 @@ def CollectFiles(dirpath, outdir):
 		copy( dirpath, datadir, ofile, pathcheck = 'Optional')
 
 
-#dirpath ='/nethome/numrel/datafiles/Waveforms/TP-series/D8_q3.00_a0.5_0.0_th000_ph000_m120'
-#outdir = '/nethome/bkhamesra3/Desktop/testing_python'
-#CollectFiles(dirpath, outdir)	
