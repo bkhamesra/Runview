@@ -25,10 +25,10 @@ def Psi4_Plots(wfdir, outdir):
 	phi = -np.unwrap(np.angle(real+1j*imag))
 	r =float( ((psi4.split('r'))[-1]).split('.asc')[0])
 
-	psi4_output = open(os.path.join(outdir,('Psi4_l2m2_r75.txt')), 'w')
+	psi4_output = open(os.path.join(datadir,'Psi4_l2m2_r75.txt'), 'w')
 	hdr = '#Time \t Real \t Imaginary \t Amplitude \t Phase \n'
 	data = np.column_stack((time, real, imag, amp, phi))
-	np.savetxt(psi4_output, data, header=hdr, delimiter='\t', newline='\n'	)
+	np.savetxt(psi4_output, data, header=hdr, delimiter='\t', newline='\n')
 	psi4_output.close()
 
 	#Phase derivatives

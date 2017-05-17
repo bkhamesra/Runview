@@ -51,9 +51,25 @@ def plot1(x,y,xlabel, ylabel, plotname, outdir):
         fig,(ax) = plt.subplots(1,1,sharex=True, squeeze=True)
 	ax.plot(x,y, 'b', linewidth=2)
 
-	ax.set_ylabel(ylabel, fontsize = 14)
-	ax.set_xlabel(xlabel, fontsize = 14)
-	ax.ticklabel_format(axis = 'y', style = 'sci', scilimits = (1,4))
+	ax.set_ylabel(ylabel, fontsize = 16)
+	ax.set_xlabel(xlabel, fontsize = 16)
+	ax.ticklabel_format(axis = 'y', style = 'sci', scilimits = (1,4), fontsize=100)
+	startx,endx = ax.get_xlim()
+	plt.xticks(np.arange(startx, endx, 100))
+	
+	lgd = plt.legend()
+	ax.grid(True)
+	fig.savefig(os.path.join(outdir,(plotname+'.png')), dpi = 500)
+	plt.close()
+
+def plot2(x1,y1, x2, y2, xlabel, ylabel, plotname, outdir):
+        fig,(ax) = plt.subplots(1,1,sharex=True, squeeze=True)
+	bh1, = ax.plot(x1, y1, 'b', linewidth=1, label="BH1")
+	bh2, = ax.plot(x2, y2, 'k--', linewidth=2, label = "BH2")
+
+	ax.set_ylabel(ylabel, fontsize = 16)
+	ax.set_xlabel(xlabel, fontsize = 16)
+	ax.ticklabel_format(axis = 'y', style = 'sci', scilimits = (1,4), fontsize=100)
 	startx,endx = ax.get_xlim()
 	plt.xticks(np.arange(startx, endx, 100))
 	

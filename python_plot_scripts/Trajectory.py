@@ -49,7 +49,7 @@ def Trajectory(wfdir, outdir):
 	#Output Data
 
 	data = np.column_stack((time_bh1, separation, phi))	
-	write_set_data(datadir, data)
+	write_sep_data(datadir, data)
 
 	#Plot 1: x vs t and y vs t
 	

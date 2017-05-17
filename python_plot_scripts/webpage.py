@@ -1,27 +1,23 @@
+def webpage(metadata):
+	html_txt = """
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Horizon Runs</title>
+    <title>{}</title>
     <link href="style.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-<!--<div id="wrapper">		-->
-    
-<!--	<div id="header">
-		<div id="nav"><a href="index.html">Home</a> | <a href="#">About Me</a> | <a href="#">Contact Me</a> | <a href="#">My Photos</a> | <a href="#">My Videos</a></div>
-		<div id="bg"></div>
-	</div>		-->
 	
 	<div id="main-content">
 		<div class="box">
-        	<h1>Horizon Runs</h1>
+        	<h1>{}</h1>
         	<h2>Simulation Details </h2>
 			<ul style="margin-top:10px;">
-				<li>Simulation Name - </li>
-				<li>a1 = (0,0,0)</li>
-				<li>a2 = (0,0,0)</li>
-				<li>q = 1</li>
-				<li>D = 6.2</li>
+				<li>Simulation Type - BBH</li>
+				<li>s1 = {}</li>
+				<li>s2 = {}</li>
+				<li>q = {}</li>
+				<li>D = {}</li>
 			</ul>
 		</div>
 		<h2> Trajectory Plots</h2>
@@ -49,4 +45,4 @@
 
 </body>
 </html>
-
+	""".format(simname, simname, s1,s2,q,sep)

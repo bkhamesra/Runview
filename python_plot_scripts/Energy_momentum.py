@@ -29,13 +29,29 @@ def Energy_Momentum(wfdir, outdir):
 #  Angular Momentum and dJ/dt plots	
 	
 	Jplot = plot1(time, Jmag, 'Time', r'$|\textbk{J}|$', 'AngMom',figdir)
-	Jder = plot1(time, Jder, 'Time', r'$\frac{dJ}{dt}$', 'AngMomDer', figdir)
 
+	Jderplot = plot1(time, Jder, 'Time', r'$|\frac{dJ}{dt}|$', 'AngMomDer', figdir)
+	
+	Jzplot	= plot1(time, jz, 'Time', r'$J_z$','AngMom_z',figdir )
+	fig,(ax1) = plt.subplots(1,1,sharex=True, squeeze=True)
+	jx, = ax1.plot(time, jx, 'b',label='Jx', linewidth=2)
+	ax1.plot(time, jy,'k', linewidth=2, label='Jy')
+
+	ax1.set_ylabel('J', fontsize = 14)
+	ax1.set_xlabel('Time', fontsize = 14)
+	
+	ax1.ticklabel_format(axis = 'y', style = 'sci', scilimits = (1,4))
+	lgd = plt.legend()
+	ax1.grid(True)
+	fig.savefig(figdir+'/AngMomentum_components.png', dpi = 500)
+	plt.close()
 
 #  Momentum plots
 
-	Momplot = plot1(time, Pmag, 'Time', r'$|\textbk{P}|$', 'Pmag', figdir)	
-	Momzplot = plot1(time, pz, 'Time', 'Pz', 'Pz', figdir)
+	Momplot = plot1(time, Pmag, 'Time',r'$|\textbk{P}|$', 'Momentum_mag', figdir)	
+
+	Momzplot = plot1(time, pz, 'Time', 'Pz', 'Momentum_z', figdir)
+
 	fig,(ax1) = plt.subplots(1,1,sharex=True, squeeze=True)
 	px, = ax1.plot(time, px, 'b',label='Px', linewidth=2)
 	ax1.plot(time, py,'k', linewidth=2, label='Py')
