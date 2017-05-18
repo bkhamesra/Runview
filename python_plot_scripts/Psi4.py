@@ -15,7 +15,12 @@ def Psi4_Plots(wfdir, outdir):
 	#Extract Psi4 info
 	
 	psi4 = "Ylm_WEYLSCAL4::Psi4r_l2_m2_r75.00.asc"
-	assert(os.path.exists(os.path.join(datadir, psi4)),'%s file not found' %psi4)
+	psi4r = "Ylm_WEYLSCAL4::Psi4_l2_m2_r75.00.asc"
+	if not(os.path.exists(os.path.join(datadir, psi4))):
+		psi4 = psi4r
+	
+	
+	assert(os.path.exists(os.path.join(datadir,psi4))),'%s file not found' %psi4
 
 	psi4_file = open(os.path.join(datadir, psi4))
 	time, real, imag = np.loadtxt(psi4_file, unpack=True)

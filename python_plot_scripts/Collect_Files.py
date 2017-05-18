@@ -39,13 +39,14 @@ def CollectFiles(dirpath, outdir):
 	ihspin3 = 'ihspin_hn_3.asc'
 	ihspin4 = 'ihspin_hn_4.asc'
 
-	psi4_ylm = "Ylm_WEYLSCAL4::Psi4r_l2_m2_r75.00.asc"
+	psi4_ylm = "Ylm_WEYLSCAL4::Psi4_l2_m2_r75.00.asc"
+	psi4r_ylm = "Ylm_WEYLSCAL4::Psi4r_l2_m2_r75.00.asc"
 	psi4_anal = "psi4analysis_r75.00.asc"
 	runstat = "runstats.asc"
 	bhdiag1 = "BH_diagnostics.ah1.gp"
 	bhdiag2 = "BH_diagnostics.ah2.gp"
 	filelist_mand = [parfile, shifttracker0, shifttracker1]
-	filelist_opt = [ihspin0, ihspin1, ihspin3, ihspin4, runstat, psi4_ylm, psi4_anal, bhdiag1, bhdiag2]
+	filelist_opt = [ihspin0, ihspin1, ihspin3, ihspin4, runstat, psi4_ylm,psi4r_ylm, psi4_anal, bhdiag1, bhdiag2]
 	
 	for mfile in filelist_mand:
 		copy( dirpath,datadir, mfile )
