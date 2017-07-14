@@ -63,6 +63,8 @@ def initial_data(parfile):
 	nr_initdata['spin_BH2'] = spin2
 	nr_initdata['momentum_BH1'] = p1
 	nr_initdata['momentum_BH2'] = p2
+	nr_initdata['pos_BH1'] = r1
+	nr_initdata['pos_BH2'] = r2
 	nr_initdata['separation'] = 2.*par_b
 
 	return nr_initdata

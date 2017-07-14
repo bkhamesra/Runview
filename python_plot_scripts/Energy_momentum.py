@@ -34,11 +34,11 @@ def Energy_Momentum(wfdir, outdir):
 	
 	Jzplot	= plot1(time, jz, 'Time', r'$J_z$','AngMom_z',figdir )
 	fig,(ax1) = plt.subplots(1,1,sharex=True, squeeze=True)
-	jx, = ax1.plot(time, jx, 'b',label='Jx', linewidth=2)
-	ax1.plot(time, jy,'k', linewidth=2, label='Jy')
+	jx, = ax1.plot(time, jx, 'b',label='Jx', linewidth=1)
+	ax1.plot(time, jy,'k', linewidth=1, label='Jy')
 
-	ax1.set_ylabel('J', fontsize = 14)
-	ax1.set_xlabel('Time', fontsize = 14)
+	ax1.set_ylabel('J', fontsize = 18)
+	ax1.set_xlabel('Time', fontsize = 18)
 	
 	ax1.ticklabel_format(axis = 'y', style = 'sci', scilimits = (1,4))
 	lgd = plt.legend()
@@ -53,11 +53,11 @@ def Energy_Momentum(wfdir, outdir):
 	Momzplot = plot1(time, pz, 'Time', 'Pz', 'Momentum_z', figdir)
 
 	fig,(ax1) = plt.subplots(1,1,sharex=True, squeeze=True)
-	px, = ax1.plot(time, px, 'b',label='Px', linewidth=2)
-	ax1.plot(time, py,'k', linewidth=2, label='Py')
+	px, = ax1.plot(time, px, 'b',label='Px', linewidth=1)
+	ax1.plot(time, py,'k', linewidth=1, label='Py')
 
-	ax1.set_ylabel('P', fontsize = 14)
-	ax1.set_xlabel('Time', fontsize = 14)
+	ax1.set_ylabel('P', fontsize = 18)
+	ax1.set_xlabel('Time', fontsize = 18)
 	
 	ax1.ticklabel_format(axis = 'y', style = 'sci', scilimits = (1,4))
 	lgd = plt.legend()

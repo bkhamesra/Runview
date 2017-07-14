@@ -2,6 +2,8 @@
 from shutil import copyfile
 import os
 from CommonFunctions import *
+import glob
+
 
 def checkfile(wfdir, filename, pathcheck = 'Mandatory'):
 	
@@ -30,7 +32,7 @@ def CollectFiles(dirpath, outdir):
 	
 	datadir  = DataDir(dirpath, outdir)
 	print("Relevant data will be saved at - {} \n".format(datadir))
-    	parfile = (dirpath.split('/')[-1]) + ('.par')
+    	parfile = os.path.basename(sorted(glob.glob(os.path.join(dirpath, '*.par')))[0])		#(dirpath.split('/')[-1]) + ('-1.par')
 	shifttracker0 = 'ShiftTracker0.asc'
 	shifttracker1 = 'ShiftTracker1.asc'
 	
@@ -54,4 +56,4 @@ def CollectFiles(dirpath, outdir):
 	for ofile in filelist_opt:
 		copy( dirpath, datadir, ofile, pathcheck = 'Optional')
 
-
+		

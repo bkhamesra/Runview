@@ -1,3 +1,6 @@
+#ihspin0 and ihpsin3 both have the spin data but they differ in numbers and total time. Guess is one of them is using AHF while other is using sphererad (approx). So would be a good idea to check which file has more data. 
+
+
 import numpy as np 
 import matplotlib.pyplot as plt
 import matplotlib as mpl
@@ -28,10 +31,20 @@ def Spins(wfdir, outdir):
    
 	ihspin0 = os.path.join(datadir,"ihspin_hn_0.asc")
 	ihspin1 = os.path.join(datadir,"ihspin_hn_1.asc")
+	ihspin3 = os.path.join(datadir,"ihspin_hn_3.asc")
+	ihspin4 = os.path.join(datadir,"ihspin_hn_4.asc")
 	
-	if not os.path.isfile(ihspin0):
-		ihspin0 = os.path.join(datadir,"ihspin_hn_3.asc")
-		ihspin1 = os.path.join(datadir,"ihspin_hn_4.asc")
+	if os.path.isfile(ihspin0) and os.path.isfile(ihspin3):
+		time1 = np.loadtxt(ihspin0, unpack=True, usecols=(0,))
+		time3 = np.loadtxt(ihspin3, unpack=True, usecols=(0,))
+		if time3[-1]>=time1[-1]:
+			os.remove(ihspin0)
+			os.remove(ihspin1)
+			os.rename(ihspin3, ihspin0)
+			os.rename(ihspin4, ihspin1)		
+	elif not os.path.isfile(ihspin0):
+		os.rename(ihspin3, ihspin0)
+		os.rename(ihspin1, ihspin1)
 		
 	if os.path.isfile(ihspin0):
 		spinplots(ihspin0, ihspin1, figdir)

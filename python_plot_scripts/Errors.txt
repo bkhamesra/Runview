@@ -1,0 +1,12 @@
+1. Trajectory - Fails if on of the shifttracker file has larger size then other (by one)
+2. Mass Plots failing - Repeated Values Error
+3. Include the eccentricity plots.
+4. Make all plots consistent - Check Font Size, Colors, Legends
+5. Include the mass plots
+6. Overwrite does not work. As a result if an error is due to some file in data directory, it continues to exist even if you recompile everything. Solution is to delete the entire data and plot directory (not the stitched directory)
+
+
+Assumptions - 
+
+1. Length of simulation is above 100M
+2. Output 0000 has all the relevant files. 

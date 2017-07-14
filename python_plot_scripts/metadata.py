@@ -1,9 +1,10 @@
 from init_data import initial_data
 import numpy as np
-import os
+import os, glob 
 from eccentricity import *
 import time
 from CommonFunctions import *
+
 def mag(vector):
 
 	magnitude = np.sqrt(vector[0]**2. + vector[1]**2. + vector[2]**2.)
@@ -44,7 +45,7 @@ def metadata(wfdir, outdir):
 	
 # Required Files	
 	filename = wfdir.split("/")[-1]
-	parfile = os.path.join(datadir, (filename+'.par'))
+	parfile = glob.glob(os.path.join(datadir, '*.par'))[0]
 		
 # Required Information from Parameter file
 	spin1 = np.empty(3)
@@ -61,7 +62,8 @@ def metadata(wfdir, outdir):
 	spin2 = initdata['spin_BH2']
 	p1 = initdata['momentum_BH1']
 	p2 = initdata['momentum_BH2']
-
+	r1 = initdata['pos_BH1']
+	r1 = initdata['pos_BH2']
 	try:
 		q = float((filename.split("q")[-1]).split("_")[0])
 	except ValueError:
@@ -75,7 +77,6 @@ def metadata(wfdir, outdir):
 	
 	delta_r = r2-r1
 	init_sep = np.linalg.norm(delta_r)
-	
 	q = m_plus/m_minus
 	eta = m_plus*m_minus/(m_plus + m_minus)**2.
 	
@@ -116,9 +117,9 @@ def metadata(wfdir, outdir):
 	nr_metadata['spin1'] = spin1
 	nr_metadata['spin2'] = spin2
 	nr_metadata['PN_approximant'] = 'None'
-        #nr_metadata['eccentricity'] = eccentricity
+	#nr_metadata['eccentricity'] = eccentricity
 	#nr_metadata['mean_anomaly'] = mean_anomaly
 
-	return nr_metadata
+	return nr_metadata, parfile
 
 

@@ -14,8 +14,8 @@ def Psi4_Plots(wfdir, outdir):
 		
 	#Extract Psi4 info
 	
-	psi4 = "Ylm_WEYLSCAL4::Psi4r_l2_m2_r75.00.asc"
-	psi4r = "Ylm_WEYLSCAL4::Psi4_l2_m2_r75.00.asc"
+	psi4 = "Ylm_WEYLSCAL4::Psi4_l2_m2_r75.00.asc"
+	psi4r = "Ylm_WEYLSCAL4::Psi4r_l2_m2_r75.00.asc"
 	if not(os.path.exists(os.path.join(datadir, psi4))):
 		psi4 = psi4r
 	
@@ -62,66 +62,66 @@ def Psi4_Plots(wfdir, outdir):
 	
 	#Plot1: Psi4 -  real and imaginary vs time
 	plt.plot(time,real, 'b', label = "Real", linewidth =1)
-	plt.plot(time, imag, 'g--', label = "Imaginary", linewidth=1)
-	plt.xlabel("Time")
-	plt.ylabel("Psi4")
+	plt.plot(time, imag, 'k--', label = "Imaginary", linewidth=1)
+	plt.xlabel("Time", fontsize=18)
+	plt.ylabel("Psi4", fontsize=18)
 	startx,endx = plt.gca().get_xlim()
-	plt.xticks(np.arange(startx, endx, 150))
+	#plt.xticks(np.arange(startx, endx, int(endx/10. - startx/10.)))
 	plt.ticklabel_format(axis = 'y', style = 'sci', scilimits = (1,4))
 	plt.grid(True)
-	plt.legend()
-	plt.savefig(figdir+"/Psi4_plot.png", dpi = 1000)
+	plt.legend(loc=2)
+	plt.savefig(figdir+"/Psi4_plot.png", dpi = 500)
 	plt.close()
 	
 	# Plot2: Psi4 - real and imaginary - near merger
 	plt.plot(time,real, 'b', label = "Real", linewidth=1)
 	#plt.plot(time, imag, 'g--', label = "Imaginary", linewidth=2)
-	plt.plot(time,amp, 'k', linewidth=1)
+	plt.plot(time,amp, 'k', linewidth=1, label="Amplitude")
 	plt.xlim(t_max_amp-300,t_max_amp+100)
 	starty,endy = plt.gca().get_ylim()
 	startx,endx = plt.gca().get_xlim()
 
 	#plt.plot([t_max_amp,t_max_amp], [starty,maxpsi4], 'k', linewidth =1.)
 	#plt.text(t_max_amp,max_amp+0.00003,'Max Amplitude', horizontalalignment='center', fontsize=9)
-	plt.xlabel("Time")
-	plt.ylabel("Psi4")
-	plt.xticks(np.arange(startx, endx, 40))
+	plt.xlabel("Time", fontsize=18)
+	plt.ylabel("Psi4", fontsize=18)
+	#plt.xticks(np.arange(startx, endx, 40))
 	plt.grid(True)
-	plt.legend()
-	plt.savefig(figdir+"/Psi4_plot_zoomed.png", dpi = 1000)
+	plt.legend(loc=2)
+	plt.savefig(figdir+"/Psi4_plot_zoomed.png", dpi = 500)
 	plt.close()
 	
 	
 	#Plot 3: Psi4 - phase and Amplitude
 	
-	plt.plot(time,amp, 'k', linewidth=1)
+	plt.plot(time,amp, 'k', linewidth=1, label="Amplitude")
 	plt.plot(time,real, 'b', label = "Real", linewidth =1)
 	plt.plot([t_max_amp,t_max_amp], [starty,max_amp], 'k--', linewidth =1.)
-	plt.text(t_max_amp,max_amp+0.00003,'Max Amplitude', horizontalalignment='center', fontsize=9)
+	plt.text(t_max_amp,max_amp+0.00003,'Max Amplitude', horizontalalignment='center', fontsize=14)
 
-	plt.xlabel('Time')
-	plt.ylabel(r"$|Psi4|$")
+	plt.xlabel('Time', fontsize=18)
+	plt.ylabel(r"$|Psi4|$", fontsize=18)
 	startx,endx = plt.gca().get_xlim()
-	plt.xticks(np.arange(startx, endx, 150))
+	#plt.xticks(np.arange(startx, endx, 150))
 	plt.ticklabel_format(axis = 'y', style = 'sci', scilimits = (1,4))
 	plt.grid(True)
-	#plt.legend()
+	plt.legend(loc=2)
 	plt.savefig(figdir+"/Psi4_amp.png", dpi = 1000)
 	plt.close()
 	
 	
-	plt.plot(time, phi )
+	plt.plot(time, phi, lw=1 )
 	starty,endy = plt.gca().get_ylim()
 	startx,endx = plt.gca().get_xlim()
 	plt.plot([t_max_amp,t_max_amp], [starty, phi[np.where(time == t_max_amp)]], 'k--', linewidth=1.5)
 	plt.text(t_max_amp,phi_at_maxamp+10 ,'Max\nAmp', horizontalalignment='right', fontsize=9)
 	
-	#plt.xticks(np.arange(startx, endx, 50))
+	##plt.xticks(np.arange(startx, endx, 50))
 	plt.xlabel("Time")
 	plt.ylabel("Phase")
 	
 	plt.grid(True)
-	plt.legend()
+	plt.legend(loc=2)
 	plt.savefig(figdir+"/Psi4_phase.png", dpi = 1000)
 	plt.close()
 	
