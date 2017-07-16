@@ -3,9 +3,9 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 from matplotlib import rc
 from CommonFunctions import *
-rc('font', **{'family':'serif','serif':['Computer Modern']})
-rc('text', usetex=True)
-mpl.rcParams['lines.linewidth']=2
+#rc('font', **{'family':'serif','serif':['Computer Modern']})
+#rc('text', usetex=True)
+#mpl.rcParams['lines.linewidth']=2
 
 
 def Energy_Momentum(wfdir, outdir):
@@ -27,16 +27,16 @@ def Energy_Momentum(wfdir, outdir):
 
 #  Energy and dE/dt plot
 	energyplot = plot1(time, Energy, 'Time', 'Energy', 'Energy', figdir)
-	Ederplot = plot1(time, E_der, 'Time', r'$\frac{dE}{dt}$', 'Energy_derivative', figdir)
+	Ederplot = plot1(time, E_der, 'Time', 'dE/dt', 'Energy_derivative', figdir)
 
 
 #  Angular Momentum and dJ/dt plots	
 	
-	Jplot = plot1(time, Jmag, 'Time', r'$|\textbk{J}|$', 'AngMom',figdir)
+	Jplot = plot1(time, Jmag, 'Time', '|J|', 'AngMom',figdir)
 
-	Jderplot = plot1(time, Jder, 'Time', r'$|\frac{dJ}{dt}|$', 'AngMomDer', figdir)
+	Jderplot = plot1(time, Jder, 'Time', 'dJ/dt', 'AngMomDer', figdir)
 	
-	Jzplot	= plot1(time, jz, 'Time', r'$J_z$','AngMom_z',figdir )
+	Jzplot	= plot1(time, jz, 'Time', 'Jz','AngMom_z',figdir )
 	fig,(ax1) = plt.subplots(1,1,sharex=True, squeeze=True)
 	jx, = ax1.plot(time, jx, 'b',label='Jx', linewidth=1)
 	ax1.plot(time, jy,'k', linewidth=1, label='Jy')
@@ -52,7 +52,7 @@ def Energy_Momentum(wfdir, outdir):
 
 #  Momentum plots
 
-	Momplot = plot1(time, Pmag, 'Time',r'$|\textbk{P}|$', 'Momentum_mag', figdir)	
+	Momplot = plot1(time, Pmag, 'Time','Mag(P)', 'Momentum_mag', figdir)	
 
 	Momzplot = plot1(time, pz, 'Time', 'Pz', 'Momentum_z', figdir)
 

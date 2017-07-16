@@ -3,8 +3,6 @@ import os
 import matplotlib.pyplot as plt
 from matplotlib import rc
 import numpy as np
-rc('font', **{'family':'serif','serif':['Computer Modern']})
-rc('text', usetex=True)
 #mpl.rcParams['lines.linewidth']=2
 
 def output_data(parfile, data):
@@ -77,3 +75,13 @@ def plot2(x1,y1, x2, y2, xlabel, ylabel, plotname, outdir):
 	ax.grid(True)
 	fig.savefig(os.path.join(outdir,(plotname+'.png')), dpi = 500)
 	plt.close()
+
+
+def func_t_hrzn(datadir, locate_merger):
+
+	if locate_merger==True:
+		bhdiag3 = os.path.join(datadir, 'BH_diagnostics.ah3.gp')
+		t_hrzn3 = np.loadtxt(bhdiag3, usecols = (1,), unpack=True)[0]
+		return t_hrzn3
+	else:
+		return 

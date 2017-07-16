@@ -1,5 +1,5 @@
 # Create a directory with all the relevant files - ShiftTracker, IHSpin, HNMAss, YLM_22_75, Psi4Analysis, Runstat
-from shutil import copyfile
+from shutil import copy
 import os
 from CommonFunctions import *
 import glob
@@ -16,14 +16,14 @@ def checkfile(wfdir, filename, pathcheck = 'Mandatory'):
 		debuginfo(message)
 
 
-def copy(wfdir, outdir, filename, pathcheck = 'Mandatory'):
+def copyfiles(wfdir, outdir, filename, pathcheck = 'Mandatory'):
 	
 	try:
 		outpath = os.path.join(outdir, filename)
 		filepath = os.path.join(wfdir, filename)
 
 		if not os.path.exists(outpath):
-			copyfile(filepath, outpath)
+			copy(filepath, outpath)
 	except IOError:
 		checkfile(wfdir, filename, pathcheck)
 
@@ -47,13 +47,14 @@ def CollectFiles(dirpath, outdir):
 	runstat = "runstats.asc"
 	bhdiag1 = "BH_diagnostics.ah1.gp"
 	bhdiag2 = "BH_diagnostics.ah2.gp"
+	bhdiag3 = "BH_diagnostics.ah3.gp"
 	filelist_mand = [parfile, shifttracker0, shifttracker1]
-	filelist_opt = [ihspin0, ihspin1, ihspin3, ihspin4, runstat, psi4_ylm,psi4r_ylm, psi4_anal, bhdiag1, bhdiag2]
+	filelist_opt = [ihspin0, ihspin1, ihspin3, ihspin4, runstat, psi4_ylm,psi4r_ylm, psi4_anal, bhdiag1, bhdiag2, bhdiag3]
 	
 	for mfile in filelist_mand:
-		copy( dirpath,datadir, mfile )
+		copyfiles( dirpath,datadir, mfile )
 	
 	for ofile in filelist_opt:
-		copy( dirpath, datadir, ofile, pathcheck = 'Optional')
+		copyfiles( dirpath, datadir, ofile, pathcheck = 'Optional')
 
 		

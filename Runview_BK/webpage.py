@@ -2,7 +2,7 @@ from metadata import *
 from shutil import copytree
 from CommonFunctions import *
 
-def webpage_data(metadata, parfile):
+def webpage_data(metadata, parfile, locate_merger):
 	
 	
 	html_txt = """
@@ -32,6 +32,12 @@ ul {{margin: 50px}}\n  </style>\n
 \n </ul>	""".format(metadata['alternative-names'], metadata['simulation-type'], metadata['mass-ratio'], metadata['init_sep'], metadata['spin1'], metadata['spin2'])
 
 
+	html_txt = html_txt + """
+\n <ul>
+\n <li> Final Horizon detected (in center of mass frame) at t = {}</li>
+\n <li> Final Horizon detected (at r=75M) at t = {}</li>
+\n <li> Maximum Amplitude in Psi4 (at r=75M) achieved at t = {}</li>
+\n </ul>	""".format(metadata['final_horizon'], metadata['final_horizon']+75, metadata['max_amp'])
 
 	html_txt = html_txt + """
 
@@ -77,13 +83,13 @@ ul {{margin: 50px}}\n  </style>\n
 	""".format(os.path.basename(parfile))
 	return html_txt
 
-def webpage(wfdir, outdir):
+def webpage(wfdir, outdir,locate_merger):
 	
 	datadir = DataDir(wfdir, outdir) 
 	filename = open(os.path.join(datadir+'/..','webpage.html'),'w+')
 
-	meta_data, parfile = metadata(wfdir, outdir)
-	webdata = webpage_data(meta_data, parfile)
+	meta_data, parfile = metadata(wfdir, outdir,locate_merger)
+	webdata = webpage_data(meta_data, parfile, locate_merger)
 	filename.write(webdata)
 	filename.close()
 	if not os.path.exists(datadir+"/../HTML"):		

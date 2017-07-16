@@ -4,6 +4,7 @@ import os, glob
 from eccentricity import *
 import time
 from CommonFunctions import *
+from Psi4 import maxamp_time
 
 def mag(vector):
 
@@ -39,7 +40,7 @@ def simulation_type(spin1, spin2):
 	
 	return simtype
 
-def metadata(wfdir, outdir):
+def metadata(wfdir, outdir, locate_merger):
 	
 	datadir = DataDir(wfdir, outdir)
 	
@@ -80,6 +81,9 @@ def metadata(wfdir, outdir):
 	q = m_plus/m_minus
 	eta = m_plus*m_minus/(m_plus + m_minus)**2.
 	
+	if locate_merger:
+		maxamp, t_maxamp = maxamp_time(wfdir, outdir)
+		t_hrzn = func_t_hrzn(datadir, locate_merger)
 
  	#Computing eccentricity and mean anomaly
 	#[mean_anomaly, eccentricity] = ecc_and_anomaly(dirpath, 75.)
@@ -117,6 +121,9 @@ def metadata(wfdir, outdir):
 	nr_metadata['spin1'] = spin1
 	nr_metadata['spin2'] = spin2
 	nr_metadata['PN_approximant'] = 'None'
+	if locate_merger:
+		nr_metadata['final_horizon'] = t_hrzn
+		nr_metadata['max_amp'] = t_maxamp
 	#nr_metadata['eccentricity'] = eccentricity
 	#nr_metadata['mean_anomaly'] = mean_anomaly
 

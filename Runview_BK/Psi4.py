@@ -5,7 +5,7 @@ from shutil import copyfile
 import os
 from CommonFunctions import *
 
-def maxamp_time(wfdir, outdir)
+def maxamp_time(wfdir, outdir):
 
 	datadir = DataDir(wfdir, outdir)
 	figdir = FigDir(wfdir, outdir)	
@@ -19,7 +19,7 @@ def maxamp_time(wfdir, outdir)
 	
 	if not(os.path.exists(os.path.join(datadir,psi4))):
 		debuginfo('%s file not found' %psi4)
-		return
+#		return
 
 	psi4_file = open(os.path.join(datadir, psi4))
 	time, real, imag = np.loadtxt(psi4_file, unpack=True)
@@ -30,7 +30,7 @@ def maxamp_time(wfdir, outdir)
 	return max_amp, time[np.where(amp==max_amp)]
 
 	
-def Psi4_Plots(wfdir, outdir):
+def Psi4_Plots(wfdir, outdir, locate_merger=False):
 
 	#Create waveform directory
 	
@@ -83,6 +83,14 @@ def Psi4_Plots(wfdir, outdir):
 	real_at_maxamp = real[np.where(time==t_max_amp)]
 	imag_at_maxamp = imag[np.where(time==t_max_amp)]
 	
+	#Horizon Info:
+	if locate_merger:
+		t_hrzn = func_t_hrzn(datadir, locate_merger)
+		t_hrzn = t_hrzn+75.
+		idx_hrzn =np.amin( np.where(time>=t_hrzn))
+		real_hrzn, imag_hrzn = real[idx_hrzn], imag[idx_hrzn]
+		amp_hrzn, phi_hrzn = amp[idx_hrzn], phi[idx_hrzn] 
+
 	if real_at_maxamp>=imag_at_maxamp: maxpsi4 = real_at_maxamp
 	else: maxpsi4 = imag_at_maxamp
 	
@@ -104,12 +112,15 @@ def Psi4_Plots(wfdir, outdir):
 	plt.plot(time,real, 'b', label = "Real", linewidth=1)
 	#plt.plot(time, imag, 'g--', label = "Imaginary", linewidth=2)
 	plt.plot(time,amp, 'k', linewidth=1, label="Amplitude")
-	plt.xlim(t_max_amp-300,t_max_amp+100)
+	plt.xlim(t_max_amp-150,t_max_amp+100)
 	starty,endy = plt.gca().get_ylim()
 	startx,endx = plt.gca().get_xlim()
-
-	#plt.plot([t_max_amp,t_max_amp], [starty,maxpsi4], 'k', linewidth =1.)
-	#plt.text(t_max_amp,max_amp+0.00003,'Max Amplitude', horizontalalignment='center', fontsize=9)
+	
+	if locate_merger:
+		plt.plot([t_max_amp,t_max_amp], [starty,max_amp], 'k', linewidth =1.)
+		plt.text(t_max_amp,max_amp+0.00003,'Max Amplitude', horizontalalignment='center', fontsize=12)
+		plt.plot([t_hrzn,t_hrzn], [starty,amp_hrzn], 'k', linewidth =1.)
+		plt.text(t_hrzn,amp_hrzn+0.00005,'AH3', horizontalalignment='right', fontsize=12)
 	plt.xlabel("Time", fontsize=18)
 	plt.ylabel("Psi4", fontsize=18)
 	#plt.xticks(np.arange(startx, endx, 40))
@@ -121,14 +132,18 @@ def Psi4_Plots(wfdir, outdir):
 	
 	#Plot 3: Psi4 - phase and Amplitude
 	
-	plt.plot(time,amp, 'k', linewidth=1, label="Amplitude")
-	plt.plot(time,real, 'b', label = "Real", linewidth =1)
-	plt.plot([t_max_amp,t_max_amp], [starty,max_amp], 'k--', linewidth =1.)
-	plt.text(t_max_amp,max_amp+0.00003,'Max Amplitude', horizontalalignment='center', fontsize=14)
+	plt.plot(time,amp, 'b', linewidth=1, label="Amplitude")
+	#plt.plot(time,real, 'b', label = "Real", linewidth =1)
+	startx,endx = plt.gca().get_xlim()
+	starty,endy = plt.gca().get_ylim()
+	if locate_merger:
+		plt.plot([t_max_amp,t_max_amp], [starty,max_amp], 'k', linewidth =1.)
+		plt.text(t_max_amp,max_amp+0.00003,'Max Amplitude', horizontalalignment='center', fontsize=12)
+		plt.plot([t_hrzn,t_hrzn], [starty,amp_hrzn], 'k', linewidth =1.)
+		plt.text(t_hrzn,amp_hrzn+0.00003,'AH3', horizontalalignment='right', fontsize=12)
 
 	plt.xlabel('Time', fontsize=18)
-	plt.ylabel(r"$|Psi4|$", fontsize=18)
-	startx,endx = plt.gca().get_xlim()
+	plt.ylabel("Amplitude", fontsize=18)
 	#plt.xticks(np.arange(startx, endx, 150))
 	plt.ticklabel_format(axis = 'y', style = 'sci', scilimits = (1,4))
 	plt.grid(True)
@@ -140,12 +155,16 @@ def Psi4_Plots(wfdir, outdir):
 	plt.plot(time, phi, lw=1 )
 	starty,endy = plt.gca().get_ylim()
 	startx,endx = plt.gca().get_xlim()
-	plt.plot([t_max_amp,t_max_amp], [starty, phi[np.where(time == t_max_amp)]], 'k--', linewidth=1.5)
-	plt.text(t_max_amp,phi_at_maxamp+10 ,'Max\nAmp', horizontalalignment='right', fontsize=9)
+	if locate_merger:
+		plt.plot([t_max_amp,t_max_amp], [starty,phi_at_maxamp], 'k', linewidth =1.)
+		plt.text(t_max_amp,phi_at_maxamp+0.00003,'Max \n Amp', horizontalalignment='left', fontsize=12)	
+		plt.plot([t_hrzn,t_hrzn], [starty,phi_hrzn], 'k', linewidth =1.)
+		plt.text(t_hrzn,phi_hrzn+5,'AH3', horizontalalignment='right', fontsize=12)
+
 	
 	##plt.xticks(np.arange(startx, endx, 50))
-	plt.xlabel("Time")
-	plt.ylabel("Phase")
+	plt.xlabel("Time", fontsize=18)
+	plt.ylabel("Phase",fontsize=18)
 	
 	plt.grid(True)
 	plt.legend(loc=2)
