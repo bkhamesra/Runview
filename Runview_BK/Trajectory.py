@@ -28,7 +28,7 @@ def write_sep_data(outdir, data):
 	output_traj.close()
 	
 
-def Trajectory(wfdir, outdir):
+def Trajectory(wfdir, outdir, locate_merger=True):
 	
   	figdir = FigDir(wfdir, outdir)
 	datadir = DataDir(wfdir, outdir)
@@ -37,6 +37,27 @@ def Trajectory(wfdir, outdir):
 	trajectory_bh2 = open(os.path.join(datadir, "ShiftTracker1.asc"))
 	time_bh1, x_bh1, y_bh1, z_bh1 = np.loadtxt(trajectory_bh1, unpack=True, usecols=(1,2,3,4))
 	time_bh2, x_bh2, y_bh2, z_bh2 = np.loadtxt(trajectory_bh2, unpack=True, usecols=(1,2,3,4))
+
+
+	#Horizon Location
+	if locate_merger=True:
+		bhdiag3 = os.path.join(datadir, 'BH_diagnostics.ah3.gp')
+		t_hrzn3 = np.loadtxt(bhdiag3, usecols = (1), unpack=True)[0]
+		maxamp, t_maxamp = psi4_amp(wfdir, outdir)	
+		
+		hrzn_idx = np.amin(np.where(time_bh1>=t_hrzn3))
+		maxamp_idx = np.amin(np.where(time_bh1>=t_maxamp))
+
+		x_bh1_hrzn, y_bh1_hrzn = x_bh1[hrzn_idx], y_bh1[hrzn_idx]
+		x_bh1_amp, y_bh1_amp = x_bh1[maxamp_idx], y_bh1[maxamp_idx]
+		x_bh2_hrzn, y_bh2_hrzn = x_bh2[hrzn_idx], ybh2[hrzn_idx]
+		x_bh2_amp, y_bh2_amp = x_bh2[maxamp_idx], y_bh2[maxamp_idx]
+
+		x_hrzn = min(x_bh1_hrzn, x_bh2_hrzn)
+		y_hrzn = min(y_bh1_hrzn, y_bh2_hrzn)
+		x_amp = min(x_bh1_amp, x_bh2_amp)
+		y_amp = min(y_bh1_amp, y_bh2_amp)
+		radius = (x_hrzn**2. + y_hrzn**2.)**0.5
 
 
 	r1 = np.array((x_bh1, y_bh1, z_bh1))
@@ -56,10 +77,17 @@ def Trajectory(wfdir, outdir):
 	f1, ax1 = plt.subplots()
 	bh1, = ax1.plot(time_bh1, x_bh1, c='b',  linewidth=1, label="bh1")
 	bh2, = ax1.plot(time_bh2, x_bh2, c='k',ls='--', linewidth=1, label = "bh2")
+	
+	if locate_merger==True:
+		ax1.plot([t_hrzn3,t_hrzn3], [-4,x_hrzn], 'b--', linewidth=1.5)
+		ax1.text( t_hrzn3,1,'AH3', horizontalalignment='right', fontsize=12)
+		ax1.plot([t_maxamp,t_maxamp], [-4,x_hrzn], 'b--', linewidth=1.5)
+		ax1.text( t_hrzn3,1,'AH3', horizontalalignment='right', fontsize=12)
+
 	ax1.set_xlabel('Time', fontsize = 18)
 	ax1.set_ylabel('X', fontsize = 18)
 	startx,endx = ax1.get_xlim()
-	##plt.xticks(np.arange(startx, endx, int(endx/10. - startx/10.)))
+	plt.xticks(np.arange(startx, endx, int(endx/10. - startx/10.)))
 	ax1.grid(True)
 	ax1.legend()#[bh1,bh2],['bh1','bh2'],bbox_to_anchor=(1, 1), loc='upper left', ncol=1, borderpad=0.8)
 	plt.savefig(figdir + '/Trajectory_xvstime.png', dpi = 500)
@@ -71,7 +99,7 @@ def Trajectory(wfdir, outdir):
 	ax2.set_xlabel('Time', fontsize = 18)
 	ax2.set_ylabel('Y', fontsize=18)
 	startx,endx = ax2.get_xlim()
-	##plt.xticks(np.arange(startx, endx, int(endx/10. - startx/10.)))
+	plt.xticks(np.arange(startx, endx, int(endx/10. - startx/10.)))
 	ax2.grid(True)
 	ax2.legend()#[bh1,bh2],['bh1','bh2'],bbox_to_anchor=(1, 1), loc='upper left', ncol=1, borderpad=0.8)
 	plt.savefig(figdir + '/Trajectory_yvstime.png', dpi = 500)
@@ -95,7 +123,7 @@ def Trajectory(wfdir, outdir):
 	plt.xlabel('Time', fontsize = 18)
 	plt.ylabel('Separation', fontsize = 18)
 	startx,endx = plt.gca().get_xlim()
-	#plt.xticks(np.arange(startx, endx, int(endx/10.- startx/10.)))
+	plt.xticks(np.arange(startx, endx, int(endx/10.- startx/10.)))
 	plt.grid(True)
 	plt.savefig(figdir+'/Trajectory_separation.png', dpi = 500)
 	plt.close()

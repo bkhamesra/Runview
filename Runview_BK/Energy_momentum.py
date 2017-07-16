@@ -14,6 +14,10 @@ def Energy_Momentum(wfdir, outdir):
 	datadir = DataDir(wfdir, outdir)
    
 	psi4analysis = os.path.join(datadir,"psi4analysis_r75.00.asc")
+	if not(os.path.exists(psi4analysis)):
+	    debuginfo("%s file not found"%os.path.basename(psi4analysis))
+	    return None
+
 	time, Energy, px, py, pz, E_der, px_der, py_der, pz_der, jx_der, jy_der, jz_der, jx, jy, jz = np.loadtxt(psi4analysis, comments="#", unpack = True)
 	
 	Pmag = np.sqrt(px**2. + py**2. + pz**2)

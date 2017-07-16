@@ -5,6 +5,31 @@ from shutil import copyfile
 import os
 from CommonFunctions import *
 
+def maxamp_time(wfdir, outdir)
+
+	datadir = DataDir(wfdir, outdir)
+	figdir = FigDir(wfdir, outdir)	
+		
+	#Extract Psi4 info
+	
+	psi4 = "Ylm_WEYLSCAL4::Psi4_l2_m2_r75.00.asc"
+	psi4r = "Ylm_WEYLSCAL4::Psi4r_l2_m2_r75.00.asc"
+	if not(os.path.exists(os.path.join(datadir, psi4))):
+		psi4 = psi4r
+	
+	if not(os.path.exists(os.path.join(datadir,psi4))):
+		debuginfo('%s file not found' %psi4)
+		return
+
+	psi4_file = open(os.path.join(datadir, psi4))
+	time, real, imag = np.loadtxt(psi4_file, unpack=True)
+	
+	#Amplitude and Phase
+	amp = abs(real+1.j *imag)		
+	max_amp = np.amax(amp)
+	return max_amp, time[np.where(amp==max_amp)]
+
+	
 def Psi4_Plots(wfdir, outdir):
 
 	#Create waveform directory
@@ -20,7 +45,9 @@ def Psi4_Plots(wfdir, outdir):
 		psi4 = psi4r
 	
 	
-	assert(os.path.exists(os.path.join(datadir,psi4))),'%s file not found' %psi4
+	if not(os.path.exists(os.path.join(datadir,psi4))):
+		debuginfo('%s file not found' %psi4)
+		return
 
 	psi4_file = open(os.path.join(datadir, psi4))
 	time, real, imag = np.loadtxt(psi4_file, unpack=True)
