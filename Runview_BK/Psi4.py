@@ -96,8 +96,8 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False):
 	
 	
 	#Plot1: Psi4 -  real and imaginary vs time
-	plt.plot(time,real, 'b', label = "Real", linewidth =1)
-	plt.plot(time, imag, 'k--', label = "Imaginary", linewidth=1)
+	plt.plot(time,real, 'b', label = "Real", linewidth =1.5)
+	plt.plot(time, imag, 'k--', label = "Imaginary", linewidth=1.5)
 	plt.xlabel("Time", fontsize=18)
 	plt.ylabel("Psi4", fontsize=18)
 	startx,endx = plt.gca().get_xlim()
@@ -109,7 +109,7 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False):
 	plt.close()
 	
 	# Plot2: Psi4 - real and imaginary - near merger
-	plt.plot(time,real, 'b', label = "Real", linewidth=1)
+	plt.plot(time,real, 'b', label = "Real", linewidth=1.5)
 	#plt.plot(time, imag, 'g--', label = "Imaginary", linewidth=2)
 	plt.plot(time,amp, 'k', linewidth=1, label="Amplitude")
 	plt.xlim(t_max_amp-150,t_max_amp+100)
@@ -117,9 +117,9 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False):
 	startx,endx = plt.gca().get_xlim()
 	
 	if locate_merger:
-		plt.plot([t_max_amp,t_max_amp], [starty,max_amp], 'k', linewidth =1.)
+		plt.plot([t_max_amp,t_max_amp], [starty,max_amp], 'k--', linewidth =1.5)
 		plt.text(t_max_amp,max_amp+0.00003,'Max Amplitude', horizontalalignment='center', fontsize=12)
-		plt.plot([t_hrzn,t_hrzn], [starty,amp_hrzn], 'k', linewidth =1.)
+		plt.plot([t_hrzn,t_hrzn], [starty,amp_hrzn], 'k--', linewidth =1.5)
 		plt.text(t_hrzn,amp_hrzn+0.00005,'AH3', horizontalalignment='right', fontsize=12)
 	plt.xlabel("Time", fontsize=18)
 	plt.ylabel("Psi4", fontsize=18)
@@ -137,9 +137,9 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False):
 	startx,endx = plt.gca().get_xlim()
 	starty,endy = plt.gca().get_ylim()
 	if locate_merger:
-		plt.plot([t_max_amp,t_max_amp], [starty,max_amp], 'k', linewidth =1.)
+		plt.plot([t_max_amp,t_max_amp], [starty,max_amp], 'k--', linewidth =1.5)
 		plt.text(t_max_amp,max_amp+0.00003,'Max Amplitude', horizontalalignment='center', fontsize=12)
-		plt.plot([t_hrzn,t_hrzn], [starty,amp_hrzn], 'k', linewidth =1.)
+		plt.plot([t_hrzn,t_hrzn], [starty,amp_hrzn], 'k--', linewidth =1.5)
 		plt.text(t_hrzn,amp_hrzn+0.00003,'AH3', horizontalalignment='right', fontsize=12)
 
 	plt.xlabel('Time', fontsize=18)
@@ -156,9 +156,9 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False):
 	starty,endy = plt.gca().get_ylim()
 	startx,endx = plt.gca().get_xlim()
 	if locate_merger:
-		plt.plot([t_max_amp,t_max_amp], [starty,phi_at_maxamp], 'k', linewidth =1.)
+		plt.plot([t_max_amp,t_max_amp], [starty,phi_at_maxamp], 'k--', linewidth =1.5)
 		plt.text(t_max_amp,phi_at_maxamp+0.00003,'Max \n Amp', horizontalalignment='left', fontsize=12)	
-		plt.plot([t_hrzn,t_hrzn], [starty,phi_hrzn], 'k', linewidth =1.)
+		plt.plot([t_hrzn,t_hrzn], [starty,phi_hrzn], 'k--', linewidth =1.5)
 		plt.text(t_hrzn,phi_hrzn+5,'AH3', horizontalalignment='right', fontsize=12)
 
 	

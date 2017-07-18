@@ -89,9 +89,9 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	plt.xticks(np.arange(startx, endx, int(endx/10. - startx/10.)))
 	
 	if locate_merger==True:
-		ax1.plot([t_hrzn3,t_hrzn3], [starty,x_hrzn], 'r--', linewidth=1.5)
+		ax1.plot([t_hrzn3,t_hrzn3], [starty,x_hrzn], 'g--', linewidth=1.5)
 		ax1.text( t_hrzn3,starty+0.2,'AH3', horizontalalignment='right', fontsize=12)
-		ax1.plot([t_maxamp,t_maxamp], [starty,x_amp], 'r--', linewidth=1.5)
+		ax1.plot([t_maxamp,t_maxamp], [starty,x_amp], 'g--', linewidth=1.5)
 		ax1.text( t_maxamp,starty+0.2,'Max Amp', horizontalalignment='left', fontsize=12)
 
 	ax1.set_xlabel('Time', fontsize = 18)

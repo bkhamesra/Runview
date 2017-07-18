@@ -7,7 +7,9 @@ from Spins import Spins
 from webpage import webpage 
 from hnmass import Mass_Plots
 from StitchFiles import StitchData
-from animation import BH_Motion
+
+from Animate_Trajectories import *
+
 import os, argparse
 
 parser = argparse.ArgumentParser()
@@ -43,8 +45,8 @@ Energy_Momentum(dirpath, outdir)
 runstats(dirpath, outdir)
 Psi4_Plots(dirpath, outdir, locate_merger=findmerger)
 Spins(dirpath, outdir)
-#Mass_Plots(dirpath, outdir)
+Mass_Plots(dirpath, outdir)
 webpage(dirpath, outdir, locate_merger=findmerger)
 
 if AHF:
-	BH_Motion(dirpath, outdir)
+	animate_trajectories(dirpath, outdir)

@@ -38,6 +38,7 @@ def CollectFiles(dirpath, outdir):
 	
 	ihspin0 = 'ihspin_hn_0.asc'
 	ihspin1 = 'ihspin_hn_1.asc'
+	ihspin2 = 'ihspin_hn_2.asc'
 	ihspin3 = 'ihspin_hn_3.asc'
 	ihspin4 = 'ihspin_hn_4.asc'
 

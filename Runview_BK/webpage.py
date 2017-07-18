@@ -67,6 +67,10 @@ ul {{margin: 50px}}\n  </style>\n
 \n <p> <a href=\"figures/Spinmag.png\"><img src=\"figures/Spinmag.png\" alt=\"Spin_Magnitude.png\" width=\"700\" height=\"600\" hspace=20></a>
 \n  <a href=\"figures/Spinz.png\"><img src=\"figures/Spinz.png\" alt=\"Spin-z.png\" width=\"700\" height=\"600\"></a></p>
 \n 
+\n <h2 style=\"text-align:left;font-size:150%;font-family:verdana\"><a href=\"HTML/Masses.html\"> Irreducible Masses Plots </a></h2>
+\n <p> <a href=\"figures/Mass_BH1.png\"><img src=\"figures/Mass_BH1.png\" alt=\"Mass_BH1.png\" width=\"700\" height=\"600\" hspace=20></a>
+\n  <a href=\"figures/Mass_BH2.png\"><img src=\"figures/Mass_BH2.png\" alt=\"Mass_BH2.png\" width=\"700\" height=\"600\"></a></p>
+\n 
 \n <h2 style=\"text-align:left;font-size:150%;font-family:verdana\"> Kicks Plots </h2>
 \n 
 \n 

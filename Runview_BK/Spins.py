@@ -6,9 +6,9 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 from matplotlib import rc
 from CommonFunctions import *
-rc('font', **{'family':'serif','serif':['Computer Modern']})
-rc('text', usetex=True)
-mpl.rcParams['lines.linewidth']=2
+#rc('font', **{'family':'serif','serif':['Computer Modern']})
+#rc('text', usetex=True)
+#mpl.rcParams['lines.linewidth']=2
 
 def spinplots(file1, file2, figdir):
 	ihspin_0 = open(file1)
@@ -38,13 +38,13 @@ def Spins(wfdir, outdir):
 		time1 = np.loadtxt(ihspin0, unpack=True, usecols=(0,))
 		time3 = np.loadtxt(ihspin3, unpack=True, usecols=(0,))
 		if time3[-1]>=time1[-1]:
-			os.remove(ihspin0)
-			os.remove(ihspin1)
-			os.rename(ihspin3, ihspin0)
-			os.rename(ihspin4, ihspin1)		
+			#os.remove(ihspin0)
+			#os.remove(ihspin1)
+			ihspin0 = ihspin3			#os.rename(ihspin3, ihspin0)
+			ihspin1 = ihspin4			#os.rename(ihspin4, ihspin1)		
 	elif not os.path.isfile(ihspin0):
-		os.rename(ihspin3, ihspin0)
-		os.rename(ihspin1, ihspin1)
+		ihspin0 = ihspin3						#os.rename(ihspin3, ihspin0)
+		ihspin1 = ihspin4						#os.rename(ihspin1, ihspin1)
 		
 	if os.path.isfile(ihspin0):
 		spinplots(ihspin0, ihspin1, figdir)
