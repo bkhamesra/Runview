@@ -46,6 +46,7 @@ def metadata(wfdir, outdir, locate_merger):
 	
 # Required Files	
 	filename = wfdir.split("/")[-1]
+	print datadir
 	parfile = glob.glob(os.path.join(datadir, '*.par'))[0]
 		
 # Required Information from Parameter file

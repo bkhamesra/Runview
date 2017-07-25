@@ -33,6 +33,7 @@ def Mass_Plots(wfdir, outdir):
 
 	bh_diag0 = os.path.join(datadir,'BH_diagnostics.ah1.gp')
 	bh_diag1 = os.path.join(datadir,'BH_diagnostics.ah2.gp')
+
 	ihspin0 = os.path.join(datadir,"ihspin_hn_0.asc")
 	ihspin1 = os.path.join(datadir,"ihspin_hn_1.asc")
 
@@ -42,8 +43,8 @@ def Mass_Plots(wfdir, outdir):
 
 
 	if os.path.exists(bh_diag1):
-		time_bh1, irr_m1 = np.loadtxt(bh_diag0, usecols = (1,26), unpack=True, comments = '#')
-		time_bh2, irr_m2 = np.loadtxt(bh_diag1, usecols = (1,26), unpack =True, comments = '#')
+		time_bh1, irr_m1 = np.genfromtxt(bh_diag0, usecols = (1,26,), unpack=True, comments = '#')
+		time_bh2, irr_m2 = np.genfromtxt(bh_diag1, usecols = (1,26,), unpack =True, comments = '#')
 		minlen = min(len(time_bh1), len(time_bh2))-1
 		
 		plot1(time_bh1, irr_m1, 'Time', 'BH1 Mass ', 'Mass_BH1', figdir)		
