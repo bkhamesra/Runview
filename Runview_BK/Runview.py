@@ -40,14 +40,14 @@ if stitchdata:
 	StitchData(dirpath, save_hrzn=AHF)
 	dirpath=os.path.join(dirpath,(os.path.basename(dirpath)+'-all'))
 
-#CollectFiles(dirpath, outdir)	
+CollectFiles(dirpath, outdir)	
 
 Trajectory(dirpath, outdir, locate_merger=findmerger)
-#Energy_Momentum(dirpath, outdir)
-#runstats(dirpath, outdir)
+Energy_Momentum(dirpath, outdir)
+runstats(dirpath, outdir)
 Psi4_Plots(dirpath, outdir, locate_merger=findmerger, locate_qnm=findqnm)
-#Spins(dirpath, outdir)
-#Mass_Plots(dirpath, outdir)
+Spins(dirpath, outdir)
+Mass_Plots(dirpath, outdir)
 webpage(dirpath, outdir, locate_merger=findmerger)
 
 if AHF:

@@ -16,13 +16,12 @@ def func_phase(varphase):
 
 	varphi = np.copy(varphase)
 	for i in range(len(varphase)):
-		if abs(varphase[i-1]-varphase[i]-np.pi)<0.1:
-			varphi[i:] = varphi[i:] + np.pi
+		if abs(varphase[i-1]-varphase[i]-2.*np.pi)<0.1:
+			varphi[i:] = varphi[i:] + 2.*np.pi
 	return varphi
 
-def write_sep_data(outdir, data):
-	output_traj = open(os.path.join(outdir, 'Separation.txt'),'w')
-	hdr = '# Time \t Separation \t Orbital Phase \n'
+def write_sep_data(filename,hdr, outdir, data):
+	output_traj = open(os.path.join(outdir, filename),'w')
 	np.savetxt(output_traj, data, header=hdr, delimiter='\t', newline='\n')
 	output_traj.close()
 	
@@ -34,20 +33,50 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 
 	trajectory_bh1 = open(os.path.join(datadir, "ShiftTracker0.asc"))
 	trajectory_bh2 = open(os.path.join(datadir, "ShiftTracker1.asc"))
-	time_bh1, x_bh1, y_bh1, z_bh1 = np.loadtxt(trajectory_bh1, unpack=True, usecols=(1,2,3,4))
-	time_bh2, x_bh2, y_bh2, z_bh2 = np.loadtxt(trajectory_bh2, unpack=True, usecols=(1,2,3,4))
+	time_bh1, x_bh1, y_bh1, z_bh1, vx_bh1, vy_bh1, vz_bh1 = np.loadtxt(trajectory_bh1, unpack=True, usecols=(1,2,3,4,5,6,7))
+	time_bh2, x_bh2, y_bh2, z_bh2, vx_bh2, vy_bh2, vz_bh2 = np.loadtxt(trajectory_bh2, unpack=True, usecols=(1,2,3,4,5,6,7))
 
-
+	#Orbital Separation
 	r1 = np.array((x_bh1, y_bh1, z_bh1))
 	r2 = np.array((x_bh2, y_bh2, z_bh2))
+	time = np.copy(time_bh1)
 	assert (len(x_bh1)==len(x_bh2)), "Length of position data are not equal. Please check length of Shifttracker files."
-	separation = np.linalg.norm(r2-r1, axis=0)
+		
+	r_sep = (r1-r2).T
+	x,y,z = r_sep.T
+	rmag = np.linalg.norm(r_sep, axis=1)
+
+	separation = np.linalg.norm(r1-r2, axis=0)
 	log_sep = np.log(separation)
 
-	phase = np.arctan(np.divide(y_bh1, x_bh1))
+	theta = np.arccos(np.divide(z,rmag))
+
+	phase = np.arctan2(y, x)
 	phi = func_phase(phase)
 	logphi = np.log(phi)
+ 	
+	#Orbital Velocity
+	v1 = np.array((vx_bh1, vy_bh1, vz_bh1))
+	v2 = np.array((vx_bh2, vy_bh2, vz_bh2))
+	v_sep = (v1-v2).T
+	vmag = np.linalg.norm(v_sep, axis=1)
+	vx,vy,vz = v_sep.T
 
+	# Derivatives
+	rdot = (vx*np.cos(phi) + vy*np.sin(phi))*np.sin(theta) + vz*np.cos(theta)
+
+	thdot = np.cos(theta)*np.cos(phi)*vx + np.cos(theta)*np.sin(phi)*vy -np.sin(theta)*vz		#z*(x*vx + y*vy) - vz*(x**2. + y**2.)
+	thdot =	np.divide(thdot, rmag)									#np.divide(thdot, (rmag**2.)*np.sqrt(x**2. + y**2.))
+
+	phdot = np.divide((vy*np.cos(phi) - vx*np.sin(phi)), (rmag*np.sin(theta)))			#np.divide((x*vy - y*vx), (x**2. + y**2.))
+	nonan_idx = np.squeeze(np.where(np.isnan(phdot)==False))
+	
+	noinf_idx =  np.squeeze(np.where(abs(phdot[nonan_idx])< float('inf')))
+	use_idx = np.sort(np.intersect1d(noinf_idx, nonan_idx))
+	print("Use Index = ",use_idx)
+	print phdot[390767:390769]
+
+	print np.where(abs(phdot[use_idx]==float('inf')))
 	#Horizon Location
 	if locate_merger==True:
 		bhdiag3 = os.path.join(datadir, 'BH_diagnostics.ah3.gp')
@@ -89,8 +118,13 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 
 	#Output Data
 
-	data = np.column_stack((time_bh1, separation, phi))	
-	write_sep_data(datadir, data)
+	data_sep = np.column_stack((time_bh1[use_idx], separation[use_idx], phi[use_idx]))	
+	hdr = '# Time \t Separation \t Orbital Phase \n'
+	write_sep_data('ShiftTrackerRadiusPhase.asc',hdr, datadir, data_sep)
+	
+	data_der = np.column_stack((time_bh1[use_idx], rdot[use_idx], phdot[use_idx]))
+	hdr = '# Time \t R_dot \t Theta_dot \n'
+	write_sep_data('ShiftTrackerRdotThdot.asc', hdr, datadir, data_der)
 
 	#Plot 1: x vs t and y vs t
 	

@@ -48,7 +48,7 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
 		return
 
 	psi4_file = open(os.path.join(datadir, psi4))
-	time, real, imag = np.loadtxt(psi4_file, unpack=True)
+	time, real, imag = np.loadtxt(psi4_file, unpack=True, usecols=(0,1,2))
 	
 	
 	#Amplitude and Phase
