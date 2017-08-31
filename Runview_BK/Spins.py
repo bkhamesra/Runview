@@ -22,7 +22,7 @@ def spinplots(file1, file2, figdir):
 	sxplot = plot2(time_bh1, sx1, time_bh2, sx2, 'Time', r'$S_x$', 'Spinx', figdir)
 	syplot = plot2(time_bh1, sy1, time_bh2, sy2, 'Time', r'$S_y$', 'Spiny', figdir)
 	szplot = plot2(time_bh1, sz1, time_bh2, sz2, 'Time', r'$S_z$', 'Spinz', figdir)
-	smag_plot = plot2(time_bh1, s1, time_bh2, s2, 'Time', r'$|S|$', 'Spinmag', figdir)
+	smag_plot = plot2(time_bh1, s1, time_bh2, s2, 'Time', 'mag(S)', 'Spinmag', figdir)
 
 def Spins(wfdir, outdir):
 

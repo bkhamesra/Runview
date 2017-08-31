@@ -44,9 +44,10 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 		
 	r_sep = (r1-r2).T
 	x,y,z = r_sep.T
-	rmag = np.linalg.norm(r_sep, axis=1)
 
-	separation = np.linalg.norm(r1-r2, axis=0)
+	rmag = norm(r_sep,1)
+
+	separation = norm(r1-r2, 0)
 	log_sep = np.log(separation)
 
 	theta = np.arccos(np.divide(z,rmag))
@@ -59,7 +60,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	v1 = np.array((vx_bh1, vy_bh1, vz_bh1))
 	v2 = np.array((vx_bh2, vy_bh2, vz_bh2))
 	v_sep = (v1-v2).T
-	vmag = np.linalg.norm(v_sep, axis=1)
+	vmag = norm(v_sep, 1)
 	vx,vy,vz = v_sep.T
 
 	# Derivatives
@@ -73,10 +74,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	
 	noinf_idx =  np.squeeze(np.where(abs(phdot[nonan_idx])< float('inf')))
 	use_idx = np.sort(np.intersect1d(noinf_idx, nonan_idx))
-	print("Use Index = ",use_idx)
-	print phdot[390767:390769]
 
-	print np.where(abs(phdot[use_idx]==float('inf')))
 	#Horizon Location
 	if locate_merger==True:
 		bhdiag3 = os.path.join(datadir, 'BH_diagnostics.ah3.gp')
@@ -133,7 +131,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	bh2, = ax1.plot(time_bh2, x_bh2, c='k',ls='--', linewidth=1, label = "bh2")
 	startx,endx = ax1.get_xlim()
 	starty,endy = ax1.get_ylim()
-	plt.xticks(np.arange(startx, endx, int(endx/10. - startx/10.)))
+	#plt.xticks(np.arange(startx, endx, int(endx/10. - startx/10.)))
 	
 	if locate_merger==True:
 	    ax1.plot([t_hrzn3,t_hrzn3], [starty,x_hrzn], 'g--', linewidth=1.5)
@@ -165,7 +163,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	       # for xy in zip(time_arr, y_arr):
 	       #     ax2.annotate('(%s, %s)' % xy, xy=xy, textcoords='data')
 
-	plt.xticks(np.arange(startx, endx, int(endx/10. - startx/10.)))
+	#plt.xticks(np.arange(startx, endx, int(endx/10. - startx/10.)))
 	ax2.set_xlabel('Time', fontsize = 18)
 	ax2.set_ylabel('Y', fontsize=18)
 	ax2.grid(True)
@@ -207,7 +205,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 
 	plt.xlabel('Time', fontsize = 18)
 	plt.ylabel('Separation', fontsize = 18)
-	plt.xticks(np.arange(startx, endx, int(endx/10.- startx/10.)))
+	#plt.xticks(np.arange(startx, endx, int(endx/10.- startx/10.)))
 	plt.grid(True)
 	plt.savefig(figdir+'/Trajectory_separation.png', dpi = 500)
 	plt.close()
@@ -249,7 +247,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 
 	plt.xlabel('Time', fontsize = 18)
 	plt.ylabel('log(Separation)', fontsize = 18)
-	plt.xticks(np.arange(startx, endx, 10))
+	#plt.xticks(np.arange(startx, endx, 10))
 	plt.grid(True)
 	plt.savefig(figdir+'/Trajectory_logseparation.png', dpi = 500)
 	plt.close()

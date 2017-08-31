@@ -45,7 +45,14 @@ def FigDir(dirpath, outdir):
 		os.makedirs(figdir)
 	return figdir
 
+
+def norm(vec, axis):
+
+	return np.apply_along_axis(np.linalg.norm, axis, vec)	
+
+
 def plot1(x,y,xlabel, ylabel, plotname, outdir):
+
         fig,(ax) = plt.subplots(1,1,sharex=True, squeeze=True)
 	ax.plot(x,y, 'b', linewidth=2)
 

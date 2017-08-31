@@ -6,7 +6,8 @@ from matplotlib import pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.colors import cnames
 from matplotlib import animation
-from IPython.display import clear_output
+
+#from IPython.display import clear_output
 
 def animate_trajectories(dirpath, outdir):
 
