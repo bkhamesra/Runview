@@ -58,6 +58,7 @@ def StitchData(wfdir, save_hrzn=True):
 	copyfiles(stdout, combine_dir)
 	
 	if save_hrzn==True:
+		print("SitchData: Collecting horizon files. ")
 		hrzn_files = os.path.join(wfdir, 'output-0???/*/h.*.ah*')
 		dest = os.path.join(combine_dir,"HorizonData")
 		if not os.path.exists(dest):
