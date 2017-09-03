@@ -35,6 +35,7 @@ def CollectFiles(dirpath, outdir):
     	parfile = os.path.basename(sorted(glob.glob(os.path.join(dirpath, '*.par')))[0])		#(dirpath.split('/')[-1]) + ('-1.par')
 	shifttracker0 = 'ShiftTracker0.asc'
 	shifttracker1 = 'ShiftTracker1.asc'
+	propdist = 'ProperDistance.asc'
 	
 	ihspin0 = 'ihspin_hn_0.asc'
 	ihspin1 = 'ihspin_hn_1.asc'
@@ -50,7 +51,7 @@ def CollectFiles(dirpath, outdir):
 	bhdiag2 = "BH_diagnostics.ah2.gp"
 	bhdiag3 = "BH_diagnostics.ah3.gp"
 	filelist_mand = [parfile, shifttracker0, shifttracker1]
-	filelist_opt = [ihspin0, ihspin1, ihspin3, ihspin4, runstat, psi4_ylm,psi4r_ylm, psi4_anal, bhdiag1, bhdiag2, bhdiag3]
+	filelist_opt = [ihspin0, ihspin1, ihspin3, ihspin4, runstat, psi4_ylm,psi4r_ylm, psi4_anal, bhdiag1, bhdiag2, bhdiag3, propdist]
 	
 	for mfile in filelist_mand:
 		copyfiles( dirpath,datadir, mfile )

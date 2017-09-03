@@ -70,6 +70,7 @@ def StitchData(wfdir, save_hrzn=True):
 
 	CombineData(wfdir, combine_dir, 'ShiftTracker0.asc', 1)
 	CombineData(wfdir, combine_dir, 'ShiftTracker1.asc', 1)
+	CombineData(wfdir, combine_dir, 'ProperDistance.asc', 1)	
 	CombineData(wfdir, combine_dir, 'runstats.asc', 1)
 	CombineData(wfdir, combine_dir, 'BH_diagnostics.ah1.gp', 1)
 	CombineData(wfdir, combine_dir, 'BH_diagnostics.ah2.gp', 1)

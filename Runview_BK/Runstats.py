@@ -7,8 +7,15 @@ def runstats(wfdir, outdir):
 
   	figdir = FigDir(wfdir, outdir)
 	datadir = DataDir(wfdir, outdir)
+	
+	
+	runstat_file = os.path.join(datadir, 'runstats.asc')
+	if not os.path.exists(runstat_file):
+		debuginfo("%s file not found" %runstat_file)
+		return
 
-	runstat = open(os.path.join(datadir, 'runstats.asc'))
+	runstat = open(runstat_file)
+	
 	
 	iteration,coord_time, walltime, speed, period, cputime = np.loadtxt(runstat, unpack=True, usecols=(0,1,2,3,4,5))
 	

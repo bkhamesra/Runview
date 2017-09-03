@@ -18,6 +18,7 @@ def maxamp_time(wfdir, outdir):
 	
 	if not(os.path.exists(os.path.join(datadir,psi4))):
 		debuginfo('%s file not found' %psi4)
+		return
 
 	psi4_file = open(os.path.join(datadir, psi4))
 	time, real, imag = np.loadtxt(psi4_file, unpack=True)

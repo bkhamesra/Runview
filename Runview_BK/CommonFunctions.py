@@ -54,10 +54,10 @@ def norm(vec, axis):
 def plot1(x,y,xlabel, ylabel, plotname, outdir):
 
         fig,(ax) = plt.subplots(1,1,sharex=True, squeeze=True)
-	ax.plot(x,y, 'b', linewidth=2)
+	ax.plot(x,y, 'b', linewidth=1)
 
-	ax.set_ylabel(ylabel, fontsize = 18)
-	ax.set_xlabel(xlabel, fontsize = 18)
+	ax.set_ylabel(ylabel, fontsize = 14)
+	ax.set_xlabel(xlabel, fontsize = 14)
 	ax.ticklabel_format(axis = 'y', style = 'sci', scilimits = (1,4), fontsize=200)
 	startx,endx = ax.get_xlim()
 	#plt.xticks(np.arange(startx, endx, int(endx/10. - startx/10. )))
@@ -69,12 +69,12 @@ def plot1(x,y,xlabel, ylabel, plotname, outdir):
 
 def plot2(x1,y1, x2, y2, xlabel, ylabel, plotname, outdir):
         fig,(ax) = plt.subplots(1,1,sharex=True, squeeze=True)
-	bh1, = ax.plot(x1, y1, 'b', linewidth=2, label="BH1")
-	bh2, = ax.plot(x2, y2, 'k--', linewidth=2, label = "BH2")
+	bh1, = ax.plot(x1, y1, 'b', linewidth=1, label="BH1")
+	bh2, = ax.plot(x2, y2, 'k--', linewidth=1, label = "BH2")
 
-	ax.set_ylabel(ylabel, fontsize = 18)
-	ax.set_xlabel(xlabel, fontsize = 18)
-	ax.ticklabel_format(axis = 'y', style = 'sci', scilimits = (1,4), fontsize=200)
+	ax.set_ylabel(ylabel, fontsize = 14)
+	ax.set_xlabel(xlabel, fontsize = 14)
+	ax.ticklabel_format(axis = 'y', style = 'sci', scilimits = (1,4), fontsize=20)
 	startx,endx = ax.get_xlim()
 	#plt.xticks(np.arange(startx, endx, int(endx/10.-startx/10.)))
 	

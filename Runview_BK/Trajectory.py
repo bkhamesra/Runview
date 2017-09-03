@@ -253,7 +253,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	plt.close()
 
 
-	#Plot 4: Combined
+	#Plot 4: Orbital Phase
 
 	plt.plot(time_bh1, phi, color='b', lw=1)
 	startx,endx = plt.gca().get_xlim()
@@ -276,7 +276,6 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 
 	
 	plt.plot(time_bh1, phi, color='b', lw=1)
-	
 
 	if locate_merger==True:
 		plt.xlim(t_hrzn3-20, t_maxamp+20)

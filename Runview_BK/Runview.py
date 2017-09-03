@@ -5,8 +5,10 @@ from Runstats import runstats
 from Psi4 import Psi4_Plots
 from Spins import Spins
 from webpage import webpage 
+from webpage_puncdyn import webpage 
 from hnmass import Mass_Plots
 from StitchFiles import StitchData
+from PunctureDynamics import PunctureDynamics
 
 from Animate_Trajectories import *
 
@@ -21,6 +23,7 @@ parser.add_argument( "-ah","--include_horizon", help='Add this option to include
 parser.add_argument("--stitch_data", help='Use this option to stitch multiple outputs. \n Usage: --stitch_data', action="store_true")
 parser.add_argument("--find_merger", help='Use this option to track the merger and final black hole. \n Usage: --find_merger', action="store_true")
 parser.add_argument("--find_qnm", help='Use this option to find the quasinormal modes using Psi4. \n Usage: --find_qnm', action="store_true")
+parser.add_argument("-pd","--puncture_dynamics", help='Creates the necessary plots for puncture dynamics project. \n Usage: --puncture_dynamics', action="store_true")
 
 
 args = parser.parse_args()
@@ -30,6 +33,7 @@ stitchdata = args.stitch_data
 verbose = args.verbosity
 findmerger = args.find_merger
 findqnm = args.find_qnm
+puncdyn = args.puncture_dynamics
 
 
 dirpath = args.source_dir
@@ -42,13 +46,18 @@ if stitchdata:
 
 CollectFiles(dirpath, outdir)	
 
-Trajectory(dirpath, outdir, locate_merger=findmerger)
-Energy_Momentum(dirpath, outdir)
-runstats(dirpath, outdir)
-Psi4_Plots(dirpath, outdir, locate_merger=findmerger, locate_qnm=findqnm)
-Spins(dirpath, outdir)
-Mass_Plots(dirpath, outdir)
-webpage(dirpath, outdir, locate_merger=findmerger)
+if puncdyn:
+	PunctureDynamics(dirpath, outdir, locate_merger=findmerger)
+	runstats(dirpath, outdir)
+	webpage(dirpath, outdir, locate_merger=findmerger)
+else:
+	Trajectory(dirpath, outdir, locate_merger=findmerger)
+	Energy_Momentum(dirpath, outdir)
+	runstats(dirpath, outdir)
+	Psi4_Plots(dirpath, outdir, locate_merger=findmerger, locate_qnm=findqnm)
+	Spins(dirpath, outdir)
+	Mass_Plots(dirpath, outdir)
+	webpage(dirpath, outdir, locate_merger=findmerger)
 
 if AHF:
 	animate_trajectories(dirpath, outdir)
