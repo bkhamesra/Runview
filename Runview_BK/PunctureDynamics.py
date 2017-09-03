@@ -549,7 +549,7 @@ def ExpansionPlots(wfdir, outdir, locate_merger=False):
 def PunctureDynamics(wfdir, outdir, locate_merger=False):
 	
 	Trajectory(wfdir, outdir, locate_merger=locate_merger)
-	#ProperDistance(wfdir, outdir, locate_merger=locate_merger)
+	ProperDistance(wfdir, outdir, locate_merger=locate_merger)
 	TrumpetPlot(wfdir, outdir, locate_merger=locate_merger)
 	Area_Mass_Plots(wfdir, outdir, locate_merger=locate_merger)
 	Spins(wfdir, outdir, locate_merger=locate_merger)
