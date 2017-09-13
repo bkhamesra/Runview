@@ -1,0 +1,473 @@
++ set -e
++ cd /scratch/03158/tg824566/simulations/SO_D9_q1.5_th2_135_ph1_90_m140/output-0000-active
++ module unload mvapich2
+++ /opt/apps/lmod/lmod/libexec/lmod bash unload mvapich2
++ eval 'LMOD_DEFAULT_MODULEPATH="/opt/apps/xsede/modulefiles:/opt/apps/modulefiles:/opt/modulefiles";' export 'LMOD_DEFAULT_MODULEPATH;' 'MODULEPATH="/opt/apps/intel13/impi_4_1/modulefiles:/opt/apps/intel13/modulefiles:/opt/apps/xsede/modulefiles:/opt/apps/modulefiles:/opt/modulefiles";' export 'MODULEPATH;' 'LMOD_DEFAULT_MODULEPATH="/opt/apps/xsede/modulefiles:/opt/apps/modulefiles:/opt/modulefiles";' export 'LMOD_DEFAULT_MODULEPATH;' 'MODULEPATH="/opt/apps/intel13/impi_4_1/modulefiles:/opt/apps/intel13/modulefiles:/opt/apps/xsede/modulefiles:/opt/apps/modulefiles:/opt/modulefiles";' export 'MODULEPATH;' '_ModuleTable001_="X01vZHVsZVRhYmxlXz17WyJhY3RpdmVTaXplIl09MTEsYmFzZU1wYXRoQT17Ii9vcHQvYXBwcy94c2VkZS9tb2R1bGVmaWxlcyIsIi9vcHQvYXBwcy9tb2R1bGVmaWxlcyIsIi9vcHQvbW9kdWxlZmlsZXMiLH0sWyJjX3JlYnVpbGRUaW1lIl09ZmFsc2UsWyJjX3Nob3J0VGltZSJdPWZhbHNlLGZhbWlseT17WyJNUEkiXT0iaW1waSIsWyJjb21waWxlciJdPSJpbnRlbCIsWyJoZGY1Il09ImhkZjUiLFsicGFwaSJdPSJwYXBpIix9LGluYWN0aXZlPXt9LG1UPXtMaW51eD17WyJGTiJdPSIvb3B0L21vZHVsZWZpbGVzL0xpbnV4IixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iTGludXgiLFsibG9hZE9yZGVyIl09Mixwcm9wVD17fSxbInNob3J0Il09IkxpbnV4IixbInN0YXR1";' export '_ModuleTable001_;' '_ModuleTable002_="cyJdPSJhY3RpdmUiLH0sVEFDQz17WyJGTiJdPSIvb3B0L21vZHVsZWZpbGVzL1RBQ0MiLFsiZGVmYXVsdCJdPTAsWyJmdWxsTmFtZSJdPSJUQUNDIixbImxvYWRPcmRlciJdPTYscHJvcFQ9e30sWyJzaG9ydCJdPSJUQUNDIixbInN0YXR1cyJdPSJhY3RpdmUiLH0sWyJUQUNDLXBhdGhzIl09e1siRk4iXT0iL29wdC9tb2R1bGVmaWxlcy9UQUNDLXBhdGhzIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iVEFDQy1wYXRocyIsWyJsb2FkT3JkZXIiXT0xLHByb3BUPXt9LFsic2hvcnQiXT0iVEFDQy1wYXRocyIsWyJzdGF0dXMiXT0iYWN0aXZlIix9LGJvb3N0PXtbIkZOIl09Ii9vcHQvYXBwcy9pbnRlbDEzL21vZHVsZWZpbGVzL2Jvb3N0LzEuNTEuMC5sdWEiLFsiZGVmYXVs";' export '_ModuleTable002_;' '_ModuleTable003_="dCJdPTAsWyJmdWxsTmFtZSJdPSJib29zdC8xLjUxLjAiLFsibG9hZE9yZGVyIl09OCxwcm9wVD17fSxbInNob3J0Il09ImJvb3N0IixbInN0YXR1cyJdPSJhY3RpdmUiLH0sY2x1c3Rlcj17WyJGTiJdPSIvb3B0L21vZHVsZWZpbGVzL2NsdXN0ZXIiLFsiZGVmYXVsdCJdPTAsWyJmdWxsTmFtZSJdPSJjbHVzdGVyIixbImxvYWRPcmRlciJdPTUscHJvcFQ9e30sWyJzaG9ydCJdPSJjbHVzdGVyIixbInN0YXR1cyJdPSJhY3RpdmUiLH0sWyJjbHVzdGVyLXBhdGhzIl09e1siRk4iXT0iL29wdC9tb2R1bGVmaWxlcy9jbHVzdGVyLXBhdGhzIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iY2x1c3Rlci1wYXRocyIsWyJsb2FkT3JkZXIiXT0zLHByb3BUPXt9LFsic2hvcnQiXT0i";' export '_ModuleTable003_;' '_ModuleTable004_="Y2x1c3Rlci1wYXRocyIsWyJzdGF0dXMiXT0iYWN0aXZlIix9LGhkZjU9e1siRk4iXT0iL29wdC9hcHBzL2ludGVsMTMvbW9kdWxlZmlsZXMvaGRmNS8xLjguOS5sdWEiLFsiZGVmYXVsdCJdPTAsWyJmdWxsTmFtZSJdPSJoZGY1LzEuOC45IixbImxvYWRPcmRlciJdPTkscHJvcFQ9e30sWyJzaG9ydCJdPSJoZGY1IixbInN0YXR1cyJdPSJhY3RpdmUiLH0saW1waT17WyJGTiJdPSIvb3B0L2FwcHMvaW50ZWwxMy9tb2R1bGVmaWxlcy9pbXBpLzQuMS4xLjAzNiIsWyJkZWZhdWx0Il09MCxbImZ1bGxOYW1lIl09ImltcGkvNC4xLjEuMDM2IixbImxvYWRPcmRlciJdPTEwLHByb3BUPXt9LFsic2hvcnQiXT0iaW1waSIsWyJzdGF0dXMiXT0iYWN0aXZlIix9LGludGVsPXtbIkZOIl09";' export '_ModuleTable004_;' '_ModuleTable005_="Ii9vcHQvYXBwcy9tb2R1bGVmaWxlcy9pbnRlbC8xMy4xLjEuMTYzIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iaW50ZWwvMTMuMS4xLjE2MyIsWyJsb2FkT3JkZXIiXT03LHByb3BUPXt9LFsic2hvcnQiXT0iaW50ZWwiLFsic3RhdHVzIl09ImFjdGl2ZSIsfSxwYXBpPXtbIkZOIl09Ii9vcHQvYXBwcy9tb2R1bGVmaWxlcy9wYXBpLzUuMy4wLmx1YSIsWyJkZWZhdWx0Il09MSxbImZ1bGxOYW1lIl09InBhcGkvNS4zLjAiLFsibG9hZE9yZGVyIl09MTEscHJvcFQ9e2FyY2g9e1sibWljIl09MSx9LH0sWyJzaG9ydCJdPSJwYXBpIixbInN0YXR1cyJdPSJhY3RpdmUiLH0seGFsdD17WyJGTiJdPSIvb3B0L2FwcHMvbW9kdWxlZmlsZXMveGFsdC8wLjQuNi5sdWEiLFsiZGVm";' export '_ModuleTable005_;' '_ModuleTable006_="YXVsdCJdPTEsWyJmdWxsTmFtZSJdPSJ4YWx0LzAuNC42IixbImxvYWRPcmRlciJdPTQscHJvcFQ9e30sWyJzaG9ydCJdPSJ4YWx0IixbInN0YXR1cyJdPSJhY3RpdmUiLH0sfSxtcGF0aEE9eyIvb3B0L2FwcHMvaW50ZWwxMy9pbXBpXzRfMS9tb2R1bGVmaWxlcyIsIi9vcHQvYXBwcy9pbnRlbDEzL21vZHVsZWZpbGVzIiwiL29wdC9hcHBzL3hzZWRlL21vZHVsZWZpbGVzIiwiL29wdC9hcHBzL21vZHVsZWZpbGVzIiwiL29wdC9tb2R1bGVmaWxlcyIsfSxbInN5c3RlbUJhc2VNUEFUSCJdPSIvb3B0L2FwcHMveHNlZGUvbW9kdWxlZmlsZXM6L29wdC9hcHBzL21vZHVsZWZpbGVzOi9vcHQvbW9kdWxlZmlsZXMiLFsidmVyc2lvbiJdPTIsfQ==";' export '_ModuleTable006_;' '_ModuleTable_Sz_="6";' export '_ModuleTable_Sz_;'
+++ LMOD_DEFAULT_MODULEPATH=/opt/apps/xsede/modulefiles:/opt/apps/modulefiles:/opt/modulefiles
+++ export LMOD_DEFAULT_MODULEPATH
+++ MODULEPATH=/opt/apps/intel13/impi_4_1/modulefiles:/opt/apps/intel13/modulefiles:/opt/apps/xsede/modulefiles:/opt/apps/modulefiles:/opt/modulefiles
+++ export MODULEPATH
+++ LMOD_DEFAULT_MODULEPATH=/opt/apps/xsede/modulefiles:/opt/apps/modulefiles:/opt/modulefiles
+++ export LMOD_DEFAULT_MODULEPATH
+++ MODULEPATH=/opt/apps/intel13/impi_4_1/modulefiles:/opt/apps/intel13/modulefiles:/opt/apps/xsede/modulefiles:/opt/apps/modulefiles:/opt/modulefiles
+++ export MODULEPATH
+++ _ModuleTable001_=X01vZHVsZVRhYmxlXz17WyJhY3RpdmVTaXplIl09MTEsYmFzZU1wYXRoQT17Ii9vcHQvYXBwcy94c2VkZS9tb2R1bGVmaWxlcyIsIi9vcHQvYXBwcy9tb2R1bGVmaWxlcyIsIi9vcHQvbW9kdWxlZmlsZXMiLH0sWyJjX3JlYnVpbGRUaW1lIl09ZmFsc2UsWyJjX3Nob3J0VGltZSJdPWZhbHNlLGZhbWlseT17WyJNUEkiXT0iaW1waSIsWyJjb21waWxlciJdPSJpbnRlbCIsWyJoZGY1Il09ImhkZjUiLFsicGFwaSJdPSJwYXBpIix9LGluYWN0aXZlPXt9LG1UPXtMaW51eD17WyJGTiJdPSIvb3B0L21vZHVsZWZpbGVzL0xpbnV4IixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iTGludXgiLFsibG9hZE9yZGVyIl09Mixwcm9wVD17fSxbInNob3J0Il09IkxpbnV4IixbInN0YXR1
+++ export _ModuleTable001_
+++ _ModuleTable002_=cyJdPSJhY3RpdmUiLH0sVEFDQz17WyJGTiJdPSIvb3B0L21vZHVsZWZpbGVzL1RBQ0MiLFsiZGVmYXVsdCJdPTAsWyJmdWxsTmFtZSJdPSJUQUNDIixbImxvYWRPcmRlciJdPTYscHJvcFQ9e30sWyJzaG9ydCJdPSJUQUNDIixbInN0YXR1cyJdPSJhY3RpdmUiLH0sWyJUQUNDLXBhdGhzIl09e1siRk4iXT0iL29wdC9tb2R1bGVmaWxlcy9UQUNDLXBhdGhzIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iVEFDQy1wYXRocyIsWyJsb2FkT3JkZXIiXT0xLHByb3BUPXt9LFsic2hvcnQiXT0iVEFDQy1wYXRocyIsWyJzdGF0dXMiXT0iYWN0aXZlIix9LGJvb3N0PXtbIkZOIl09Ii9vcHQvYXBwcy9pbnRlbDEzL21vZHVsZWZpbGVzL2Jvb3N0LzEuNTEuMC5sdWEiLFsiZGVmYXVs
+++ export _ModuleTable002_
+++ _ModuleTable003_=dCJdPTAsWyJmdWxsTmFtZSJdPSJib29zdC8xLjUxLjAiLFsibG9hZE9yZGVyIl09OCxwcm9wVD17fSxbInNob3J0Il09ImJvb3N0IixbInN0YXR1cyJdPSJhY3RpdmUiLH0sY2x1c3Rlcj17WyJGTiJdPSIvb3B0L21vZHVsZWZpbGVzL2NsdXN0ZXIiLFsiZGVmYXVsdCJdPTAsWyJmdWxsTmFtZSJdPSJjbHVzdGVyIixbImxvYWRPcmRlciJdPTUscHJvcFQ9e30sWyJzaG9ydCJdPSJjbHVzdGVyIixbInN0YXR1cyJdPSJhY3RpdmUiLH0sWyJjbHVzdGVyLXBhdGhzIl09e1siRk4iXT0iL29wdC9tb2R1bGVmaWxlcy9jbHVzdGVyLXBhdGhzIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iY2x1c3Rlci1wYXRocyIsWyJsb2FkT3JkZXIiXT0zLHByb3BUPXt9LFsic2hvcnQiXT0i
+++ export _ModuleTable003_
+++ _ModuleTable004_=Y2x1c3Rlci1wYXRocyIsWyJzdGF0dXMiXT0iYWN0aXZlIix9LGhkZjU9e1siRk4iXT0iL29wdC9hcHBzL2ludGVsMTMvbW9kdWxlZmlsZXMvaGRmNS8xLjguOS5sdWEiLFsiZGVmYXVsdCJdPTAsWyJmdWxsTmFtZSJdPSJoZGY1LzEuOC45IixbImxvYWRPcmRlciJdPTkscHJvcFQ9e30sWyJzaG9ydCJdPSJoZGY1IixbInN0YXR1cyJdPSJhY3RpdmUiLH0saW1waT17WyJGTiJdPSIvb3B0L2FwcHMvaW50ZWwxMy9tb2R1bGVmaWxlcy9pbXBpLzQuMS4xLjAzNiIsWyJkZWZhdWx0Il09MCxbImZ1bGxOYW1lIl09ImltcGkvNC4xLjEuMDM2IixbImxvYWRPcmRlciJdPTEwLHByb3BUPXt9LFsic2hvcnQiXT0iaW1waSIsWyJzdGF0dXMiXT0iYWN0aXZlIix9LGludGVsPXtbIkZOIl09
+++ export _ModuleTable004_
+++ _ModuleTable005_=Ii9vcHQvYXBwcy9tb2R1bGVmaWxlcy9pbnRlbC8xMy4xLjEuMTYzIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iaW50ZWwvMTMuMS4xLjE2MyIsWyJsb2FkT3JkZXIiXT03LHByb3BUPXt9LFsic2hvcnQiXT0iaW50ZWwiLFsic3RhdHVzIl09ImFjdGl2ZSIsfSxwYXBpPXtbIkZOIl09Ii9vcHQvYXBwcy9tb2R1bGVmaWxlcy9wYXBpLzUuMy4wLmx1YSIsWyJkZWZhdWx0Il09MSxbImZ1bGxOYW1lIl09InBhcGkvNS4zLjAiLFsibG9hZE9yZGVyIl09MTEscHJvcFQ9e2FyY2g9e1sibWljIl09MSx9LH0sWyJzaG9ydCJdPSJwYXBpIixbInN0YXR1cyJdPSJhY3RpdmUiLH0seGFsdD17WyJGTiJdPSIvb3B0L2FwcHMvbW9kdWxlZmlsZXMveGFsdC8wLjQuNi5sdWEiLFsiZGVm
+++ export _ModuleTable005_
+++ _ModuleTable006_=YXVsdCJdPTEsWyJmdWxsTmFtZSJdPSJ4YWx0LzAuNC42IixbImxvYWRPcmRlciJdPTQscHJvcFQ9e30sWyJzaG9ydCJdPSJ4YWx0IixbInN0YXR1cyJdPSJhY3RpdmUiLH0sfSxtcGF0aEE9eyIvb3B0L2FwcHMvaW50ZWwxMy9pbXBpXzRfMS9tb2R1bGVmaWxlcyIsIi9vcHQvYXBwcy9pbnRlbDEzL21vZHVsZWZpbGVzIiwiL29wdC9hcHBzL3hzZWRlL21vZHVsZWZpbGVzIiwiL29wdC9hcHBzL21vZHVsZWZpbGVzIiwiL29wdC9tb2R1bGVmaWxlcyIsfSxbInN5c3RlbUJhc2VNUEFUSCJdPSIvb3B0L2FwcHMveHNlZGUvbW9kdWxlZmlsZXM6L29wdC9hcHBzL21vZHVsZWZpbGVzOi9vcHQvbW9kdWxlZmlsZXMiLFsidmVyc2lvbiJdPTIsfQ==
+++ export _ModuleTable006_
+++ _ModuleTable_Sz_=6
+++ export _ModuleTable_Sz_
++ '[' 0 = 0 ']'
+++ : -s sh
++ eval
++ module load impi/4.1.0.030
+++ /opt/apps/lmod/lmod/libexec/lmod bash load impi/4.1.0.030
+
+The following have been reloaded with a version change:
+  1) impi/4.1.1.036 => impi/4.1.0.030
+
++ eval 'LMOD_DEFAULT_MODULEPATH="/opt/apps/xsede/modulefiles:/opt/apps/modulefiles:/opt/modulefiles";' export 'LMOD_DEFAULT_MODULEPATH;' 'MODULEPATH="/opt/apps/intel13/impi_4_1/modulefiles:/opt/apps/intel13/modulefiles:/opt/apps/xsede/modulefiles:/opt/apps/modulefiles:/opt/modulefiles";' export 'MODULEPATH;' 'I_MPI_CC="icc";' export 'I_MPI_CC;' 'I_MPI_CXX="icpc";' export 'I_MPI_CXX;' 'I_MPI_F90="ifort";' export 'I_MPI_F90;' 'I_MPI_ROOT="/opt/apps/intel13/impi/4.1.0.030";' export 'I_MPI_ROOT;' 'LMOD_DEFAULT_MODULEPATH="/opt/apps/xsede/modulefiles:/opt/apps/modulefiles:/opt/modulefiles";' export 'LMOD_DEFAULT_MODULEPATH;' 'LMOD_FAMILY_MPI="impi";' export 'LMOD_FAMILY_MPI;' 'LOADEDMODULES="TACC-paths:Linux:cluster-paths:xalt/0.4.6:cluster:TACC:intel/13.1.1.163:boost/1.51.0:hdf5/1.8.9:papi/5.3.0:impi/4.1.0.030";' export 'LOADEDMODULES;' 'MANPATH="/opt/apps/intel13/impi/4.1.0.030/man:/opt/apps/papi/5.3.0/x86_64/man:/opt/apps/intel/13/composer_xe_2013.3.163/man/en_US:/opt/apps/intel/13/composer_xe_2013.3.163/man/en_US:/opt/apps/intel/13/vtune_amplifier_xe_2013/man:/usr/local/man:/usr/share/man:/usr/X11R6/man:/usr/kerberos/man:/usr/man:/usr/local/man";' export 'MANPATH;' 'MODULEPATH="/opt/apps/intel13/impi_4_1/modulefiles:/opt/apps/intel13/modulefiles:/opt/apps/xsede/modulefiles:/opt/apps/modulefiles:/opt/modulefiles";' export 'MODULEPATH;' 'MPICH_HOME="/opt/apps/intel13/impi/4.1.0.030";' export 'MPICH_HOME;' 'PATH="/opt/apps/intel13/impi/4.1.0.030/intel64/bin:/opt/apps/papi/5.3.0/x86_64/bin:/opt/apps/intel13/hdf5/1.8.9/bin:/opt/apps/intel/13/vtune_amplifier_xe_2013/bin64:/opt/apps/intel/13/composer_xe_2013.3.163/mpirt/bin/intel64:/opt/intel/sep/bin:/opt/apps/xalt/0.4.6/bin:/usr/lib64/qt-3.3/bin:/usr/local/bin:/bin:/usr/bin:/usr/X11R6/bin:/opt/ofed/bin:/opt/ofed/sbin:.:/opt/apps/intel/13/composer_xe_2013.3.163/bin/intel64:/opt/apps/intel/13/composer_xe_2013.3.163/bin/intel64_mic:/opt/apps/intel/13/composer_xe_2013.3.163/debugger/gui/intel64";' export 'PATH;' 'TACC_FAMILY_MPI="impi";' export 'TACC_FAMILY_MPI;' 'TACC_IMPI_LIB="/opt/apps/intel13/impi/4.1.0.030/intel64/lib";' export 'TACC_IMPI_LIB;' 'TACC_MPI_GETMODE="impi_hydra";' export 'TACC_MPI_GETMODE;' '_LMFILES_="/opt/modulefiles/TACC-paths:/opt/modulefiles/Linux:/opt/modulefiles/cluster-paths:/opt/apps/modulefiles/xalt/0.4.6.lua:/opt/modulefiles/cluster:/opt/modulefiles/TACC:/opt/apps/modulefiles/intel/13.1.1.163:/opt/apps/intel13/modulefiles/boost/1.51.0.lua:/opt/apps/intel13/modulefiles/hdf5/1.8.9.lua:/opt/apps/modulefiles/papi/5.3.0.lua:/opt/apps/intel13/modulefiles/impi/4.1.0.030";' export '_LMFILES_;' '_ModuleTable001_="X01vZHVsZVRhYmxlXz17WyJhY3RpdmVTaXplIl09MTEsYmFzZU1wYXRoQT17Ii9vcHQvYXBwcy94c2VkZS9tb2R1bGVmaWxlcyIsIi9vcHQvYXBwcy9tb2R1bGVmaWxlcyIsIi9vcHQvbW9kdWxlZmlsZXMiLH0sWyJjX3JlYnVpbGRUaW1lIl09ZmFsc2UsWyJjX3Nob3J0VGltZSJdPWZhbHNlLGZhbWlseT17WyJNUEkiXT0iaW1waSIsWyJjb21waWxlciJdPSJpbnRlbCIsWyJoZGY1Il09ImhkZjUiLFsicGFwaSJdPSJwYXBpIix9LGluYWN0aXZlPXt9LG1UPXtMaW51eD17WyJGTiJdPSIvb3B0L21vZHVsZWZpbGVzL0xpbnV4IixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iTGludXgiLFsibG9hZE9yZGVyIl09Mixwcm9wVD17fSxbInNob3J0Il09IkxpbnV4IixbInN0YXR1";' export '_ModuleTable001_;' '_ModuleTable002_="cyJdPSJhY3RpdmUiLH0sVEFDQz17WyJGTiJdPSIvb3B0L21vZHVsZWZpbGVzL1RBQ0MiLFsiZGVmYXVsdCJdPTAsWyJmdWxsTmFtZSJdPSJUQUNDIixbImxvYWRPcmRlciJdPTYscHJvcFQ9e30sWyJzaG9ydCJdPSJUQUNDIixbInN0YXR1cyJdPSJhY3RpdmUiLH0sWyJUQUNDLXBhdGhzIl09e1siRk4iXT0iL29wdC9tb2R1bGVmaWxlcy9UQUNDLXBhdGhzIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iVEFDQy1wYXRocyIsWyJsb2FkT3JkZXIiXT0xLHByb3BUPXt9LFsic2hvcnQiXT0iVEFDQy1wYXRocyIsWyJzdGF0dXMiXT0iYWN0aXZlIix9LGJvb3N0PXtbIkZOIl09Ii9vcHQvYXBwcy9pbnRlbDEzL21vZHVsZWZpbGVzL2Jvb3N0LzEuNTEuMC5sdWEiLFsiZGVmYXVs";' export '_ModuleTable002_;' '_ModuleTable003_="dCJdPTAsWyJmdWxsTmFtZSJdPSJib29zdC8xLjUxLjAiLFsibG9hZE9yZGVyIl09OCxwcm9wVD17fSxbInNob3J0Il09ImJvb3N0IixbInN0YXR1cyJdPSJhY3RpdmUiLH0sY2x1c3Rlcj17WyJGTiJdPSIvb3B0L21vZHVsZWZpbGVzL2NsdXN0ZXIiLFsiZGVmYXVsdCJdPTAsWyJmdWxsTmFtZSJdPSJjbHVzdGVyIixbImxvYWRPcmRlciJdPTUscHJvcFQ9e30sWyJzaG9ydCJdPSJjbHVzdGVyIixbInN0YXR1cyJdPSJhY3RpdmUiLH0sWyJjbHVzdGVyLXBhdGhzIl09e1siRk4iXT0iL29wdC9tb2R1bGVmaWxlcy9jbHVzdGVyLXBhdGhzIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iY2x1c3Rlci1wYXRocyIsWyJsb2FkT3JkZXIiXT0zLHByb3BUPXt9LFsic2hvcnQiXT0i";' export '_ModuleTable003_;' '_ModuleTable004_="Y2x1c3Rlci1wYXRocyIsWyJzdGF0dXMiXT0iYWN0aXZlIix9LGhkZjU9e1siRk4iXT0iL29wdC9hcHBzL2ludGVsMTMvbW9kdWxlZmlsZXMvaGRmNS8xLjguOS5sdWEiLFsiZGVmYXVsdCJdPTAsWyJmdWxsTmFtZSJdPSJoZGY1LzEuOC45IixbImxvYWRPcmRlciJdPTkscHJvcFQ9e30sWyJzaG9ydCJdPSJoZGY1IixbInN0YXR1cyJdPSJhY3RpdmUiLH0saW1waT17WyJGTiJdPSIvb3B0L2FwcHMvaW50ZWwxMy9tb2R1bGVmaWxlcy9pbXBpLzQuMS4wLjAzMCIsWyJkZWZhdWx0Il09MCxbImZ1bGxOYW1lIl09ImltcGkvNC4xLjAuMDMwIixbImxvYWRPcmRlciJdPTExLHByb3BUPXt9LFsic2hvcnQiXT0iaW1waSIsWyJzdGF0dXMiXT0iYWN0aXZlIix9LGludGVsPXtbIkZOIl09";' export '_ModuleTable004_;' '_ModuleTable005_="Ii9vcHQvYXBwcy9tb2R1bGVmaWxlcy9pbnRlbC8xMy4xLjEuMTYzIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iaW50ZWwvMTMuMS4xLjE2MyIsWyJsb2FkT3JkZXIiXT03LHByb3BUPXt9LFsic2hvcnQiXT0iaW50ZWwiLFsic3RhdHVzIl09ImFjdGl2ZSIsfSxwYXBpPXtbIkZOIl09Ii9vcHQvYXBwcy9tb2R1bGVmaWxlcy9wYXBpLzUuMy4wLmx1YSIsWyJkZWZhdWx0Il09MSxbImZ1bGxOYW1lIl09InBhcGkvNS4zLjAiLFsibG9hZE9yZGVyIl09MTAscHJvcFQ9e2FyY2g9e1sibWljIl09MSx9LH0sWyJzaG9ydCJdPSJwYXBpIixbInN0YXR1cyJdPSJhY3RpdmUiLH0seGFsdD17WyJGTiJdPSIvb3B0L2FwcHMvbW9kdWxlZmlsZXMveGFsdC8wLjQuNi5sdWEiLFsiZGVm";' export '_ModuleTable005_;' '_ModuleTable006_="YXVsdCJdPTEsWyJmdWxsTmFtZSJdPSJ4YWx0LzAuNC42IixbImxvYWRPcmRlciJdPTQscHJvcFQ9e30sWyJzaG9ydCJdPSJ4YWx0IixbInN0YXR1cyJdPSJhY3RpdmUiLH0sfSxtcGF0aEE9eyIvb3B0L2FwcHMvaW50ZWwxMy9pbXBpXzRfMS9tb2R1bGVmaWxlcyIsIi9vcHQvYXBwcy9pbnRlbDEzL21vZHVsZWZpbGVzIiwiL29wdC9hcHBzL3hzZWRlL21vZHVsZWZpbGVzIiwiL29wdC9hcHBzL21vZHVsZWZpbGVzIiwiL29wdC9tb2R1bGVmaWxlcyIsfSxbInN5c3RlbUJhc2VNUEFUSCJdPSIvb3B0L2FwcHMveHNlZGUvbW9kdWxlZmlsZXM6L29wdC9hcHBzL21vZHVsZWZpbGVzOi9vcHQvbW9kdWxlZmlsZXMiLFsidmVyc2lvbiJdPTIsfQ==";' export '_ModuleTable006_;' '_ModuleTable_Sz_="6";' export '_ModuleTable_Sz_;'
+++ LMOD_DEFAULT_MODULEPATH=/opt/apps/xsede/modulefiles:/opt/apps/modulefiles:/opt/modulefiles
+++ export LMOD_DEFAULT_MODULEPATH
+++ MODULEPATH=/opt/apps/intel13/impi_4_1/modulefiles:/opt/apps/intel13/modulefiles:/opt/apps/xsede/modulefiles:/opt/apps/modulefiles:/opt/modulefiles
+++ export MODULEPATH
+++ I_MPI_CC=icc
+++ export I_MPI_CC
+++ I_MPI_CXX=icpc
+++ export I_MPI_CXX
+++ I_MPI_F90=ifort
+++ export I_MPI_F90
+++ I_MPI_ROOT=/opt/apps/intel13/impi/4.1.0.030
+++ export I_MPI_ROOT
+++ LMOD_DEFAULT_MODULEPATH=/opt/apps/xsede/modulefiles:/opt/apps/modulefiles:/opt/modulefiles
+++ export LMOD_DEFAULT_MODULEPATH
+++ LMOD_FAMILY_MPI=impi
+++ export LMOD_FAMILY_MPI
+++ LOADEDMODULES=TACC-paths:Linux:cluster-paths:xalt/0.4.6:cluster:TACC:intel/13.1.1.163:boost/1.51.0:hdf5/1.8.9:papi/5.3.0:impi/4.1.0.030
+++ export LOADEDMODULES
+++ MANPATH=/opt/apps/intel13/impi/4.1.0.030/man:/opt/apps/papi/5.3.0/x86_64/man:/opt/apps/intel/13/composer_xe_2013.3.163/man/en_US:/opt/apps/intel/13/composer_xe_2013.3.163/man/en_US:/opt/apps/intel/13/vtune_amplifier_xe_2013/man:/usr/local/man:/usr/share/man:/usr/X11R6/man:/usr/kerberos/man:/usr/man:/usr/local/man
+++ export MANPATH
+++ MODULEPATH=/opt/apps/intel13/impi_4_1/modulefiles:/opt/apps/intel13/modulefiles:/opt/apps/xsede/modulefiles:/opt/apps/modulefiles:/opt/modulefiles
+++ export MODULEPATH
+++ MPICH_HOME=/opt/apps/intel13/impi/4.1.0.030
+++ export MPICH_HOME
+++ PATH=/opt/apps/intel13/impi/4.1.0.030/intel64/bin:/opt/apps/papi/5.3.0/x86_64/bin:/opt/apps/intel13/hdf5/1.8.9/bin:/opt/apps/intel/13/vtune_amplifier_xe_2013/bin64:/opt/apps/intel/13/composer_xe_2013.3.163/mpirt/bin/intel64:/opt/intel/sep/bin:/opt/apps/xalt/0.4.6/bin:/usr/lib64/qt-3.3/bin:/usr/local/bin:/bin:/usr/bin:/usr/X11R6/bin:/opt/ofed/bin:/opt/ofed/sbin:.:/opt/apps/intel/13/composer_xe_2013.3.163/bin/intel64:/opt/apps/intel/13/composer_xe_2013.3.163/bin/intel64_mic:/opt/apps/intel/13/composer_xe_2013.3.163/debugger/gui/intel64
+++ export PATH
+++ TACC_FAMILY_MPI=impi
+++ export TACC_FAMILY_MPI
+++ TACC_IMPI_LIB=/opt/apps/intel13/impi/4.1.0.030/intel64/lib
+++ export TACC_IMPI_LIB
+++ TACC_MPI_GETMODE=impi_hydra
+++ export TACC_MPI_GETMODE
+++ _LMFILES_=/opt/modulefiles/TACC-paths:/opt/modulefiles/Linux:/opt/modulefiles/cluster-paths:/opt/apps/modulefiles/xalt/0.4.6.lua:/opt/modulefiles/cluster:/opt/modulefiles/TACC:/opt/apps/modulefiles/intel/13.1.1.163:/opt/apps/intel13/modulefiles/boost/1.51.0.lua:/opt/apps/intel13/modulefiles/hdf5/1.8.9.lua:/opt/apps/modulefiles/papi/5.3.0.lua:/opt/apps/intel13/modulefiles/impi/4.1.0.030
+++ export _LMFILES_
+++ _ModuleTable001_=X01vZHVsZVRhYmxlXz17WyJhY3RpdmVTaXplIl09MTEsYmFzZU1wYXRoQT17Ii9vcHQvYXBwcy94c2VkZS9tb2R1bGVmaWxlcyIsIi9vcHQvYXBwcy9tb2R1bGVmaWxlcyIsIi9vcHQvbW9kdWxlZmlsZXMiLH0sWyJjX3JlYnVpbGRUaW1lIl09ZmFsc2UsWyJjX3Nob3J0VGltZSJdPWZhbHNlLGZhbWlseT17WyJNUEkiXT0iaW1waSIsWyJjb21waWxlciJdPSJpbnRlbCIsWyJoZGY1Il09ImhkZjUiLFsicGFwaSJdPSJwYXBpIix9LGluYWN0aXZlPXt9LG1UPXtMaW51eD17WyJGTiJdPSIvb3B0L21vZHVsZWZpbGVzL0xpbnV4IixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iTGludXgiLFsibG9hZE9yZGVyIl09Mixwcm9wVD17fSxbInNob3J0Il09IkxpbnV4IixbInN0YXR1
+++ export _ModuleTable001_
+++ _ModuleTable002_=cyJdPSJhY3RpdmUiLH0sVEFDQz17WyJGTiJdPSIvb3B0L21vZHVsZWZpbGVzL1RBQ0MiLFsiZGVmYXVsdCJdPTAsWyJmdWxsTmFtZSJdPSJUQUNDIixbImxvYWRPcmRlciJdPTYscHJvcFQ9e30sWyJzaG9ydCJdPSJUQUNDIixbInN0YXR1cyJdPSJhY3RpdmUiLH0sWyJUQUNDLXBhdGhzIl09e1siRk4iXT0iL29wdC9tb2R1bGVmaWxlcy9UQUNDLXBhdGhzIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iVEFDQy1wYXRocyIsWyJsb2FkT3JkZXIiXT0xLHByb3BUPXt9LFsic2hvcnQiXT0iVEFDQy1wYXRocyIsWyJzdGF0dXMiXT0iYWN0aXZlIix9LGJvb3N0PXtbIkZOIl09Ii9vcHQvYXBwcy9pbnRlbDEzL21vZHVsZWZpbGVzL2Jvb3N0LzEuNTEuMC5sdWEiLFsiZGVmYXVs
+++ export _ModuleTable002_
+++ _ModuleTable003_=dCJdPTAsWyJmdWxsTmFtZSJdPSJib29zdC8xLjUxLjAiLFsibG9hZE9yZGVyIl09OCxwcm9wVD17fSxbInNob3J0Il09ImJvb3N0IixbInN0YXR1cyJdPSJhY3RpdmUiLH0sY2x1c3Rlcj17WyJGTiJdPSIvb3B0L21vZHVsZWZpbGVzL2NsdXN0ZXIiLFsiZGVmYXVsdCJdPTAsWyJmdWxsTmFtZSJdPSJjbHVzdGVyIixbImxvYWRPcmRlciJdPTUscHJvcFQ9e30sWyJzaG9ydCJdPSJjbHVzdGVyIixbInN0YXR1cyJdPSJhY3RpdmUiLH0sWyJjbHVzdGVyLXBhdGhzIl09e1siRk4iXT0iL29wdC9tb2R1bGVmaWxlcy9jbHVzdGVyLXBhdGhzIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iY2x1c3Rlci1wYXRocyIsWyJsb2FkT3JkZXIiXT0zLHByb3BUPXt9LFsic2hvcnQiXT0i
+++ export _ModuleTable003_
+++ _ModuleTable004_=Y2x1c3Rlci1wYXRocyIsWyJzdGF0dXMiXT0iYWN0aXZlIix9LGhkZjU9e1siRk4iXT0iL29wdC9hcHBzL2ludGVsMTMvbW9kdWxlZmlsZXMvaGRmNS8xLjguOS5sdWEiLFsiZGVmYXVsdCJdPTAsWyJmdWxsTmFtZSJdPSJoZGY1LzEuOC45IixbImxvYWRPcmRlciJdPTkscHJvcFQ9e30sWyJzaG9ydCJdPSJoZGY1IixbInN0YXR1cyJdPSJhY3RpdmUiLH0saW1waT17WyJGTiJdPSIvb3B0L2FwcHMvaW50ZWwxMy9tb2R1bGVmaWxlcy9pbXBpLzQuMS4wLjAzMCIsWyJkZWZhdWx0Il09MCxbImZ1bGxOYW1lIl09ImltcGkvNC4xLjAuMDMwIixbImxvYWRPcmRlciJdPTExLHByb3BUPXt9LFsic2hvcnQiXT0iaW1waSIsWyJzdGF0dXMiXT0iYWN0aXZlIix9LGludGVsPXtbIkZOIl09
+++ export _ModuleTable004_
+++ _ModuleTable005_=Ii9vcHQvYXBwcy9tb2R1bGVmaWxlcy9pbnRlbC8xMy4xLjEuMTYzIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iaW50ZWwvMTMuMS4xLjE2MyIsWyJsb2FkT3JkZXIiXT03LHByb3BUPXt9LFsic2hvcnQiXT0iaW50ZWwiLFsic3RhdHVzIl09ImFjdGl2ZSIsfSxwYXBpPXtbIkZOIl09Ii9vcHQvYXBwcy9tb2R1bGVmaWxlcy9wYXBpLzUuMy4wLmx1YSIsWyJkZWZhdWx0Il09MSxbImZ1bGxOYW1lIl09InBhcGkvNS4zLjAiLFsibG9hZE9yZGVyIl09MTAscHJvcFQ9e2FyY2g9e1sibWljIl09MSx9LH0sWyJzaG9ydCJdPSJwYXBpIixbInN0YXR1cyJdPSJhY3RpdmUiLH0seGFsdD17WyJGTiJdPSIvb3B0L2FwcHMvbW9kdWxlZmlsZXMveGFsdC8wLjQuNi5sdWEiLFsiZGVm
+++ export _ModuleTable005_
+++ _ModuleTable006_=YXVsdCJdPTEsWyJmdWxsTmFtZSJdPSJ4YWx0LzAuNC42IixbImxvYWRPcmRlciJdPTQscHJvcFQ9e30sWyJzaG9ydCJdPSJ4YWx0IixbInN0YXR1cyJdPSJhY3RpdmUiLH0sfSxtcGF0aEE9eyIvb3B0L2FwcHMvaW50ZWwxMy9pbXBpXzRfMS9tb2R1bGVmaWxlcyIsIi9vcHQvYXBwcy9pbnRlbDEzL21vZHVsZWZpbGVzIiwiL29wdC9hcHBzL3hzZWRlL21vZHVsZWZpbGVzIiwiL29wdC9hcHBzL21vZHVsZWZpbGVzIiwiL29wdC9tb2R1bGVmaWxlcyIsfSxbInN5c3RlbUJhc2VNUEFUSCJdPSIvb3B0L2FwcHMveHNlZGUvbW9kdWxlZmlsZXM6L29wdC9hcHBzL21vZHVsZWZpbGVzOi9vcHQvbW9kdWxlZmlsZXMiLFsidmVyc2lvbiJdPTIsfQ==
+++ export _ModuleTable006_
+++ _ModuleTable_Sz_=6
+++ export _ModuleTable_Sz_
++ '[' 0 = 0 ']'
+++ : -s sh
++ eval
++ module list
+++ /opt/apps/lmod/lmod/libexec/lmod bash list
+
+Currently Loaded Modules:
+  1) TACC-paths      5) cluster            9) hdf5/1.8.9
+  2) Linux           6) TACC              10) papi/5.3.0     (m)
+  3) cluster-paths   7) intel/13.1.1.163  11) impi/4.1.0.030
+  4) xalt/0.4.6      8) boost/1.51.0
+
+  Where:
+   (m):  built for host and native MIC
+
+
+
++ eval 'LMOD_DEFAULT_MODULEPATH="/opt/apps/xsede/modulefiles:/opt/apps/modulefiles:/opt/modulefiles";' export 'LMOD_DEFAULT_MODULEPATH;' 'MODULEPATH="/opt/apps/intel13/impi_4_1/modulefiles:/opt/apps/intel13/modulefiles:/opt/apps/xsede/modulefiles:/opt/apps/modulefiles:/opt/modulefiles";' export 'MODULEPATH;' 'LMOD_DEFAULT_MODULEPATH="/opt/apps/xsede/modulefiles:/opt/apps/modulefiles:/opt/modulefiles";' export 'LMOD_DEFAULT_MODULEPATH;' 'MODULEPATH="/opt/apps/intel13/impi_4_1/modulefiles:/opt/apps/intel13/modulefiles:/opt/apps/xsede/modulefiles:/opt/apps/modulefiles:/opt/modulefiles";' export 'MODULEPATH;' '_ModuleTable001_="X01vZHVsZVRhYmxlXz17WyJhY3RpdmVTaXplIl09MTEsYmFzZU1wYXRoQT17Ii9vcHQvYXBwcy94c2VkZS9tb2R1bGVmaWxlcyIsIi9vcHQvYXBwcy9tb2R1bGVmaWxlcyIsIi9vcHQvbW9kdWxlZmlsZXMiLH0sWyJjX3JlYnVpbGRUaW1lIl09ZmFsc2UsWyJjX3Nob3J0VGltZSJdPWZhbHNlLGZhbWlseT17WyJNUEkiXT0iaW1waSIsWyJjb21waWxlciJdPSJpbnRlbCIsWyJoZGY1Il09ImhkZjUiLFsicGFwaSJdPSJwYXBpIix9LGluYWN0aXZlPXt9LG1UPXtMaW51eD17WyJGTiJdPSIvb3B0L21vZHVsZWZpbGVzL0xpbnV4IixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iTGludXgiLFsibG9hZE9yZGVyIl09Mixwcm9wVD17fSxbInNob3J0Il09IkxpbnV4IixbInN0YXR1";' export '_ModuleTable001_;' '_ModuleTable002_="cyJdPSJhY3RpdmUiLH0sVEFDQz17WyJGTiJdPSIvb3B0L21vZHVsZWZpbGVzL1RBQ0MiLFsiZGVmYXVsdCJdPTAsWyJmdWxsTmFtZSJdPSJUQUNDIixbImxvYWRPcmRlciJdPTYscHJvcFQ9e30sWyJzaG9ydCJdPSJUQUNDIixbInN0YXR1cyJdPSJhY3RpdmUiLH0sWyJUQUNDLXBhdGhzIl09e1siRk4iXT0iL29wdC9tb2R1bGVmaWxlcy9UQUNDLXBhdGhzIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iVEFDQy1wYXRocyIsWyJsb2FkT3JkZXIiXT0xLHByb3BUPXt9LFsic2hvcnQiXT0iVEFDQy1wYXRocyIsWyJzdGF0dXMiXT0iYWN0aXZlIix9LGJvb3N0PXtbIkZOIl09Ii9vcHQvYXBwcy9pbnRlbDEzL21vZHVsZWZpbGVzL2Jvb3N0LzEuNTEuMC5sdWEiLFsiZGVmYXVs";' export '_ModuleTable002_;' '_ModuleTable003_="dCJdPTAsWyJmdWxsTmFtZSJdPSJib29zdC8xLjUxLjAiLFsibG9hZE9yZGVyIl09OCxwcm9wVD17fSxbInNob3J0Il09ImJvb3N0IixbInN0YXR1cyJdPSJhY3RpdmUiLH0sY2x1c3Rlcj17WyJGTiJdPSIvb3B0L21vZHVsZWZpbGVzL2NsdXN0ZXIiLFsiZGVmYXVsdCJdPTAsWyJmdWxsTmFtZSJdPSJjbHVzdGVyIixbImxvYWRPcmRlciJdPTUscHJvcFQ9e30sWyJzaG9ydCJdPSJjbHVzdGVyIixbInN0YXR1cyJdPSJhY3RpdmUiLH0sWyJjbHVzdGVyLXBhdGhzIl09e1siRk4iXT0iL29wdC9tb2R1bGVmaWxlcy9jbHVzdGVyLXBhdGhzIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iY2x1c3Rlci1wYXRocyIsWyJsb2FkT3JkZXIiXT0zLHByb3BUPXt9LFsic2hvcnQiXT0i";' export '_ModuleTable003_;' '_ModuleTable004_="Y2x1c3Rlci1wYXRocyIsWyJzdGF0dXMiXT0iYWN0aXZlIix9LGhkZjU9e1siRk4iXT0iL29wdC9hcHBzL2ludGVsMTMvbW9kdWxlZmlsZXMvaGRmNS8xLjguOS5sdWEiLFsiZGVmYXVsdCJdPTAsWyJmdWxsTmFtZSJdPSJoZGY1LzEuOC45IixbImxvYWRPcmRlciJdPTkscHJvcFQ9e30sWyJzaG9ydCJdPSJoZGY1IixbInN0YXR1cyJdPSJhY3RpdmUiLH0saW1waT17WyJGTiJdPSIvb3B0L2FwcHMvaW50ZWwxMy9tb2R1bGVmaWxlcy9pbXBpLzQuMS4wLjAzMCIsWyJkZWZhdWx0Il09MCxbImZ1bGxOYW1lIl09ImltcGkvNC4xLjAuMDMwIixbImxvYWRPcmRlciJdPTExLHByb3BUPXt9LFsic2hvcnQiXT0iaW1waSIsWyJzdGF0dXMiXT0iYWN0aXZlIix9LGludGVsPXtbIkZOIl09";' export '_ModuleTable004_;' '_ModuleTable005_="Ii9vcHQvYXBwcy9tb2R1bGVmaWxlcy9pbnRlbC8xMy4xLjEuMTYzIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iaW50ZWwvMTMuMS4xLjE2MyIsWyJsb2FkT3JkZXIiXT03LHByb3BUPXt9LFsic2hvcnQiXT0iaW50ZWwiLFsic3RhdHVzIl09ImFjdGl2ZSIsfSxwYXBpPXtbIkZOIl09Ii9vcHQvYXBwcy9tb2R1bGVmaWxlcy9wYXBpLzUuMy4wLmx1YSIsWyJkZWZhdWx0Il09MSxbImZ1bGxOYW1lIl09InBhcGkvNS4zLjAiLFsibG9hZE9yZGVyIl09MTAscHJvcFQ9e2FyY2g9e1sibWljIl09MSx9LH0sWyJzaG9ydCJdPSJwYXBpIixbInN0YXR1cyJdPSJhY3RpdmUiLH0seGFsdD17WyJGTiJdPSIvb3B0L2FwcHMvbW9kdWxlZmlsZXMveGFsdC8wLjQuNi5sdWEiLFsiZGVm";' export '_ModuleTable005_;' '_ModuleTable006_="YXVsdCJdPTEsWyJmdWxsTmFtZSJdPSJ4YWx0LzAuNC42IixbImxvYWRPcmRlciJdPTQscHJvcFQ9e30sWyJzaG9ydCJdPSJ4YWx0IixbInN0YXR1cyJdPSJhY3RpdmUiLH0sfSxtcGF0aEE9eyIvb3B0L2FwcHMvaW50ZWwxMy9pbXBpXzRfMS9tb2R1bGVmaWxlcyIsIi9vcHQvYXBwcy9pbnRlbDEzL21vZHVsZWZpbGVzIiwiL29wdC9hcHBzL3hzZWRlL21vZHVsZWZpbGVzIiwiL29wdC9hcHBzL21vZHVsZWZpbGVzIiwiL29wdC9tb2R1bGVmaWxlcyIsfSxbInN5c3RlbUJhc2VNUEFUSCJdPSIvb3B0L2FwcHMveHNlZGUvbW9kdWxlZmlsZXM6L29wdC9hcHBzL21vZHVsZWZpbGVzOi9vcHQvbW9kdWxlZmlsZXMiLFsidmVyc2lvbiJdPTIsfQ==";' export '_ModuleTable006_;' '_ModuleTable_Sz_="6";' export '_ModuleTable_Sz_;'
+++ LMOD_DEFAULT_MODULEPATH=/opt/apps/xsede/modulefiles:/opt/apps/modulefiles:/opt/modulefiles
+++ export LMOD_DEFAULT_MODULEPATH
+++ MODULEPATH=/opt/apps/intel13/impi_4_1/modulefiles:/opt/apps/intel13/modulefiles:/opt/apps/xsede/modulefiles:/opt/apps/modulefiles:/opt/modulefiles
+++ export MODULEPATH
+++ LMOD_DEFAULT_MODULEPATH=/opt/apps/xsede/modulefiles:/opt/apps/modulefiles:/opt/modulefiles
+++ export LMOD_DEFAULT_MODULEPATH
+++ MODULEPATH=/opt/apps/intel13/impi_4_1/modulefiles:/opt/apps/intel13/modulefiles:/opt/apps/xsede/modulefiles:/opt/apps/modulefiles:/opt/modulefiles
+++ export MODULEPATH
+++ _ModuleTable001_=X01vZHVsZVRhYmxlXz17WyJhY3RpdmVTaXplIl09MTEsYmFzZU1wYXRoQT17Ii9vcHQvYXBwcy94c2VkZS9tb2R1bGVmaWxlcyIsIi9vcHQvYXBwcy9tb2R1bGVmaWxlcyIsIi9vcHQvbW9kdWxlZmlsZXMiLH0sWyJjX3JlYnVpbGRUaW1lIl09ZmFsc2UsWyJjX3Nob3J0VGltZSJdPWZhbHNlLGZhbWlseT17WyJNUEkiXT0iaW1waSIsWyJjb21waWxlciJdPSJpbnRlbCIsWyJoZGY1Il09ImhkZjUiLFsicGFwaSJdPSJwYXBpIix9LGluYWN0aXZlPXt9LG1UPXtMaW51eD17WyJGTiJdPSIvb3B0L21vZHVsZWZpbGVzL0xpbnV4IixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iTGludXgiLFsibG9hZE9yZGVyIl09Mixwcm9wVD17fSxbInNob3J0Il09IkxpbnV4IixbInN0YXR1
+++ export _ModuleTable001_
+++ _ModuleTable002_=cyJdPSJhY3RpdmUiLH0sVEFDQz17WyJGTiJdPSIvb3B0L21vZHVsZWZpbGVzL1RBQ0MiLFsiZGVmYXVsdCJdPTAsWyJmdWxsTmFtZSJdPSJUQUNDIixbImxvYWRPcmRlciJdPTYscHJvcFQ9e30sWyJzaG9ydCJdPSJUQUNDIixbInN0YXR1cyJdPSJhY3RpdmUiLH0sWyJUQUNDLXBhdGhzIl09e1siRk4iXT0iL29wdC9tb2R1bGVmaWxlcy9UQUNDLXBhdGhzIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iVEFDQy1wYXRocyIsWyJsb2FkT3JkZXIiXT0xLHByb3BUPXt9LFsic2hvcnQiXT0iVEFDQy1wYXRocyIsWyJzdGF0dXMiXT0iYWN0aXZlIix9LGJvb3N0PXtbIkZOIl09Ii9vcHQvYXBwcy9pbnRlbDEzL21vZHVsZWZpbGVzL2Jvb3N0LzEuNTEuMC5sdWEiLFsiZGVmYXVs
+++ export _ModuleTable002_
+++ _ModuleTable003_=dCJdPTAsWyJmdWxsTmFtZSJdPSJib29zdC8xLjUxLjAiLFsibG9hZE9yZGVyIl09OCxwcm9wVD17fSxbInNob3J0Il09ImJvb3N0IixbInN0YXR1cyJdPSJhY3RpdmUiLH0sY2x1c3Rlcj17WyJGTiJdPSIvb3B0L21vZHVsZWZpbGVzL2NsdXN0ZXIiLFsiZGVmYXVsdCJdPTAsWyJmdWxsTmFtZSJdPSJjbHVzdGVyIixbImxvYWRPcmRlciJdPTUscHJvcFQ9e30sWyJzaG9ydCJdPSJjbHVzdGVyIixbInN0YXR1cyJdPSJhY3RpdmUiLH0sWyJjbHVzdGVyLXBhdGhzIl09e1siRk4iXT0iL29wdC9tb2R1bGVmaWxlcy9jbHVzdGVyLXBhdGhzIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iY2x1c3Rlci1wYXRocyIsWyJsb2FkT3JkZXIiXT0zLHByb3BUPXt9LFsic2hvcnQiXT0i
+++ export _ModuleTable003_
+++ _ModuleTable004_=Y2x1c3Rlci1wYXRocyIsWyJzdGF0dXMiXT0iYWN0aXZlIix9LGhkZjU9e1siRk4iXT0iL29wdC9hcHBzL2ludGVsMTMvbW9kdWxlZmlsZXMvaGRmNS8xLjguOS5sdWEiLFsiZGVmYXVsdCJdPTAsWyJmdWxsTmFtZSJdPSJoZGY1LzEuOC45IixbImxvYWRPcmRlciJdPTkscHJvcFQ9e30sWyJzaG9ydCJdPSJoZGY1IixbInN0YXR1cyJdPSJhY3RpdmUiLH0saW1waT17WyJGTiJdPSIvb3B0L2FwcHMvaW50ZWwxMy9tb2R1bGVmaWxlcy9pbXBpLzQuMS4wLjAzMCIsWyJkZWZhdWx0Il09MCxbImZ1bGxOYW1lIl09ImltcGkvNC4xLjAuMDMwIixbImxvYWRPcmRlciJdPTExLHByb3BUPXt9LFsic2hvcnQiXT0iaW1waSIsWyJzdGF0dXMiXT0iYWN0aXZlIix9LGludGVsPXtbIkZOIl09
+++ export _ModuleTable004_
+++ _ModuleTable005_=Ii9vcHQvYXBwcy9tb2R1bGVmaWxlcy9pbnRlbC8xMy4xLjEuMTYzIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iaW50ZWwvMTMuMS4xLjE2MyIsWyJsb2FkT3JkZXIiXT03LHByb3BUPXt9LFsic2hvcnQiXT0iaW50ZWwiLFsic3RhdHVzIl09ImFjdGl2ZSIsfSxwYXBpPXtbIkZOIl09Ii9vcHQvYXBwcy9tb2R1bGVmaWxlcy9wYXBpLzUuMy4wLmx1YSIsWyJkZWZhdWx0Il09MSxbImZ1bGxOYW1lIl09InBhcGkvNS4zLjAiLFsibG9hZE9yZGVyIl09MTAscHJvcFQ9e2FyY2g9e1sibWljIl09MSx9LH0sWyJzaG9ydCJdPSJwYXBpIixbInN0YXR1cyJdPSJhY3RpdmUiLH0seGFsdD17WyJGTiJdPSIvb3B0L2FwcHMvbW9kdWxlZmlsZXMveGFsdC8wLjQuNi5sdWEiLFsiZGVm
+++ export _ModuleTable005_
+++ _ModuleTable006_=YXVsdCJdPTEsWyJmdWxsTmFtZSJdPSJ4YWx0LzAuNC42IixbImxvYWRPcmRlciJdPTQscHJvcFQ9e30sWyJzaG9ydCJdPSJ4YWx0IixbInN0YXR1cyJdPSJhY3RpdmUiLH0sfSxtcGF0aEE9eyIvb3B0L2FwcHMvaW50ZWwxMy9pbXBpXzRfMS9tb2R1bGVmaWxlcyIsIi9vcHQvYXBwcy9pbnRlbDEzL21vZHVsZWZpbGVzIiwiL29wdC9hcHBzL3hzZWRlL21vZHVsZWZpbGVzIiwiL29wdC9hcHBzL21vZHVsZWZpbGVzIiwiL29wdC9tb2R1bGVmaWxlcyIsfSxbInN5c3RlbUJhc2VNUEFUSCJdPSIvb3B0L2FwcHMveHNlZGUvbW9kdWxlZmlsZXM6L29wdC9hcHBzL21vZHVsZWZpbGVzOi9vcHQvbW9kdWxlZmlsZXMiLFsidmVyc2lvbiJdPTIsfQ==
+++ export _ModuleTable006_
+++ _ModuleTable_Sz_=6
+++ export _ModuleTable_Sz_
++ '[' 0 = 0 ']'
+++ : -s sh
++ eval
++ echo Checking:
++ pwd
++ hostname
++ date
++ echo Environment:
++ export CACTUS_NUM_PROCS=24
++ CACTUS_NUM_PROCS=24
++ export CACTUS_NUM_THREADS=8
++ CACTUS_NUM_THREADS=8
++ export GMON_OUT_PREFIX=gmon.out
++ GMON_OUT_PREFIX=gmon.out
++ export KMP_AFFINITY=norespect,compact
++ KMP_AFFINITY=norespect,compact
++ export OMP_NUM_THREADS=8
++ OMP_NUM_THREADS=8
++ env
++ sort
++ echo 'c451-[102-104,201-204,301-302,804,901-902]'
++ echo Starting:
+++ date +%s
++ export CACTUS_STARTTIME=1420282555
++ CACTUS_STARTTIME=1420282555
++ ibrun /scratch/03158/tg824566/simulations/SO_D9_q1.5_th2_135_ph1_90_m140/SIMFACTORY/exe/cactus_bbhv2 -L 3 /scratch/03158/tg824566/simulations/SO_D9_q1.5_th2_135_ph1_90_m140/output-0000/SO_D9_q1.5_th2_135_ph1_90_m140.par
+*******************************************************
+ WARNING: Your MPI Environment is :       impi/4.1.0.030
+          Your executable was built with: mvapich2/1.9a2
+*******************************************************
+WARNING[L1,P1] (CarpetRegrid2): Boolean variable is set with integer: CarpetRegrid2::verbose               = 0
+
+
+WARNING[L1,P0] (CarpetRegrid2): Boolean variable is set with integer: CarpetRegrid2::verbose               = 0
+
+
+WARNING[L1,P20] (CarpetRegrid2):WARNING[L1,P21] (CarpetRegrid2): Boolean variable is set with integer: CarpetRegrid2::verbose               = 0
+
+ Boolean variable is set with integer: CarpetRegrid2::verbose               = 0
+
+
+
+WARNING[L1,P18] (CarpetRegrid2):WARNING[L1,P19] (CarpetRegrid2):  Boolean variable is set with integer: CarpetRegrid2::verbose               = 0
+
+
+Boolean variable is set with integer: CarpetRegrid2::verbose               = 0
+
+
+WARNING[L1,P8] (CarpetRegrid2):WARNING[L1,P9] (CarpetRegrid2):WARNING[L1,P14] (CarpetRegrid2):WARNING[L1,P12] (CarpetRegrid2): Boolean variable is set with integer: CarpetRegrid2::verbose               = 0
+
+WARNING[L1,P15] (CarpetRegrid2):WARNING[L1,P13] (CarpetRegrid2):WARNING[L1,P7] (CarpetRegrid2): Boolean variable is set with integer: CarpetRegrid2::verbose               = 0
+
+
+WARNING[L1,P6] (CarpetRegrid2):
+ Boolean variable is set with integer: CarpetRegrid2::verbose               = 0
+
+
+ Boolean variable is set with integer: CarpetRegrid2::verbose               = 0
+
+ Boolean variable is set with integer: CarpetRegrid2::verbose               = 0
+
+
+ Boolean variable is set with integer: CarpetRegrid2::verbose               = 0
+
+
+ Boolean variable is set with integer: CarpetRegrid2::verbose               = 0
+
+
+
+ Boolean variable is set with integer: CarpetRegrid2::verbose               = 0
+
+
+WARNING[L1,P10] (CarpetRegrid2):WARNING[L1,P11] (CarpetRegrid2):WARNING[L1,P22] (CarpetRegrid2): Boolean variable is set with integer: CarpetRegrid2::verbose               = 0
+
+WARNING[L1,P23] (CarpetRegrid2):
+WARNING[L1,P2] (CarpetRegrid2): Boolean variable is set with integer: CarpetRegrid2::verbose               = 0
+
+
+WARNING[L1,P3] (CarpetRegrid2): Boolean variable is set with integer: CarpetRegrid2::verbose               = 0
+
+
+ Boolean variable is set with integer: CarpetRegrid2::verbose               = 0
+
+ Boolean variable is set with integer: CarpetRegrid2::verbose               = 0
+
+
+ Boolean variable is set with integer: CarpetRegrid2::verbose               = 0
+
+
+
+WARNING[L1,P4] (CarpetRegrid2):WARNING[L1,P5] (CarpetRegrid2): Boolean variable is set with integer: CarpetRegrid2::verbose               = 0
+
+ WARNING[L1,P17] (CarpetRegrid2):
+WARNING[L1,P16] (CarpetRegrid2):Boolean variable is set with integer: CarpetRegrid2::verbose               = 0
+
+
+ Boolean variable is set with integer: CarpetRegrid2::verbose               = 0
+
+
+ Boolean variable is set with integer: CarpetRegrid2::verbose               = 0
+
+
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+moving origin in x direction by 0.900000
+slurmd[c451-102]: *** JOB 4655198 CANCELLED AT 2015-01-04T04:54:51 DUE TO TIME LIMIT ***
+[mpiexec@c451-102.stampede.tacc.utexas.edu] HYD_pmcd_pmiserv_send_signal (./pm/pmiserv/pmiserv_cb.c:221): assert (!closed) failed
+[mpiexec@c451-102.stampede.tacc.utexas.edu] ui_cmd_cb (./pm/pmiserv/pmiserv_pmci.c:128): unable to send SIGUSR1 downstream
+[mpiexec@c451-102.stampede.tacc.utexas.edu] HYDT_dmxu_poll_wait_for_event (./tools/demux/demux_poll.c:77): callback returned error status
+[mpiexec@c451-102.stampede.tacc.utexas.edu] HYD_pmci_wait_for_completion (./pm/pmiserv/pmiserv_pmci.c:388): error waiting for event
+[mpiexec@c451-102.stampede.tacc.utexas.edu] main (./ui/mpich/mpiexec.c:745): 

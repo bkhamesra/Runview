@@ -2,6 +2,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import pylab
+plt.switch_backend('agg')
+
+
 import matplotlib
 import glob, math
 import os
@@ -11,7 +14,6 @@ from Psi4 import maxamp_time
 tick_label_size = 14
 matplotlib.rcParams['xtick.labelsize'] = tick_label_size
 matplotlib.rcParams['ytick.labelsize'] = tick_label_size
-
 
 def func_phase(varphase):
 
@@ -45,14 +47,28 @@ def multiplot(t1, y1, t2, y2, tmerger, xname, yname, figname, figdir, locate_mer
 	    plt.plot([tmerger,tmerger], [starty,endy], 'k--', linewidth=1.5)
  	    plt.text( tmerger,starty+0.001,'AH3', horizontalalignment='right', fontsize=12)
 	plt.ylim(starty, endy)
-	plt.xlabel(xname)
-	plt.ylabel(yname)
+	plt.xlabel(xname, fontsize=14)
+	plt.ylabel(yname, fontsize=14)
 	plt.grid(True)	
-	plt.legend(bbox_to_anchor=(0.15, 1.02, .7, .102), loc=3, ncol=2, mode="expand", borderaxespad=0.)
-	plt.savefig(os.path.join(figdir, figname), dpi=500)
+	lgd = plt.legend(bbox_to_anchor=(0.15, 1.02, .7, .102), loc=3, ncol=2, mode="expand", borderaxespad=0.)
+	plt.tight_layout()
+	plt.savefig(os.path.join(figdir, figname), dpi=500, bbox_extra_artists=(lgd,), bbox_inches='tight')
 	plt.close()
 
+def vel_polar(x,y,z, vx, vy, vz):	#while one can simply treat velocity as vectors and perform transformation from cartesian to polar but that results in division by zero
+	rvec = np.array((x,y,z))
+	rho = norm(rvec, 0)
+	th = np.arccos(np.divide(z,rho))
+	ph = func_phase(np.arctan2(y,x))
+	
+	v = np.array((vx,vy,vz))
+	vr = (vx*np.cos(ph) + vy*np.sin(ph))*np.sin(th) + vz*np.cos(th)
+	thdot = np.cos(th)*np.cos(ph)*vx + np.cos(th)*np.sin(ph)*vy -np.sin(th)*vz		#z*(x*vx + y*vy) - vz*(x**2. + y**2.)
+	vtheta = np.divide(thdot, rho)									#np.divide(thdot, (rmag**2.)*np.sqrt(x**2. + y**2.))
 
+	vphi = np.divide((vy*np.cos(ph) - vx*np.sin(ph)), (rho*np.sin(th)))			#np.divide((x*vy - y*vx), (x**2. + y**2.))
+	return [vr, vtheta, vphi]
+	
 def Trajectory(wfdir, outdir, locate_merger=False):
 	
   	figdir = FigDir(wfdir, outdir)
@@ -69,6 +85,9 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	r2 = np.array((x_bh2, y_bh2, z_bh2))
 	time = np.copy(time_bh1)
 	assert (len(x_bh1)==len(x_bh2)), "Length of position data are not equal. Please check length of Shifttracker files."
+
+	vr_bh1, vth_bh1, vph_bh1  = vel_polar(x_bh1, y_bh1, z_bh1, vx_bh1, vy_bh1, vz_bh1)
+	vr_bh2, vth_bh2, vph_bh2 = vel_polar(x_bh2, y_bh2, z_bh2, vx_bh2, vy_bh2, vz_bh2)
 		
 	r_sep = (r1-r2).T
 	x,y,z = r_sep.T
@@ -148,8 +167,9 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	ax1.set_xlabel('Time', fontsize = 14)
 	ax1.set_ylabel('X', fontsize = 14)
 	ax1.grid(True)
-	ax1.legend()
-	plt.savefig(figdir + '/Trajectory_xvstime.png', dpi = 500)
+	lgd = ax1.legend()
+	plt.tight_layout()
+	plt.savefig(figdir + '/Trajectory_xvstime.png', dpi = 500, bbox_extra_artists=(lgd,), bbox_inches='tight')
 	plt.close()
 	
 
@@ -166,8 +186,9 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	ax2.set_xlabel('Time', fontsize = 14)
 	ax2.set_ylabel('Y', fontsize=14)
 	ax2.grid(True)
-	ax2.legend()
-	plt.savefig(figdir + '/Trajectory_yvstime.png', dpi = 500)
+	lgd = ax2.legend()
+	plt.tight_layout()
+	plt.savefig(figdir + '/Trajectory_yvstime.png', dpi = 500, bbox_extra_artists=(lgd,), bbox_inches='tight')
 	plt.close()
 	
 
@@ -183,13 +204,14 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 
 	ax3.set_xlabel('X', fontsize = 14)
 	ax3.set_ylabel('Y', fontsize = 14)
-	ax3.legend()
+	lgd = ax3.legend()
 	plt.grid(True)
-	plt.savefig(figdir+'/Trajectory_xy.png', dpi = 500)
+	plt.tight_layout()
+	plt.savefig(figdir+'/Trajectory_xy.png', dpi = 500, bbox_extra_artists=(lgd,), bbox_inches='tight')
 	plt.close()
 
 	
-	#Plot 3: Trajectory - separation vs time
+	#Plot 3a: Trajectory - separation vs time
 
 	plt.plot(time_bh1, separation, color='b', linewidth=1)
 	startx,endx = plt.gca().get_xlim()
@@ -202,11 +224,28 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	plt.xlabel('Time', fontsize = 14)
 	plt.ylabel('Separation', fontsize = 14)
 	plt.grid(True)
+	plt.tight_layout()
 	plt.savefig(figdir+'/Trajectory_separation.png', dpi = 500)
 	plt.close()
 	
+	#Plot 3b: Trajectory - log(separation) vs time
 
-	#Plot 4: Orbital Phase
+	plt.plot(time_bh1, log_sep, color='b', linewidth=1)
+	startx,endx = plt.gca().get_xlim()
+	starty,endy = plt.gca().get_ylim()
+
+	if locate_merger==True:
+		plt.plot([t_hrzn3,t_hrzn3], [starty,sep_hrzn], 'k--', linewidth=1.5)
+		plt.text( t_hrzn3,starty+0.1,'AH3', horizontalalignment='right', fontsize=12)
+
+	plt.xlabel('Time', fontsize = 14)
+	plt.ylabel('log(Separation)', fontsize = 14)
+	plt.grid(True)
+	plt.tight_layout()
+	plt.savefig(figdir+'/Trajectory_logsep.png', dpi = 500)
+	plt.close()
+
+	#Plot 4a: Orbital Phase
 
 	plt.plot(time_bh1, phi, color='b', lw=1)
 	startx,endx = plt.gca().get_xlim()
@@ -220,12 +259,72 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	plt.xlabel('Time', fontsize=14)
 	plt.ylabel('Phase', fontsize=14)
 	plt.grid(True)
+	plt.tight_layout()
 	plt.savefig(figdir+'/Trajectory_phase.png',dpi = 500)
 	plt.close()
 
-	
+	#Plot 4b: Orbital Phase
 
-	#Plot 5: Relative orbital Velocity/Rate of Orbital Separation 
+	plt.plot(time_bh1, logphi, color='b', lw=1)
+	startx,endx = plt.gca().get_xlim()
+	starty,endy = plt.gca().get_ylim()
+
+	if locate_merger==True:
+		plt.plot([t_hrzn3,t_hrzn3], [starty,phi_hrzn], 'k--', linewidth=1.5)
+		plt.text( t_hrzn3,starty+0.2,'AH3', horizontalalignment='right', fontsize=12)
+
+
+	plt.xlabel('Time', fontsize=14)
+	plt.ylabel('log(Phase)', fontsize=14)
+	plt.grid(True)
+	plt.tight_layout()
+	plt.savefig(figdir+'/Trajectory_logphase.png',dpi = 500)
+	plt.close()
+	
+	#Plot 5a: Radial Velocity
+	
+	r1_mag = norm(r1,0)
+	r2_mag = norm(r2,0)
+	plt.plot(r1_mag, vr_bh1, color='b', lw=1, label="BH1")
+	plt.plot(r2_mag, vr_bh2, color='g',linestyle='--', lw=2, label="BH2")
+	startx,endx = plt.gca().get_xlim()
+	starty,endy = plt.gca().get_ylim()
+	
+	r_hrzn = max(r1_mag[hrzn_idx], r2_mag[hrzn_idx])
+	if locate_merger==True:
+		plt.plot([r_hrzn,r_hrzn], [starty,max(vr_bh1[hrzn_idx], vr_bh2[hrzn_idx])], 'k--', linewidth=1.5)
+		plt.text( r_hrzn,starty+0.01,'AH3', horizontalalignment='right', fontsize=12)
+
+	plt.xlabel('Radius', fontsize=14)
+	plt.ylabel('v_r', fontsize=14)
+	plt.grid(True)
+	lgd = plt.legend()
+	plt.tight_layout()
+	plt.savefig(figdir+'/Trajectory_vr.png',dpi = 500, bbox_extra_artists=(lgd,), bbox_inches='tight')
+	plt.close()
+
+
+	#Plot 5b: Phase Velocity 
+	
+	plt.plot(time_bh1, vph_bh1, color='b', lw=1, label="BH1")
+	plt.plot(time_bh2, vph_bh2, color='g', linestyle='--',lw=2, label="BH2")
+	startx,endx = plt.gca().get_xlim()
+	starty,endy = plt.gca().get_ylim()
+
+	if locate_merger==True:
+		plt.plot([t_hrzn3,t_hrzn3], [starty,min(vph_bh1[hrzn_idx],vph_bh2[hrzn_idx])], 'k--', linewidth=1.5)
+		plt.text( t_hrzn3,starty,'AH3', horizontalalignment='right', fontsize=12)
+
+
+	plt.xlabel('Time', fontsize=14)
+	plt.ylabel('v_phi', fontsize=14)
+	lgd = plt.legend()
+	plt.grid(True)
+	plt.tight_layout()
+	plt.savefig(figdir+'/Trajectory_vphi.png',dpi = 500, bbox_extra_artists=(lgd,), bbox_inches='tight')
+	plt.close()
+
+	#Plot 5c: Relative orbital Velocity/Rate of change of radial component of Orbital Separation
 	
 	plt.plot(time_bh1, rdot, color='b', lw=1)
 	startx,endx = plt.gca().get_xlim()
@@ -239,9 +338,39 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	plt.xlabel('Time', fontsize=14)
 	plt.ylabel('Separation velocity', fontsize=14)
 	plt.grid(True)
+	plt.tight_layout()
 	plt.savefig(figdir+'/Trajectory_rdot.png',dpi = 500)
 	plt.close()
-	 
+	
+	#Plot 6: Precession - Oscillation in theta of separation vector  and orbital angular momentum
+	
+	fig, (ax1,ax2) = plt.subplots(2,1, sharex=True)
+	ax1.plot(time_bh1, theta, color='b', lw=1)
+	startx,endx = ax1.get_xlim()
+	starty,endy = ax1.get_ylim()
+
+	if locate_merger==True:
+		ax1.plot([t_hrzn3,t_hrzn3], [starty,theta[hrzn_idx]], 'k--', linewidth=1.5)
+		ax1.text( t_hrzn3,starty+0.01,'AH3', horizontalalignment='right', fontsize=12)
+
+	ax2.plot(time_bh1, phi, color='b', lw=1)
+	startx,endx = ax2.get_xlim()
+	starty,endy = ax2.get_ylim()
+
+	if locate_merger==True:
+		ax2.plot([t_hrzn3,t_hrzn3], [starty,phi[hrzn_idx]], 'k--', linewidth=1.5)
+		ax2.text( t_hrzn3,starty+0.01,'AH3', horizontalalignment='right', fontsize=12)
+
+	ax2.set_xlabel('Time', fontsize=14)
+	ax1.set_ylabel('Theta', fontsize=14)
+	ax2.set_ylabel('Phi', fontsize=14)
+	ax1.grid(True)
+	ax2.grid(True)
+
+	plt.tight_layout()
+	plt.savefig(figdir+'/Trajectory_thetaphi.png',dpi = 500)
+	plt.close()
+	
 
 def RadiusPlots(wfdir, outdir, locate_merger=False):
 	
@@ -264,7 +393,7 @@ def RadiusPlots(wfdir, outdir, locate_merger=False):
 	
 	#Plot 1: Areal Radius Plots
 	f1, (ax1,ax2) = plt.subplots(2,1)
-	bh1, = ax1.plot(time_bh1, r_areal1, c='b',  linewidth=1, label="BH1")
+	bh1, = ax1.plot(time_bh1, r_areal1, c='b',  linewidth=2, label="BH1")
 	bh2, = ax1.plot(time_bh2, r_areal2, c='g',  linewidth=1, label="BH2")
 	bh3, = ax1.plot(time_bh3, r_areal3, c='r',  linewidth=1, label="BH3")
 	
@@ -292,10 +421,11 @@ def RadiusPlots(wfdir, outdir, locate_merger=False):
 	ax2.set_xlabel('Time', fontsize = 14)
 	ax2.set_ylabel('Grad(Areal Radius)', fontsize = 14)
 	ax1.grid(True)
-	ax1.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
+	lgd = ax1.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
 	ax2.grid(True)
+	plt.tight_layout()
 	#ax2.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
-	plt.savefig(figdir + '/ArealRadius.png', dpi = 500)
+	plt.savefig(figdir + '/ArealRadius.png', dpi = 500, bbox_extra_artists=(lgd,), bbox_inches='tight')
 	plt.close()
 	
 
@@ -327,8 +457,9 @@ def RadiusPlots(wfdir, outdir, locate_merger=False):
 	ax1.set_xlabel('Time', fontsize = 14)
 	ax1.set_ylabel('Coordinate Radius', fontsize = 14)
 	ax1.grid(True)
-	ax1.legend( loc=2, prop={'size': 8})
-	plt.savefig(figdir + '/CoordRadius.png', dpi = 500)
+	lgd = ax1.legend( loc=2, prop={'size': 8})
+	plt.tight_layout()
+	plt.savefig(figdir + '/CoordRadius.png', dpi = 500, bbox_extra_artists=(lgd,), bbox_inches='tight')
 	plt.close()
 
 
@@ -339,7 +470,8 @@ def ProperDistance(wfdir, outdir, locate_merger=False):
 	propdist_file = os.path.join(datadir, "ProperDistance.asc")
 	if not os.path.exists(propdist_file):
 		debuginfo('Proper Distance file not found' )
-		return 
+		return
+ 
 	time_pd, propdist = np.loadtxt(propdist_file, unpack=True, usecols=(1,2))
 	
 	#Plot 6: Proper Distance
@@ -358,6 +490,7 @@ def ProperDistance(wfdir, outdir, locate_merger=False):
 	plt.xlabel('Time', fontsize=14)
 	plt.ylabel('Proper Distance', fontsize=14)
 	plt.grid(True)
+	plt.tight_layout()
 	plt.savefig(figdir+'/ProperDistance.png',dpi = 500)
 	plt.close()
 
@@ -409,8 +542,9 @@ def TrumpetPlot(wfdir, outdir, locate_merger=False):
 	ax1.set_ylabel('Time', fontsize = 14)
 	ax1.set_xlabel('Radial Distance from Punctures', fontsize = 14)
 	ax1.grid(True)
-	ax1.legend()
-	plt.savefig(figdir + '/Trumpets.png', dpi = 500)
+	lgd = ax1.legend()
+	plt.tight_layout()
+	plt.savefig(figdir + '/Trumpets.png', dpi = 500, bbox_extra_artists=(lgd,), bbox_inches='tight')
 	plt.close()
 
 
@@ -435,7 +569,7 @@ def Area_Mass_Plots(wfdir, outdir, locate_merger=False):
 	t_merger = merger_time(wfdir, outdir)
 	
 	#Mass Plots
-	plt.plot(time_bh1, irr_m1, color='b', label="BH1")
+	plt.plot(time_bh1, irr_m1, color='b', ls='--', lw=2, label="BH1")
 	plt.plot(time_bh2, irr_m2, color='g', label="BH2")
 	plt.plot(time_bh3, irr_m3, color='r', label="BH3")
 	
@@ -447,12 +581,13 @@ def Area_Mass_Plots(wfdir, outdir, locate_merger=False):
 	plt.xlabel("Time (in M)")
 	plt.ylabel("Irreducible Mass")
 	plt.grid(True)
-	plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
-	plt.savefig(os.path.join(figdir, "IrreducibleMasses.png"), dpi=500)
+	lgd = plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
+	plt.tight_layout()
+	plt.savefig(os.path.join(figdir, "IrreducibleMasses.png"), dpi=500, bbox_extra_artists=(lgd,), bbox_inches='tight')
 	plt.close()
 
 	#Area Plots		
-	plt.plot(time_bh1, area1, color='b', label="BH1")
+	plt.plot(time_bh1, area1, color='b', ls='--', lw=2, label="BH1")
 	plt.plot(time_bh2, area2, color='g', label="BH2")
 	plt.plot(time_bh3, area3, color='r', label="BH3")
 	
@@ -464,8 +599,9 @@ def Area_Mass_Plots(wfdir, outdir, locate_merger=False):
 	plt.xlabel("Time (in M)")
 	plt.ylabel("Area")
 	plt.grid(True)
-	plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
-	plt.savefig(os.path.join(figdir, "Area.png"), dpi=500)
+	lgd = plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
+	plt.tight_layout()
+	plt.savefig(os.path.join(figdir, "Area.png"), dpi=500, bbox_extra_artists=(lgd,), bbox_inches='tight')
 	plt.close()
 
 
@@ -523,9 +659,9 @@ def ExpansionPlots(wfdir, outdir, locate_merger=False):
 	plt.xlabel("Time (in M)")
 	plt.ylabel("Expansion (outward normal)")
 	plt.grid(True)
-	plt.legend()#bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
+	lgd = plt.legend()#bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
 	plt.tight_layout()
-	plt.savefig(os.path.join(figdir, "OutwardExpansion.png"), dpi=500)
+	plt.savefig(os.path.join(figdir, "OutwardExpansion.png"), dpi=500, bbox_extra_artists=(lgd,), bbox_inches='tight')
 	plt.close()
 	
 
@@ -541,8 +677,9 @@ def ExpansionPlots(wfdir, outdir, locate_merger=False):
 	plt.xlabel("Time (in M)")
 	plt.ylabel("Expansion (inward normal)")
 	plt.grid(True)
-	plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
-	plt.savefig(os.path.join(figdir, "InwardExpansion.png"), dpi=500)
+	lgd = plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
+	plt.tight_layout()
+	plt.savefig(os.path.join(figdir, "InwardExpansion.png"), dpi=500, bbox_extra_artists=(lgd,), bbox_inches='tight')
 	plt.close()
 
 

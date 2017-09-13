@@ -5,7 +5,7 @@ from Runstats import runstats
 from Psi4 import Psi4_Plots
 from Spins import Spins
 from webpage import webpage 
-from webpage_puncdyn import webpage 
+from webpage_puncdyn import webpage_pd 
 from hnmass import Mass_Plots
 from StitchFiles import StitchData
 from PunctureDynamics import PunctureDynamics
@@ -46,10 +46,10 @@ if stitchdata:
 
 CollectFiles(dirpath, outdir)	
 
-if puncdyn:
+if puncdyn==True:
 	PunctureDynamics(dirpath, outdir, locate_merger=findmerger)
 	runstats(dirpath, outdir)
-	webpage(dirpath, outdir, locate_merger=findmerger)
+	webpage_pd(dirpath, outdir, locate_merger=findmerger)
 else:
 	Trajectory(dirpath, outdir, locate_merger=findmerger)
 	Energy_Momentum(dirpath, outdir)
