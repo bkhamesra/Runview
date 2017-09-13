@@ -82,6 +82,6 @@ def animate_trajectories(dirpath, outdir):
 	                               frames=np.arange(0,len(time_1), 50), interval=1, blit=False)
 	
 	# Save as mp4. This requires mplayer or ffmpeg to be installed
-	anim.save('PunctureTrajectory.mp4', fps=15, extra_args=['-vcodec', 'libx264'])
+	#anim.save('PunctureTrajectory.mp4', fps=15, extra_args=['-vcodec', 'libx264'])
 	
 	#plt.show()
