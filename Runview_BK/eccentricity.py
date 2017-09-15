@@ -261,10 +261,10 @@ def ecc_and_anomaly(dirpath,  jkrad_time):
 	maxima, tmax  = func_max(time_cutoff, eccfit_poly(time_cutoff))
 	minima, tmin = func_min(time_cutoff, eccfit_poly(time_cutoff))
 	
-	#print("*(metadata) >> Eccentricity: max = {} found at time = {} and min = {} found at time = {} \n".format(maxima, tmax, minima, tmin))
+	print("*(metadata) >> Eccentricity: max = {} found at time = {} and min = {} found at time = {} \n".format(maxima, tmax, minima, tmin))
 	
 	ecc_init = (abs(maxima) + abs(minima))/2.
-	#print(" *(metadata) >> Initial Eccentricity = {} \n".format(ecc_init)) 
+	print(" *(metadata) >> Initial Eccentricity = {} \n".format(ecc_init)) 
 
 	return [mean_anom, ecc_init]
 
