@@ -86,8 +86,9 @@ def metadata(wfdir, outdir, locate_merger):
 		maxamp, t_maxamp = maxamp_time(wfdir, outdir)
 		t_hrzn = func_t_hrzn(datadir, locate_merger)
 
- 	#Computing eccentricity and mean anomaly
-	#[mean_anomaly, eccentricity] = ecc_and_anomaly(dirpath, 75.)
+ 	
+		#Computing eccentricity and mean anomaly
+	eccentricity = ecc_and_anomaly(datadir, 75.)[0]
 
 	#print("*(metadata) >> Final Information \n")
 	#print("*(metadata) >> Mass Ratio of system = {} \n".format(q))
