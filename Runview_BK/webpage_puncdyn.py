@@ -44,12 +44,17 @@ ul {{margin: 50px}}\n  </style>\n
 
 \n <h2 style=\"text-align:left;font-size:150%;font-family:verdana\">Trajectory Plots</a> </h2>
 \n 
+\n <p> <a href=\"figures/Trajectory_xy.png\"><img src=\"figures/Trajectory_xy.png\" alt=\"HTML/Trajectory_xy\" width=\"700\" height=\"600\" hspace=20></a>
+\n  <a href=\"figures/Trajectory_thetaphi.png\"><img src=\"figures/Trajectory_thetaphi.png\" alt=\"Trajectory_thetaphi\" width=\"700\" height=\"600\" ></a></p>
 \n <p> <a href=\"figures/Trajectory_xvstime.png\"><img src=\"figures/Trajectory_xvstime.png\" alt=\"HTML/Trajectory_xvstime\" width=\"700\" height=\"600\" hspace=20></a>
 \n  <a href=\"figures/Trajectory_yvstime.png\"><img src=\"figures/Trajectory_yvstime.png\" alt=\"Trajectory_yvstime\" width=\"700\" height=\"600\" ></a></p>
-\n <p> <a href=\"figures/Trajectory_xy.png\"><img src=\"figures/Trajectory_xy.png\" alt=\"HTML/Trajectory_xy\" width=\"700\" height=\"600\" hspace=20></a>
-\n  <a href=\"figures/Trajectory_separation.png\"><img src=\"figures/Trajectory_separation.png\" alt=\"Trajectory_separation\" width=\"700\" height=\"600\" ></a></p>
+\n <p> <a href=\"figures/Trajectory_separation.png\"><img src=\"figures/Trajectory_separation.png\" alt=\"HTML/Trajectory_separation\" width=\"700\" height=\"600\" hspace=20></a>
+\n  <a href=\"figures/Trajectory_logsep.png\"><img src=\"figures/Trajectory_logsep.png\" alt=\"Trajectory_logsep\" width=\"700\" height=\"600\" ></a></p>
 \n <p> <a href=\"figures/Trajectory_phase.png\"><img src=\"figures/Trajectory_phase.png\" alt=\"HTML/Trajectory_phase\" width=\"700\" height=\"600\" hspace=20></a>
-\n  <a href=\"figures/Trajectory_rdot.png\"><img src=\"figures/Trajectory_rdot.png\" alt=\"Trajectory_rdot\" width=\"700\" height=\"600\" ></a></p>
+\n  <a href=\"figures/Trajectory_logphase.png\"><img src=\"figures/Trajectory_logphase.png\" alt=\"Trajectory_logphase\" width=\"700\" height=\"600\" ></a></p>
+\n <p> <a href=\"figures/Trajectory_vr.png\"><img src=\"figures/Trajectory_vr.png\" alt=\"HTML/Trajectory_vr\" width=\"700\" height=\"600\" hspace=20></a>
+\n  <a href=\"figures/Trajectory_vphi.png\"><img src=\"figures/Trajectory_vphi.png\" alt=\"Trajectory_vphi\" width=\"700\" height=\"600\" ></a></p>
+\n <p> <a href=\"figures/Trajectory_rdot.png\"><img src=\"figures/Trajectory_rdot.png\" alt=\"Trajectory_rdot\" width=\"700\" height=\"600\" ></a></p>
 \n 
 \n <h2 style=\"text-align:left;font-size:150%;font-family:verdana\"> Mass and Area Plots </a></h2>
 \n <p> <a href=\"figures/IrreducibleMasses.png\"><img src=\"figures/IrreducibleMasses.png\" alt=\"IrreducibleMasses.png\" width=\"700\" height=\"600\" hspace=20></a>
@@ -60,8 +65,8 @@ ul {{margin: 50px}}\n  </style>\n
 \n  <a href=\"figures/ArealRadius.png\"><img src=\"figures/ArealRadius.png\" alt=\"ArealRadius.png\" width=\"700\" height=\"600\"></a></p>
 \n 
 \n <h2 style=\"text-align:left;font-size:150%;font-family:verdana\"> Proper Distance </a></h2>
-\n <p> <a href=\"figures/ProperDistance.png\"><img src=\"figures/ProperDistance.png\" alt=\"ProperDistance.png\" width=\"700\" height=\"600\" hspace=20></a>
-\n  <a href=\"figures/Trumpets.png\"><img src=\"figures/Trumpets.png\" alt=\"Trumpets.png\" width=\"700\" height=\"600\"></a></p>
+\n <p> <a href=\"figures/Trumpets.png\"><img src=\"figures/Trumpets.png\" alt=\"Trumpets.png\" width=\"700\" height=\"600\"></a>
+\n  <a href=\"figures/ProperDistance.png\"><img src=\"figures/ProperDistance.png\" alt=\"ProperDistance.png\" width=\"700\" height=\"600\" hspace=20></a></p>
 \n 
 \n <h2 style=\"text-align:left;font-size:150%;font-family:verdana\"> Runstats </h2>
 \n <p> <a href=\"figures/Runstats.png\"><img src=\"figures/Runstats.png\" alt=\"Runstats.png\" width=\"700\" height=\"600\"></a></p>
@@ -89,10 +94,10 @@ ul {{margin: 50px}}\n  </style>\n
 	""".format(os.path.basename(parfile))
 	return html_txt
 
-def webpage(wfdir, outdir,locate_merger):
+def webpage_pd(wfdir, outdir,locate_merger):
 	
 	datadir = DataDir(wfdir, outdir) 
-	filename = open(os.path.join(datadir+'/..','webpage.html'),'w+')
+	filename = open(os.path.join(datadir+'/..','index.html'),'w+')
 
 	meta_data, parfile = metadata(wfdir, outdir, locate_merger=False)
 	webdata = webpage_data(meta_data, parfile, locate_merger=False)
