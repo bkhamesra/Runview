@@ -505,9 +505,9 @@ def TrumpetPlot(wfdir, outdir, locate_merger=False):
 	bh_diag1 = os.path.join(datadir,'BH_diagnostics.ah2.gp')
 	bh_diag2 = os.path.join(datadir,'BH_diagnostics.ah3.gp')
 	
-	time_bh1_diag, x_bh1, y_bh1, z_bh1, rmean_bh1 =np.loadtxt(bh_diag0, unpack=True, usecols=(1,2,3,4,7))	
-	time_bh2_diag, x_bh2, y_bh2, z_bh2, rmean_bh2 =np.loadtxt(bh_diag1, unpack=True, usecols=(1,2,3,4,7))	
-	time_bh3_diag, x_bh3, y_bh3, z_bh3, rmean_bh3 =np.loadtxt(bh_diag2, unpack=True, usecols=(1,2,3,4,7))	
+	time_bh1_diag, x_bh1, y_bh1, z_bh1, rmax_bh1 =np.loadtxt(bh_diag0, unpack=True, usecols=(1,2,3,4,6))	
+	time_bh2_diag, x_bh2, y_bh2, z_bh2, rmax_bh2 =np.loadtxt(bh_diag1, unpack=True, usecols=(1,2,3,4,6))	
+	time_bh3_diag, x_bh3, y_bh3, z_bh3, rmax_bh3 =np.loadtxt(bh_diag2, unpack=True, usecols=(1,2,3,4,6))	
 	
 
 	#Orbital Separation
@@ -522,19 +522,19 @@ def TrumpetPlot(wfdir, outdir, locate_merger=False):
 	#Plot 1: Trumpet Plot
 	f1, ax1 = plt.subplots()
 	bh1, = ax1.plot(r1_mag, time_bh1_diag, c='b',  linewidth=2, label="bh1")
-	ax1.plot(r1_mag-rmean_bh1, time_bh1_diag, ls='--', linewidth=1,c='b')
-	ax1.plot(r1_mag+rmean_bh1, time_bh1_diag, ls='--', linewidth=1,c='b')
-	ax1.fill_betweenx(time_bh1_diag, r1_mag-rmean_bh1, r1_mag + rmean_bh1, color='deepskyblue')
+	ax1.plot(r1_mag-rmax_bh1, time_bh1_diag, ls='--', linewidth=1,c='b')
+	ax1.plot(r1_mag+rmax_bh1, time_bh1_diag, ls='--', linewidth=1,c='b')
+	ax1.fill_betweenx(time_bh1_diag, r1_mag-rmax_bh1, r1_mag + rmax_bh1, color='deepskyblue')
 
 	bh2, = ax1.plot(-1.*r2_mag, time_bh2_diag, c='g', linewidth=2, label = "bh2")
-	ax1.plot(-1.*r2_mag-rmean_bh2, time_bh2_diag, ls='--', linewidth=1,c='g')
-	ax1.plot(-1.*r2_mag+rmean_bh2, time_bh2_diag, ls='--', linewidth=1,c='g')
-	ax1.fill_betweenx(time_bh2_diag, -1.*r2_mag-rmean_bh2, -1.*r2_mag + rmean_bh2, color='mediumspringgreen')
+	ax1.plot(-1.*r2_mag-rmax_bh2, time_bh2_diag, ls='--', linewidth=1,c='g')
+	ax1.plot(-1.*r2_mag+rmax_bh2, time_bh2_diag, ls='--', linewidth=1,c='g')
+	ax1.fill_betweenx(time_bh2_diag, -1.*r2_mag-rmax_bh2, -1.*r2_mag + rmax_bh2, color='mediumspringgreen')
 
 	bh3, = ax1.plot(r3_mag, time_bh3_diag, c='r', linewidth=2, label = "bh3")
-	ax1.plot(-1.*r3_mag-rmean_bh3, time_bh3_diag, ls='--', linewidth=1,c='r')
-	ax1.plot(-1.*r3_mag+rmean_bh3, time_bh3_diag, ls='--', linewidth=1,c='r')
-	ax1.fill_betweenx(time_bh3_diag, -1.*r3_mag-rmean_bh3, -1.*r3_mag + rmean_bh3, color='coral', alpha=0.2)
+	ax1.plot(-1.*r3_mag-rmax_bh3, time_bh3_diag, ls='--', linewidth=1,c='r')
+	ax1.plot(-1.*r3_mag+rmax_bh3, time_bh3_diag, ls='--', linewidth=1,c='r')
+	ax1.fill_betweenx(time_bh3_diag, -1.*r3_mag-rmax_bh3, -1.*r3_mag + rmax_bh3, color='coral', alpha=0.2)
 
 	startx,endx = ax1.get_xlim()
 	starty,endy = ax1.get_ylim()

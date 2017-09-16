@@ -56,7 +56,7 @@ else:
 	runstats(dirpath, outdir)
 	Psi4_Plots(dirpath, outdir, locate_merger=findmerger, locate_qnm=findqnm)
 	Spins(dirpath, outdir)
-	Mass_Plots(dirpath, outdir)
+	#Mass_Plots(dirpath, outdir)
 	webpage(dirpath, outdir, locate_merger=findmerger)
 
 if AHF:
