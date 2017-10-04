@@ -245,7 +245,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	plt.savefig(figdir+'/Trajectory_logsep.png', dpi = 500)
 	plt.close()
 
-	#Plot 4a: Orbital Phase
+	#Plot 4a: Orbital Phase vs time
 
 	plt.plot(time_bh1, phi, color='b', lw=1)
 	startx,endx = plt.gca().get_xlim()
@@ -263,7 +263,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	plt.savefig(figdir+'/Trajectory_phase.png',dpi = 500)
 	plt.close()
 
-	#Plot 4b: Orbital Phase
+	#Plot 4b: log(Orbital Phase) vs time
 
 	plt.plot(time_bh1, logphi, color='b', lw=1)
 	startx,endx = plt.gca().get_xlim()
@@ -281,7 +281,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	plt.savefig(figdir+'/Trajectory_logphase.png',dpi = 500)
 	plt.close()
 	
-	#Plot 5a: Radial Velocity
+	#Plot 5a: Radial Velocity vs r
 	
 	r1_mag = norm(r1,0)
 	r2_mag = norm(r2,0)
@@ -304,7 +304,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	plt.close()
 
 
-	#Plot 5b: Phase Velocity 
+	#Plot 5b: Phase Velocity vs time
 	
 	plt.plot(time_bh1, vph_bh1, color='b', lw=1, label="BH1")
 	plt.plot(time_bh2, vph_bh2, color='g', linestyle='--',lw=2, label="BH2")
@@ -342,7 +342,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	plt.savefig(figdir+'/Trajectory_rdot.png',dpi = 500)
 	plt.close()
 	
-	#Plot 6: Precession - Oscillation in theta of separation vector  and orbital angular momentum
+	#Plot 6: Precession - Oscillation in theta of separation vector  and orbital angular momentum - vs time
 	
 	fig, (ax1,ax2) = plt.subplots(2,1, sharex=True)
 	ax1.plot(time_bh1, theta, color='b', lw=1)
