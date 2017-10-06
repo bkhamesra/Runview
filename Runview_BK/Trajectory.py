@@ -28,7 +28,7 @@ def write_sep_data(filename,hdr, outdir, data):
 
 def Trajectory(wfdir, outdir, locate_merger=False):
 	
-  	figdir = FigDir(wfdir, outdir)
+  	statfigdir, dynfigdir = FigDir(wfdir, outdir)
 	datadir = DataDir(wfdir, outdir)
 
 	trajectory_bh1 = open(os.path.join(datadir, "ShiftTracker0.asc"))
@@ -145,7 +145,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	ax1.set_ylabel('X', fontsize = 18)
 	ax1.grid(True)
 	ax1.legend()#[bh1,bh2],['bh1','bh2'],bbox_to_anchor=(1, 1), loc='upper left', ncol=1, borderpad=0.8)
-	plt.savefig(figdir + '/Trajectory_xvstime.png', dpi = 500)
+	plt.savefig(statfigdir + '/Trajectory_xvstime.png', dpi = 500)
 	plt.close()
 	
 
@@ -168,7 +168,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	ax2.set_ylabel('Y', fontsize=18)
 	ax2.grid(True)
 	ax2.legend()#[bh1,bh2],['bh1','bh2'],bbox_to_anchor=(1, 1), loc='upper left', ncol=1, borderpad=0.8)
-	plt.savefig(figdir + '/Trajectory_yvstime.png', dpi = 500)
+	plt.savefig(statfigdir + '/Trajectory_yvstime.png', dpi = 500)
 	plt.close()
 	
 
@@ -186,7 +186,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	ax3.set_ylabel('Y', fontsize = 18)
 	ax3.legend()
 	plt.grid(True)
-	plt.savefig(figdir+'/Trajectory_xy.png', dpi = 500)
+	plt.savefig(statfigdir+'/Trajectory_xy.png', dpi = 500)
 	plt.close()
 	
 	#Plot 3: Trajectory - separation vs time
@@ -207,7 +207,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	plt.ylabel('Separation', fontsize = 18)
 	#plt.xticks(np.arange(startx, endx, int(endx/10.- startx/10.)))
 	plt.grid(True)
-	plt.savefig(figdir+'/Trajectory_separation.png', dpi = 500)
+	plt.savefig(statfigdir+'/Trajectory_separation.png', dpi = 500)
 	plt.close()
 	
 	plt.plot(time_bh1, separation, color='b', linewidth=1)
@@ -228,7 +228,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	plt.ylabel('Separation', fontsize = 18)
 	#plt.xticks(np.arange(startx, endx, 10))
 	plt.grid(True)
-	plt.savefig(figdir+'/Trajectory_separation_zoom.png', dpi = 500)
+	plt.savefig(statfigdir+'/Trajectory_separation_zoom.png', dpi = 500)
 	plt.close()
 	
 	plt.plot(time_bh1, log_sep, color='b', linewidth=1)
@@ -249,7 +249,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	plt.ylabel('log(Separation)', fontsize = 18)
 	#plt.xticks(np.arange(startx, endx, 10))
 	plt.grid(True)
-	plt.savefig(figdir+'/Trajectory_logseparation.png', dpi = 500)
+	plt.savefig(statfigdir+'/Trajectory_logseparation.png', dpi = 500)
 	plt.close()
 
 
@@ -271,7 +271,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	plt.xlabel('Time', fontsize=18)
 	plt.ylabel('Phase', fontsize=18)
 	plt.grid(True)
-	plt.savefig(figdir+'/Trajectory_phase.png',dpi = 500)
+	plt.savefig(statfigdir+'/Trajectory_phase.png',dpi = 500)
 	plt.close()
 
 	
@@ -293,7 +293,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	plt.xlabel('Time', fontsize=18)
 	plt.ylabel('Phase', fontsize=18)
 	plt.grid(True)
-	plt.savefig(figdir+'/Trajectory_phase_zoom.png',dpi = 500)
+	plt.savefig(statfigdir+'/Trajectory_phase_zoom.png',dpi = 500)
 	plt.close()
 	
 
@@ -316,5 +316,5 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	plt.xlabel('Time', fontsize=18)
 	plt.ylabel('log(Phase)', fontsize=18)
 	plt.grid(True)
-	plt.savefig(figdir+'/Trajectory_logphase.png',dpi = 500)
+	plt.savefig(statfigdir+'/Trajectory_logphase.png',dpi = 500)
 	plt.close()

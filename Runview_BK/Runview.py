@@ -58,6 +58,4 @@ else:
 	Spins(dirpath, outdir)
 	#Mass_Plots(dirpath, outdir)
 	webpage(dirpath, outdir, locate_merger=findmerger)
-
-if AHF:
 	animate_trajectories(dirpath, outdir)

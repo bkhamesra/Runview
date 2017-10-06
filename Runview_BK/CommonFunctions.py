@@ -39,11 +39,14 @@ def FigDir(dirpath, outdir):
 
 	filename = dirpath.split("/")[-1]
   	outputdir = os.path.join(outdir, filename)
-	figdir = os.path.join(outputdir,'figures')
+	statfigdir = os.path.join(outputdir,'figures/static/')
+	dynfigdir = os.path.join(outputdir,'figures/dynamic/')
 
-	if not os.path.exists(figdir):
-		os.makedirs(figdir)
-	return figdir
+	if not os.path.exists(statfigdir):
+		os.makedirs(statfigdir)
+	if not os.path.exists(dynfigdir):
+		os.makedirs(dynfigdir)
+	return [statfigdir, dynfigdir]
 
 
 def norm(vec, axis):

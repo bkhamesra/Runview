@@ -84,4 +84,8 @@ def animate_trajectories(dirpath, outdir):
 	# Save as mp4. This requires mplayer or ffmpeg to be installed
 	#anim.save('PunctureTrajectory.mp4', fps=15, extra_args=['-vcodec', 'libx264'])
 	
-	#plt.show()
+	plt.show()
+
+dirpath = '../TestCase/BBH/SO_D9_q1.5_th2_135_ph1_90_m140'
+outdir = '../TestCase'
+animate_trajectories(dirpath, outdir)
