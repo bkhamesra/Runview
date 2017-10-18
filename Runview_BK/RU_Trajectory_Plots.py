@@ -145,7 +145,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	write_sep_data('ShiftTrackerRdotThdot.asc', hdr, datadir, data_der)
 	
 	#data sets follow key:category name(e.g. trace, data) + object (e.g. BH1) + variables (X,Y,Sep,T)
-	
+	"""
 	#Plot 1 X vs T  
 	traceBH1XT= go.Scatter( 
 	  x = time_bh1, 
@@ -162,7 +162,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	)
 	
 	dataXT = [traceBH1XT, traceBH2XT]
-	layout = go.Layout(
+	layoutXT = go.Layout(
 	  title = "X vs. Time for BBH System",
 	  hovermode = "closest",
 	  xaxis = dict(
@@ -173,9 +173,8 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	  )
 	)
 	
-	plotXT = go.Figure(data=dataXT, layout=layout)
-	py.plot(plotXT, filename=dynfigdir + "xvstplot.html")
-	pyon.image.save_as(plotXT, format='png', filename=statfigdir+'Trajectory_xvstime')
+	plotXT = go.Figure(data=dataXT, layout=layoutXT)
+	py.plot(plotXT, filename=dynfigdir + "Trajectory_xvstime.html")
 	
 	#Plot 2: Y vs T
 	
@@ -194,7 +193,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	)
 	
 	dataYT = [traceBH1YT, traceBH2YT]
-	layout = go.Layout(
+	layoutYT = go.Layout(
 	  title = "Y vs. Time for BBH System",
 	  hovermode = "closest", 
 	  xaxis = dict(
@@ -205,8 +204,8 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	  )
 	)
 	
-	plotYT = go.Figure(data=dataYT, layout=layout)
-	py.plot(plotYT, filename=statfigdir + "yvstplot.html")
+	plotYT = go.Figure(data=dataYT, layout=layoutYT)
+	py.plot(plotYT, filename=dynfigdir + "Trajectory_yvstime.html")
 
 	#Plot 3: Sep vs T
 	
@@ -217,8 +216,30 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	  name = "Distance"
 	)
 	
-	dataSepT = [traceSepT]
-	layout = go.Layout(
+	traceLSepT = go.Scatter(
+	  x = time_bh1, 
+	  y = log_sep,
+	  mode = "lines",
+	  name = "Log Distance"
+	)
+	
+	dataSepT = [traceSepT,traceLSepT]
+	
+	  
+	updatemenusSepT = list([
+	  dict(type="buttons",
+	       active=-1,
+	       buttons=list([
+		 dict(label="Regular",
+		      method='update',
+		      args=[{'visible': [True,False]},
+			    {'title':"Separation vs. Time for BBH System"}]),
+		 dict(label="Log",
+		      method='update',
+		      args=[{'visible':[False,True]},
+			    {'title':"Log Separation vs. Time for BBH System"}])]))])
+	
+	layoutSepT = go.Layout(
 	  title = "Separation vs. Time for BBH System",
 	  hovermode = "closest",
 	  xaxis = dict(
@@ -226,11 +247,16 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	  ),
 	  yaxis = dict(
 	    title = "Separation"
-	  )
+	  ),
+	  updatemenus=updatemenusSepT
 	)
 	
-	plotSepT = go.Figure(data=dataSepT, layout=layout)
-	py.plot(plotSepT, filename=dynfigdirdir + "sepvstplot.html")
+	
+	
+	
+	
+	plotSepT = go.Figure(data=dataSepT, layout=layoutSepT)
+	py.plot(plotSepT, filename=dynfigdir + "Trajectory_separation.html")
 	
 
 	#Plot 4: Log Sep vs T
@@ -243,7 +269,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	)
 	
 	dataLSepT = [traceLSepT]
-	layout = go.Layout(
+	layoutLSepT = go.Layout(
 	  title = "Log Separation vs. Time for BBH System",
 	  hovermode = "closest",
 	  xaxis = dict(
@@ -254,8 +280,8 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	  )
 	)
 	
-	plotLSepT = go.Figure(data=dataLSepT, layout=layout)
-	py.plot(plotLSepT, filename=dynfigdir + "lsepvstplot.html")
+	plotLSepT = go.Figure(data=dataLSepT, layout=layoutLSepT)
+	py.plot(plotLSepT, filename=dynfigdir + "Trajectory_logseparation.html")
 	
 	#Plot 5: Orbital Phase vs T
 
@@ -266,8 +292,30 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	  name = "Phi"
 	)
 	
-	dataOPT = [traceOPT]
-	layout = go.Layout(
+	traceLOPT = go.Scatter(
+	  x = time_bh1, 
+	  y = logphi,
+	  mode = "lines",
+	  name = "Log Phi"
+	)
+	
+	dataOPT = [traceOPT,traceLOPT]
+	
+	updatemenusOPT = list([
+	  dict(type="buttons",
+	       active=-1,
+	       buttons=list([
+		 dict(label="Regular",
+		      method='update',
+		      args=[{'visible': [True,False]},
+			    {'title':"Orbital Phase vs. Time for BBH System"}]),
+		 dict(label="Log",
+		      method='update',
+		      args=[{'visible':[False,True]},
+			    {'title':"Log Orbital Phase vs. Time for BBH System"}])]))])
+	
+	
+	layoutOPT = go.Layout(
 	  title = "Orbital Phase vs. Time for BBH System",
 	  hovermode = "closest",
 	  xaxis = dict(
@@ -275,11 +323,12 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	  ),
 	  yaxis = dict(
 	    title = "Orbital Phase"
-	  )
+	  ),
+	  updatemenus=updatemenusOPT
 	)
 	
-	plotOPT = go.Figure(data=dataOPT, layout=layout)
-	py.plot(plotOPT, filename=dynfigdirdir + "orbphasetplot.html") 
+	plotOPT = go.Figure(data=dataOPT, layout=layoutOPT)
+	py.plot(plotOPT, filename=dynfigdir + "Trajectory_phase.html") 
 	
 	#Plot 6: Log Orbital Phase vs T
 
@@ -291,7 +340,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	)
 	
 	dataLOPT = [traceLOPT]
-	layout = go.Layout(
+	layoutLOPT = go.Layout(
 	  title = "Log Orbital Phase vs. Time for BBH System",
 	  hovermode = "closest",
 	  xaxis = dict(
@@ -302,8 +351,8 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	  )
 	)
 	
-	plotLOPT = go.Figure(data=dataLOPT, layout=layout)
-	py.plot(plotLOPT, filename=dynfigdir + "logorbphasetplot.html")
+	plotLOPT = go.Figure(data=dataLOPT, layout=layoutLOPT)
+	py.plot(plotLOPT, filename=dynfigdir + "Trajectory_logphase.html")
 	
 	#Plot 7: Velocity of Orbital Separation vs T
 
@@ -315,7 +364,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	)
 	
 	dataVOST = [traceVOST]
-	layout = go.Layout(
+	layoutVOST = go.Layout(
 	  title = "Velocity of Orbital Separation vs. Time for BBH System",
 	  hovermode = "closest",
 	  xaxis = dict(
@@ -326,8 +375,8 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	  )
 	)
 	
-	plotVOST = go.Figure(data=dataVOST, layout=layout)
-	py.plot(plotVOST, filename=dynfigdir + "vostplot.html")
+	plotVOST = go.Figure(data=dataVOST, layout=layoutVOST)
+	py.plot(plotVOST, filename=dynfigdir + "Trajectory_separation_velocity.html")
 	
 	#Plot 8: Velocity of Orbital Phase vs T
 	
@@ -346,7 +395,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	)
 	
 	dataVOPT = [traceBH1VOPT, traceBH2VOPT]
-	layout = go.Layout(
+	layoutVOPT = go.Layout(
 	  title = "Velocity of Orbital Phase vs. Time for BBH System",
 	  hovermode = "closest", 
 	  xaxis = dict(
@@ -357,10 +406,10 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	  )
 	)
 	
-	plotVOPT = go.Figure(data=dataVOPT, layout=layout)
-	py.plot(plotVOPT, filename=dynfigdir + "vopvstplot.html")
+	plotVOPT = go.Figure(data=dataVOPT, layout=layoutVOPT)
+	py.plot(plotVOPT, filename=dynfigdir + "Trajectory_phase_velocity.html")
 	
-	
+	"""
 	
 	#Animation 1: X vs Y animation:
 	
@@ -398,32 +447,44 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 		     mode='lines',
 		     name='BH2',
 		     line=dict(width=2, color='blue')
-		    ),
-		dict(x=x_bh1[::100], y=y_bh1[::100],
-		     mode='lines',
-		     name='BH1',
-		     line=dict(width=2, color='orange')
-		     ),
-		dict(x=x_bh2[::100], y=y_bh2[::100],
-		     mode='lines',
-		     name='BH2',
-		     line=dict(width=2, color='blue')
-		    )
-	      ]
+		   )
+		#dict(x=x_bh1[::100], y=y_bh1[::100],
+		#     mode='lines',
+		#     name='BH1',
+		#     line=dict(width=2, color='orange')
+		#     ),
+		#dict(x=x_bh2[::100], y=y_bh2[::100],
+		#     mode='lines',
+		#     name='BH2',
+		#     line=dict(width=2, color='blue')
+		#    )
+		]
 	framesXY=[dict(data=[
-			dict(x=[x_bh1[100*k]],
-			     y=[y_bh1[100*k]],
-			     mode='markers',
-			     name='BH1',
-			     marker=dict(color='orange',size=10)
-			),
-			dict(x=[x_bh2[100*k]],
-			     y=[y_bh2[100*k]],
-			     mode='markers',
-			     name='BH2',
-			     marker=dict(color='blue',size=10)
-			     )
-			  ]) for k in range(len(time_bh1)//100)]
+			#dict(x=[x_bh1[100*k]],
+			#     y=[y_bh1[100*k]],
+			#     mode='markers',
+			#     name='BH1',
+			#     marker=dict(color='red',size=10)
+			#    ),
+			#dict(x=[x_bh2[100*k]],
+			#     y=[y_bh2[100*k]],
+			#     mode='markers',
+			#     name='BH2',
+			#     marker=dict(color='green',size=10)
+			#    ),
+			dict(x=x_bh1[:100*k:100],
+			       y=y_bh1[:100*k:100],
+			       mode='lines',
+			       line=dict(color='orange',width=2)
+			    ),
+			dict(x=x_bh2[:100*k:100],
+			       y=y_bh2[:100*k:100],
+			       mode='lines',
+			       line=dict(color='blue',width=2)
+			      )
+			 ], 
+			  ) for k in range(len(time_bh1)//100-1)]
+			
 	
 	figureXY['data'] = dataXY
 	figureXY['layout']['xaxis'] = {'range':[xm,yM], 'autorange': False, 'zeroline': False, 'title': "X Position"} # this is the better way to handle things when you have ridiculous numbers of attributes to fix
@@ -444,10 +505,10 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	  }
 	]
 	figureXY['frames'] = framesXY
-	py.plot(figureXY, filename=dynfigdirdir+'xyanimation.html')
+	py.plot(figureXY, filename=dynfigdir+'Trajectory_xy_animation.html')
 	
-	 
-"""	
+
+	"""
 	layoutXY=dict(xaxis=dict(range=[xm,xM], autorange=False, zeroline=False),
 		      yaxis=dict(range=[ym,yM], autorange=False, zeroline=False),
 		      title="X vs Y for Two Black Holes Approaching Merger",
@@ -459,8 +520,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 						'method': 'animate',
 						'args':[None]}
 						]}])
-"""	
-
+	"""
 binQC0 = "/home/rudall/Runview/TestCase/OutputDirectory/QC0_p1_l11_M192-all/data/"
 outDir = "/home/rudall/Runview/TestCase/OutputDirectory/SOetc_2/"
 binSO = "/home/rudall/Runview/TestCase/BBH/SO_D9_q1.5_th2_135_ph1_90_m140/"
