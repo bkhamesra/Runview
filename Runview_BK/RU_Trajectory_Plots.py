@@ -487,7 +487,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 			
 	
 	figureXY['data'] = dataXY
-	figureXY['layout']['xaxis'] = {'range':[xm,yM], 'autorange': False, 'zeroline': False, 'title': "X Position"} # this is the better way to handle things when you have ridiculous numbers of attributes to fix
+	figureXY['layout']['xaxis'] = {'range':[xm,xM], 'autorange': False, 'zeroline': False, 'title': "X Position"} # this is the better way to handle things when you have ridiculous numbers of attributes to fix
 	figureXY['layout']['yaxis'] = {'range':[ym,yM], 'autorange': False, 'zeroline': False, 'title': "Y Position"}
 	figureXY['layout']['title'] = "X vs Y for Two Black Holes Approaching Merger"
 	figureXY['layout']['updatemenus'] = [
