@@ -150,10 +150,12 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
 	plt.savefig(statfigdir+"/Psi4_plot.png", dpi = 500)
 	plt.close()
 	
-	xm = np.min(time)
-	ym = np.min(real)
-	xM = np.max(time)
-	yM = np.max(real)
+	#Real 
+	#See Trajectory_XYanimation for explanation of Plotly methods
+	xRm = np.min(time)
+	yRm = np.min(real)
+	xRM = np.max(time)
+	yRM = np.max(real)
 	
 	figurePsi4R = {
 	    'data': [],
@@ -198,11 +200,10 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
 			 ], 
 			  ) for k in range(len(time))]
 			
-	
 	figurePsi4R['data'] = dataPsi4R
-	figurePsi4R['layout']['xaxis'] = {'range':[xm,xM], 'autorange': False, 'zeroline': False, 'title': "Time"} # this is the better way to handle things when you have ridiculous numbers of attributes to fix
-	figurePsi4R['layout']['yaxis'] = {'range':[ym,yM], 'autorange': False, 'zeroline': False, 'title': "Psi4"}
-	figurePsi4R['layout']['title'] = "Psi4 Vs Time"
+	figurePsi4R['layout']['xaxis'] = {'range':[xRm,xRM], 'autorange': False, 'zeroline': False, 'title': "Time"} # this is the better way to handle things when you have ridiculous numbers of attributes to fix
+	figurePsi4R['layout']['yaxis'] = {'range':[yRm,yRM], 'autorange': False, 'zeroline': False, 'title': "Psi4"}
+	figurePsi4R['layout']['title'] = "Real Component of Psi4 Vs Time"
 	figurePsi4R['layout']['updatemenus'] = [
 	  {
 	    'buttons':[
@@ -219,10 +220,77 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
 	]
 	figurePsi4R['frames'] = framesPsi4R
 	py.plot(figurePsi4R, filename=dynfigdir+'Trajectory_Psi4R_animation.html')
+		
+	#Imaginary
+	xIm = np.min(time)
+	yIm = np.min(imag)
+	xIM = np.max(time)
+	yIM = np.max(imag)
+	
+	figurePsi4I = {
+	    'data': [],
+	    'layout': {},
+	    'frames': []
+	}
+	
+	dataPsi4I=[dict(x=time, y=imag,
+		     mode='lines',
+		     name='Psi4I',
+		     line=dict(width=2, color='blue')
+		     )
+		#dict(x=x_bh1[::100], y=y_bh1[::100],
+		#     mode='lines',
+		#     name='BH1',
+		#     line=dict(width=2, color='orange')
+		#     ),
+		#dict(x=x_bh2[::100], y=y_bh2[::100],
+		#     mode='lines',
+		#     name='BH2',
+		#     line=dict(width=2, color='blue')
+		#    )
+		]
+	framesPsi4I=[dict(data=[
+			#dict(x=[x_bh1[100*k]],
+			#     y=[y_bh1[100*k]],
+			#     mode='markers',
+			#     name='BH1',
+			#     marker=dict(color='red',size=10)
+			#    ),
+			#dict(x=[x_bh2[100*k]],
+			#     y=[y_bh2[100*k]],
+			#     mode='markers',
+			#     name='BH2',
+			#     marker=dict(color='green',size=10)
+			#    ),
+			dict(x=time[:k],
+			       y=imag[:k],
+			       mode='lines',
+			       line=dict(color='blue',width=2)
+			      )
+			 ], 
+			  ) for k in range(len(time))]
 	
 	
-	
-	
+	figurePsi4I['data'] = dataPsi4I
+	figurePsi4I['layout']['xaxis'] = {'range':[xIm,xIM], 'autorange': False, 'zeroline': False, 'title': "Time"} # this is the better way to handle things when you have ridiculous numbers of attributes to fix
+	figurePsi4I['layout']['yaxis'] = {'range':[yIm,yIM], 'autorange': False, 'zeroline': False, 'title': "Psi4"}
+	figurePsi4I['layout']['title'] = "Imaginary Component of Psi4 Vs Time"
+	figurePsi4I['layout']['updatemenus'] = [
+	  {
+	    'buttons':[
+		{'label': 'Play',
+		 'method': 'animate',
+		 'args': [None, {'frame':{'duration': 10, 'redraw':False}, 'mode':'immediate', 'transition':{'duration':0},'fromcurrent':True}]
+		},
+		{'label': 'Pause',
+		 'method': 'animate',
+		 'args': [[None], {'frame':{'duration': 0, 'redraw': False}, 'mode': 'immediate', 'transition':{'duration':0}, 'fromcurrent': True}]
+		}
+		]
+	  }
+	]
+	figurePsi4I['frames'] = framesPsi4I
+	py.plot(figurePsi4I, filename=dynfigdir+'Trajectory_Psi4I_animation.html')
 	
 	# Plot2: Psi4 - real and imaginary - near merger
 	plt.plot(time,real, 'b', label = "Real", linewidth=1.5)
@@ -276,6 +344,77 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
 	#plt.savefig(statfigdir+"/Psi4_amp.png", dpi = 1000)
 	plt.close()
 	
+	#Amplitude
+	xAm = np.min(time)
+	#yAm = np.min(amp) not working for some reason, so stopgap implemented below
+	xAM = np.max(time)
+	yAM = np.max(amp)
+	yAm = -1*yAM
+	
+	figurePsi4A = {
+	    'data': [],
+	    'layout': {},
+	    'frames': []
+	}
+	
+	dataPsi4A=[dict(x=time, y=real,
+		     mode='lines',
+		     name='Psi4A',
+		     line=dict(width=2, color='blue')
+		     )
+		#dict(x=x_bh1[::100], y=y_bh1[::100],
+		#     mode='lines',
+		#     name='BH1',
+		#     line=dict(width=2, color='orange')
+		#     ),
+		#dict(x=x_bh2[::100], y=y_bh2[::100],
+		#     mode='lines',
+		#     name='BH2',
+		#     line=dict(width=2, color='blue')
+		#    )
+		]
+	framesPsi4A=[dict(data=[
+			#dict(x=[x_bh1[100*k]],
+			#     y=[y_bh1[100*k]],
+			#     mode='markers',
+			#     name='BH1',
+			#     marker=dict(color='red',size=10)
+			#    ),
+			#dict(x=[x_bh2[100*k]],
+			#     y=[y_bh2[100*k]],
+			#     mode='markers',
+			#     name='BH2',
+			#     marker=dict(color='green',size=10)
+			#    ),
+			dict(x=time[:k],
+			       y=real[:k],
+			       mode='lines',
+			       line=dict(color='blue',width=2)
+			      )
+			 ], 
+			  ) for k in range(len(time))]
+			
+	figurePsi4A['data'] = dataPsi4A
+	figurePsi4A['layout']['xaxis'] = {'range':[xAm,xAM], 'autorange': False, 'zeroline': False, 'title': "Time"} # this is the better way to handle things when you have ridiculous numbers of attributes to fix
+	figurePsi4A['layout']['yaxis'] = {'range':[yAm,yAM], 'autorange': False, 'zeroline': False, 'title': "Psi4"}
+	figurePsi4A['layout']['title'] = "Amplitude of Psi4 Vs Time"
+	figurePsi4A['layout']['updatemenus'] = [
+	  {
+	    'buttons':[
+		{'label': 'Play',
+		 'method': 'animate',
+		 'args': [None, {'frame':{'duration': 10, 'redraw':False}, 'mode':'immediate', 'transition':{'duration':0},'fromcurrent':True}]
+		},
+		{'label': 'Pause',
+		 'method': 'animate',
+		 'args': [[None], {'frame':{'duration': 0, 'redraw': False}, 'mode': 'immediate', 'transition':{'duration':0}, 'fromcurrent': True}]
+		}
+		]
+	  }
+	]
+	figurePsi4A['frames'] = framesPsi4A
+	py.plot(figurePsi4A, filename=dynfigdir+'Trajectory_Psi4A_animation.html')
+	
 	
 	plt.plot(time,amp, 'b', linewidth=1, label="Amplitude")
 	if locate_merger:
@@ -328,9 +467,33 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
 	plt.savefig(statfigdir+"/Psi4_phase.png", dpi = 1000)
 	plt.close()
 	
-
 	plt.plot(time, phi, lw=1 )
-
+	
+	#Phase, directly lifted from trajectories with some stuff taken out (log toggle)
+	traceOPT = go.Scatter(
+	  x = time, 
+	  y = phi,
+	  mode = "lines",
+	  name = "Phi"
+	)
+	
+	dataOPT=[traceOPT]
+	
+	layoutOPT = go.Layout(
+	  title = "Orbital Phase vs. Time for BBH System",
+	  hovermode = "closest",
+	  xaxis = dict(
+	    title = "Time"
+	  ),
+	  yaxis = dict(
+	    title = "Orbital Phase"
+	  )
+	)
+	
+	plotOPT = go.Figure(data=dataOPT, layout=layoutOPT)
+	py.plot(plotOPT, filename=dynfigdir + "Trajectory_phase.html") 
+	
+	
 	if locate_merger:
 		plt.xlim(t_hrzn-20, t_qnm_phi+50)
 		plt.ylim(phi_hrzn - 10, phi_qnm + 30)

@@ -145,39 +145,38 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	write_sep_data('ShiftTrackerRdotThdot.asc', hdr, datadir, data_der)
 	
 	#data sets follow key:category name(e.g. trace, data) + object (e.g. BH1) + variables (X,Y,Sep,T)
-	"""
 	#Plot 1 X vs T  
-	traceBH1XT= go.Scatter( 
+	traceBH1XT= go.Scatter( #scatter is standard data type, accomodates discrete points and lines, the latter used here
 	  x = time_bh1, 
 	  y = x_bh1,
 	  mode = "lines",
-	  name = "BH1"
+	  name = "BH1" #variables and labels should be fairly intuitive
 	)
 	
-	traceBH2XT = go.Scatter(
+	traceBH2XT = go.Scatter( #I call them traces because that's what plotly calls them
 	  x = time_bh2, 
 	  y = x_bh2,
 	  mode = "lines",
 	  name = "BH2"
 	)
 	
-	dataXT = [traceBH1XT, traceBH2XT]
-	layoutXT = go.Layout(
-	  title = "X vs. Time for BBH System",
-	  hovermode = "closest",
-	  xaxis = dict(
-	    title = "Time"
+	dataXT = [traceBH1XT, traceBH2XT] #data is a list containing all the graph objects. It could be initialized with the object initializations inside, but that quickly gets ugly
+	layoutXT = go.Layout( #layout objects do exactly what you think they do
+	  title = "X vs. Time for BBH System", #obvious
+	  hovermode = "closest", #sets what data point the hover info will display for
+	  xaxis = dict( #obvious, but note use of dict for these, although it doesn't follow dictionary notation. If in doubt, read the syntax errors
+	    title = "Time" 
 	  ),
 	  yaxis = dict(
 	    title = "X"
 	  )
 	)
 	
-	plotXT = go.Figure(data=dataXT, layout=layoutXT)
-	py.plot(plotXT, filename=dynfigdir + "Trajectory_xvstime.html")
+	plotXT = go.Figure(data=dataXT, layout=layoutXT) #creates the figure object		
+	py.plot(plotXT, filename=dynfigdir + "Trajectory_xvstime.html") #does the actual plotting, note delivery to dynamic figure directory, and naming convention similarity to static plots 
 	
 	#Plot 2: Y vs T
-	
+	#as above
 	traceBH1YT = go.Scatter(
 	  x = time_bh1, 
 	  y = y_bh1,
@@ -208,7 +207,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	py.plot(plotYT, filename=dynfigdir + "Trajectory_yvstime.html")
 
 	#Plot 3: Sep vs T
-	
+	#Largely as above
 	traceSepT = go.Scatter(
 	  x = time_bh1, 
 	  y = separation,
@@ -216,10 +215,11 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	  name = "Distance"
 	)
 	
-	traceLSepT = go.Scatter(
+	traceLSepT = go.Scatter( #logarithmic data can be plotted on the same and toggled, as performed below
 	  x = time_bh1, 
 	  y = log_sep,
 	  mode = "lines",
+	  visible=False, #makes this data not load on startup
 	  name = "Log Distance"
 	)
 	
@@ -251,16 +251,12 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	  updatemenus=updatemenusSepT
 	)
 	
-	
-	
-	
-	
 	plotSepT = go.Figure(data=dataSepT, layout=layoutSepT)
 	py.plot(plotSepT, filename=dynfigdir + "Trajectory_separation.html")
 	
 
 	#Plot 4: Log Sep vs T
-
+	"""obsolete but kept for reference
 	traceLSepT = go.Scatter(
 	  x = time_bh1, 
 	  y = log_sep,
@@ -282,9 +278,9 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	
 	plotLSepT = go.Figure(data=dataLSepT, layout=layoutLSepT)
 	py.plot(plotLSepT, filename=dynfigdir + "Trajectory_logseparation.html")
-	
+	"""
 	#Plot 5: Orbital Phase vs T
-
+	#methods essentially identical to sep above, including log toggle
 	traceOPT = go.Scatter(
 	  x = time_bh1, 
 	  y = phi,
@@ -295,6 +291,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	traceLOPT = go.Scatter(
 	  x = time_bh1, 
 	  y = logphi,
+	  visible=False,
 	  mode = "lines",
 	  name = "Log Phi"
 	)
@@ -331,7 +328,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	py.plot(plotOPT, filename=dynfigdir + "Trajectory_phase.html") 
 	
 	#Plot 6: Log Orbital Phase vs T
-
+	"""obsolete but kept for reference
 	traceLOPT = go.Scatter(
 	  x = time_bh1, 
 	  y = logphi,
@@ -353,9 +350,10 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	
 	plotLOPT = go.Figure(data=dataLOPT, layout=layoutLOPT)
 	py.plot(plotLOPT, filename=dynfigdir + "Trajectory_logphase.html")
+	"""
 	
 	#Plot 7: Velocity of Orbital Separation vs T
-
+	#methods as above, although data reading is taken from Puncture Dynamics, unlike the rest taken from Trajectories
 	traceVOST = go.Scatter(
 	  x = time_bh1, 
 	  y = rdot,
@@ -379,7 +377,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	py.plot(plotVOST, filename=dynfigdir + "Trajectory_separation_velocity.html")
 	
 	#Plot 8: Velocity of Orbital Phase vs T
-	
+	#methods as above
 	traceBH1VOPT = go.Scatter(
 	  x = time_bh1, 
 	  y = vph_bh1,
@@ -409,20 +407,17 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	plotVOPT = go.Figure(data=dataVOPT, layout=layoutVOPT)
 	py.plot(plotVOPT, filename=dynfigdir + "Trajectory_phase_velocity.html")
 	
-	"""
-	
 	#Animation 1: X vs Y animation:
 	
-	
-	if np.min(x_bh1)< np.min(x_bh2):
+	if np.min(x_bh1)< np.min(x_bh2): #finds the actual minima and maxima then sets them, for layout purposes
 	  xm = np.min(x_bh1)-0.5
 	else:
 	  xm = np.min(x_bh2)-0.5
-	if np.min(y_bh1)< np.min(y_bh2):
+	if np.min(y_bh1)< np.min(y_bh2): 
 	  ym = np.min(y_bh1)-0.5
 	else:
 	  ym = np.min(y_bh2)-0.5
-	if np.max(x_bh1)> np.max(x_bh2):
+	if np.max(x_bh1)> np.max(x_bh2): 
 	  xM = np.max(x_bh1)+0.5
 	else:
 	  xM = np.max(x_bh2)+0.5
@@ -432,13 +427,13 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	  yM = np.max(y_bh2)+0.5
 	
 	
-	figureXY = {
+	figureXY = { #the figure is initialized ahead of time here to make things a bit cleaner
 	    'data': [],
 	    'layout': {},
 	    'frames': []
 	}
 	
-	dataXY=[dict(x=x_bh1, y=y_bh1,
+	dataXY=[dict(x=x_bh1, y=y_bh1, #data is needed even for animations, although it likely will not be used
 		     mode='lines',
 		     name='BH1',
 		     line=dict(width=2, color='orange')
@@ -448,7 +443,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 		     name='BH2',
 		     line=dict(width=2, color='blue')
 		   )
-		#dict(x=x_bh1[::100], y=y_bh1[::100],
+		#dict(x=x_bh1[::100], y=y_bh1[::100], #if you wish to have static lines accompanying your frames, repeat the data a second time to make them appear
 		#     mode='lines',
 		#     name='BH1',
 		#     line=dict(width=2, color='orange')
@@ -459,9 +454,9 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 		#     line=dict(width=2, color='blue')
 		#    )
 		]
-	framesXY=[dict(data=[
-			#dict(x=[x_bh1[100*k]],
-			#     y=[y_bh1[100*k]],
+	framesXY=[dict(data=[ #frames are the core of the animation, fairly intuitive
+			#dict(x=[x_bh1[100*k]], #sets x and y data for a single point (note marker mode)
+			#     y=[y_bh1[100*k]], #100*k means only sampling 1/100th of the actual data, else the animation lags severely
 			#     mode='markers',
 			#     name='BH1',
 			#     marker=dict(color='red',size=10)
@@ -472,8 +467,8 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 			#     name='BH2',
 			#     marker=dict(color='green',size=10)
 			#    ),
-			dict(x=x_bh1[:100*k:100],
-			       y=y_bh1[:100*k:100],
+			dict(x=x_bh1[:100*k:100], #arrays generate a line which can be viewed. Note how the data above was in fact an array as well, but here we do not include the extra brackets
+			       y=y_bh1[:100*k:100], #per numpy slicing, we go to the same point as above, step size 100
 			       mode='lines',
 			       line=dict(color='orange',width=2)
 			    ),
@@ -483,23 +478,23 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 			       line=dict(color='blue',width=2)
 			      )
 			 ], 
-			  ) for k in range(len(time_bh1)//100-1)]
+			  ) for k in range(len(time_bh1)//100)] #k iteration sets the frames, note how range follows from the above iteration over k
 			
 	
-	figureXY['data'] = dataXY
-	figureXY['layout']['xaxis'] = {'range':[xm,xM], 'autorange': False, 'zeroline': False, 'title': "X Position"} # this is the better way to handle things when you have ridiculous numbers of attributes to fix
-	figureXY['layout']['yaxis'] = {'range':[ym,yM], 'autorange': False, 'zeroline': False, 'title': "Y Position"}
+	figureXY['data'] = dataXY 
+	figureXY['layout']['xaxis'] = {'range':[xm,xM], 'autorange': False, 'zeroline': False, 'title': "X Position"} # this is why we initialized the figure first - this would be very messy otherwise
+	figureXY['layout']['yaxis'] = {'range':[ym,yM], 'autorange': False, 'zeroline': False, 'title': "Y Position"} #autorange: False prevents it from autoscaling, I'm not sure what zeroline is for
 	figureXY['layout']['title'] = "X vs Y for Two Black Holes Approaching Merger"
-	figureXY['layout']['updatemenus'] = [
+	figureXY['layout']['updatemenus'] = [ #updatemenus controls buttons, sliders, etc
 	  {
 	    'buttons':[
-		{'label': 'Play',
-		 'method': 'animate',
-		 'args': [None, {'frame':{'duration': 10, 'redraw':False}, 'fromcurrent':True}]
+		{'label': 'Play', #label is just the text
+		 'method': 'animate', #method:animate for controlling animations
+		 'args': [None, {'frame':{'duration': 10, 'redraw':False}, 'fromcurrent':True}] #passing None as the first argument makes it a play button. I have no idea what units duration is in. the rest should be decently intuitive
 		},
 		{'label': 'Pause',
 		 'method': 'animate',
-		 'args': [[None], {'frame':{'duration': 0, 'redraw': False}, 'mode': 'immediate', 'transition':{'duration':0}, 'fromcurrent': True}]
+		 'args': [[None], {'frame':{'duration': 0, 'redraw': False}, 'mode': 'immediate', 'transition':{'duration':0}, 'fromcurrent': True}] #[None] corresponds to a pause button. I have no explanation why. 
 		}
 		]
 	  }
