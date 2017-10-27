@@ -219,7 +219,7 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
 	  }
 	]
 	figurePsi4R['frames'] = framesPsi4R
-	py.plot(figurePsi4R, filename=dynfigdir+'Trajectory_Psi4R_animation.html')
+	py.plot(figurePsi4R, filename=dynfigdir+'Psi4R_animation.html')
 		
 	#Imaginary
 	xIm = np.min(time)
@@ -290,7 +290,7 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
 	  }
 	]
 	figurePsi4I['frames'] = framesPsi4I
-	py.plot(figurePsi4I, filename=dynfigdir+'Trajectory_Psi4I_animation.html')
+	py.plot(figurePsi4I, filename=dynfigdir+'Psi4I_animation.html')
 	
 	# Plot2: Psi4 - real and imaginary - near merger
 	plt.plot(time,real, 'b', label = "Real", linewidth=1.5)
@@ -413,7 +413,7 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
 	  }
 	]
 	figurePsi4A['frames'] = framesPsi4A
-	py.plot(figurePsi4A, filename=dynfigdir+'Trajectory_Psi4A_animation.html')
+	py.plot(figurePsi4A, filename=dynfigdir+'Psi4A_animation.html')
 	
 	
 	plt.plot(time,amp, 'b', linewidth=1, label="Amplitude")
@@ -491,7 +491,7 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
 	)
 	
 	plotOPT = go.Figure(data=dataOPT, layout=layoutOPT)
-	py.plot(plotOPT, filename=dynfigdir + "Trajectory_phase.html") 
+	py.plot(plotOPT, filename=dynfigdir + "Psi4_phase.html") 
 	
 	
 	if locate_merger:
