@@ -1,9 +1,7 @@
 import plotly.offline as py
-import plotly.plotly as pyon
-from IPython.display import display, HTML
 import plotly.graph_objs as go
 import numpy as np
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 #from matplotlib import pylab
 #import matplotlib
 import glob, math
@@ -174,6 +172,8 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	
 	plotXT = go.Figure(data=dataXT, layout=layoutXT) #creates the figure object		
 	py.plot(plotXT, filename=dynfigdir + "Trajectory_xvstime.html") #does the actual plotting, note delivery to dynamic figure directory, and naming convention similarity to static plots 
+	plot_mpl(plotXT,image='png',filename="/home/rudall/Runview/TestCase")
+	
 	
 	#Plot 2: Y vs T
 	#as above
@@ -253,7 +253,6 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	
 	plotSepT = go.Figure(data=dataSepT, layout=layoutSepT)
 	py.plot(plotSepT, filename=dynfigdir + "Trajectory_separation.html")
-	
 
 	#Plot 4: Log Sep vs T
 	"""obsolete but kept for reference
@@ -278,6 +277,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	
 	plotLSepT = go.Figure(data=dataLSepT, layout=layoutLSepT)
 	py.plot(plotLSepT, filename=dynfigdir + "Trajectory_logseparation.html")
+	
 	"""
 	#Plot 5: Orbital Phase vs T
 	#methods essentially identical to sep above, including log toggle
@@ -350,8 +350,8 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	
 	plotLOPT = go.Figure(data=dataLOPT, layout=layoutLOPT)
 	py.plot(plotLOPT, filename=dynfigdir + "Trajectory_logphase.html")
-	"""
 	
+	"""
 	#Plot 7: Velocity of Orbital Separation vs T
 	#methods as above, although data reading is taken from Puncture Dynamics, unlike the rest taken from Trajectories
 	traceVOST = go.Scatter(
@@ -502,7 +502,6 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	figureXY['frames'] = framesXY
 	py.plot(figureXY, filename=dynfigdir+'Trajectory_xy_animation.html')
 	
-
 	"""
 	layoutXY=dict(xaxis=dict(range=[xm,xM], autorange=False, zeroline=False),
 		      yaxis=dict(range=[ym,yM], autorange=False, zeroline=False),
@@ -516,6 +515,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 						'args':[None]}
 						]}])
 	"""
+	
 binQC0 = "/home/rudall/Runview/TestCase/OutputDirectory/QC0_p1_l11_M192-all/data/"
 outDir = "/home/rudall/Runview/TestCase/OutputDirectory/SOetc_2/"
 binSO = "/home/rudall/Runview/TestCase/BBH/SO_D9_q1.5_th2_135_ph1_90_m140/"

@@ -1,3 +1,5 @@
+import plotly.offline as py
+import plotly.graph_objs as go
 from inspect import getframeinfo, stack
 import os
 import matplotlib.pyplot as plt
@@ -86,7 +88,98 @@ def plot2(x1,y1, x2, y2, xlabel, ylabel, plotname, outdir):
 	fig.savefig(os.path.join(outdir,(plotname+'.png')), dpi = 500)
 	plt.close()
 
+#Generic Functions for 1 and 2 object plots. Adaptations (read: basically copies) of trajectories plots, comments and all. Go to those to figure out how they work more clearly
 
+#1 variable plot, with added log toggle
+def plyplot1(x,y1,name1,title,x_label,y_label,Ly2=None): 
+	trace1 = go.Scatter(
+	  x = x, 
+	  y = y1,
+	  mode = "lines",
+	  name = name1
+	)
+	if Ly2 != None:
+	  trace2 = go.Scatter( #logarithmic data can be plotted on the same and toggled, as performed below
+	    x = x, 
+	    y = Ly2,
+	    mode = "lines",
+	    visible=False, #makes this data not load on startup
+	    name = "Log " + name1
+	  )
+	  
+	  data = [trace,trace]
+	  
+	  updatemenus = list([
+	    dict(type="buttons",
+		active=-1,
+		buttons=list([
+		  dict(label="Regular",
+			method='update',
+			args=[{'visible': [True,False]},
+			      {'title':title}]),
+		  dict(label="Log",
+			method='update',
+			args=[{'visible':[False,True]},
+			      {'title':"Log "+title}])]))])
+	  
+	  layout = go.Layout(
+	    title = title,
+	    hovermode = "closest",
+	    xaxis = dict(
+	      title = x_label
+	    ),
+	    yaxis = dict(
+	      title = y_label
+	    ),
+	    updatemenus=updatemenus
+	  )
+	    
+	else:
+	  data = [trace1]
+	  
+	  layout = go.Layout(
+	    title = title,
+	    hovermode = "closest",
+	    xaxis = dict(
+	      title = x_label
+	    ),
+	    yaxis = dict(
+	      title = y_label
+	    ),
+	  )
+	  
+	plot = go.Figure(data=data, layout=layout)
+	return plot
+	
+def plyplot2(x1, x2, y1, y2, name1, name2, title, x_label, y_label): #for 2 objects; directly from trajectories, with comments included
+	trace1= go.Scatter( #scatter is standard data type, accomodates discrete points and lines, the latter used here
+	  x = x1, 
+	  y = y1,
+	  mode = "lines",
+	  name = name2 #variables and labels should be fairly intuitive
+	)
+	trace2 = go.Scatter( #I call them traces because that's what plotly calls them
+	  x = x2, 
+	  y = y2,
+	  mode = "lines",
+	  name = name2
+	)
+	
+	dataXT = [trace1, trace2] #data is a list containing all the graph objects. It could be initialized with the object initializations inside, but that quickly gets ugly
+	layoutXT = go.Layout( #layout objects do exactly what you think they do
+	  title = title, #obvious
+	  hovermode = "closest", #sets what data point the hover info will display for
+	  xaxis = dict( #obvious, but note use of dict for these, although it doesn't follow dictionary notation. If in doubt, read the syntax errors
+	    title = x_label
+	  ),
+	  yaxis = dict(
+	    title = y_label
+	  )
+	)
+	
+	plot = go.Figure(data=data, layout=layout) #creates the figure object		
+	return plot #do the final step of actually plotting inside the appropriate file, with the appropriate folder paths
+      
 def func_t_hrzn(datadir, locate_merger):
 
 	if locate_merger==True:
