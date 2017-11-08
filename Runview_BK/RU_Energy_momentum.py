@@ -30,8 +30,8 @@ def Energy_Momentum(wfdir, outdir):
 #  Energy and dE/dt plot
 	energyplot = plot1(time, Energy, 'Time', 'Energy', 'Energy', statfigdir) #MPL
 	Ederplot = plot1(time, E_der, 'Time', 'dE/dt', 'Energy_derivative', statfigdir) #MPL
-	plyenergyplot = plyplot1(time, Energy, 'Energy', 'Time', 'Energy', 'Energy') #PLY
-	plyEderplot = plyplot1(time,E_der,'dE/dt','Time','dE/dt','Energy Derivative') #PLY
+	plyenergyplot = plyplot1(time, Energy, 'Time', 'Energy', 'Energy') #PLY
+	plyEderplot = plyplot1(time,E_der,'Time','dE/dt','Energy Derivative') #PLY
 	ply.plot(plyenergyplot, filename=dynfigdir + "Energy.html")
 	ply.plot(plyEderplot, filename=dynfigdir + "Energy_Derivative.html")
 	
@@ -39,11 +39,11 @@ def Energy_Momentum(wfdir, outdir):
 
 #  Angular Momentum and dJ/dt plots
 	Jplot = plot1(time, Jmag, 'Time', '|J|', 'AngMom',statfigdir)
-	plyJplot= plyplot1(time, Jmag, 'Jmag', 'Time', 'Jmag', 'Angular Momentum')
+	plyJplot= plyplot1(time, Jmag,'Time', 'Jmag', 'Angular Momentum')
 	ply.plot(plyJplot,filename= dynfigdir + "AngMom.html")
 	
 	Jderplot = plot1(time, Jder, 'Time', 'dJ/dt', 'AngMomDer', statfigdir)
-	plyJderplot = plyplot1(time, Jder, "dJ/dt", 'Time', "dJ/dt","Derivative of Anular Momentum")
+	plyJderplot = plyplot1(time, Jder, 'Time', "dJ/dt","Derivative of Anular Momentum")
 	ply.plot(plyJderplot,filename= dynfigdir + "AngMomDer.html")
 	
 	
@@ -61,17 +61,17 @@ def Energy_Momentum(wfdir, outdir):
 	fig.savefig(statfigdir+'/AngMomentum_components.png', dpi = 500)
 	plt.close()
 
-	plyJzplot = plyplot1(time, jz, 'Jz', 'Time', 'Jz', 'Z Component of Angular Momentum')
+	plyJzplot = plyplot1(time, jz, 'Time', 'Jz', 'Z Component of Angular Momentum')
 	ply.plot(plyJzplot,filename= dynfigdir + "AngMom_z.html")
 
 #  Momentum plots
 
 	Momplot = plot1(time, Pmag, 'Time','Mag(P)', 'Momentum_mag', statfigdir)
-	plyMomplot = plyplot1(time, Pmag, "Mag(P)", "Time", "Mag(P)", "Momentum Magnitude")
+	plyMomplot = plyplot1(time, Pmag, "Time", "Mag(P)", "Momentum Magnitude")
 	ply.plot(plyMomplot,filename= dynfigdir + "Momentum_mag.html")
 	
 	Momzplot = plot1(time, pz, 'Time', 'Pz', 'Momentum_z', statfigdir)
-	plyMomzplot = plyplot1(time, pz, "Pz", "Time", "Pz", 'Z Component of Momentum')
+	plyMomzplot = plyplot1(time, pz, "Time", "Pz", 'Z Component of Momentum')
 	ply.plot(plyMomzplot,filename= dynfigdir + "Momentum_z.html")
 	
 	fig,(ax1) = plt.subplots(1,1,sharex=True, squeeze=True)

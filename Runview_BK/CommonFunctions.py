@@ -91,12 +91,12 @@ def plot2(x1,y1, x2, y2, xlabel, ylabel, plotname, outdir):
 #Generic Functions for 1 and 2 object plots. Adaptations (read: basically copies) of trajectories plots, comments and all. Go to those to figure out how they work more clearly
 
 #1 variable plot, with added log toggle
-def plyplot1(x,y1,name1,title,x_label,y_label,Ly2=None): 
+def plyplot1(x,y1,x_label,y_label,title, Ly2=None): 
 	trace1 = go.Scatter(
 	  x = x, 
 	  y = y1,
 	  mode = "lines",
-	  name = name1
+	  name = y_label
 	)
 	if Ly2 != None:
 	  trace2 = go.Scatter( #logarithmic data can be plotted on the same and toggled, as performed below
@@ -104,7 +104,7 @@ def plyplot1(x,y1,name1,title,x_label,y_label,Ly2=None):
 	    y = Ly2,
 	    mode = "lines",
 	    visible=False, #makes this data not load on startup
-	    name = "Log " + name1
+	    name = "Log " + y_label
 	  )
 	  
 	  data = [trace,trace]
