@@ -151,7 +151,7 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
 	plt.close()
 	
 	#Real 
-	#See Trajectory_XYanimation for explanation of Plotly methods
+	#See Trajectory_XYanimation for explanation of Plotly methods RU
 	xRm = np.min(time)
 	yRm = np.min(real)
 	xRM = np.max(time)
@@ -470,29 +470,9 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
 	plt.plot(time, phi, lw=1 )
 	
 	#Phase, directly lifted from trajectories with some stuff taken out (log toggle)
-	traceOPT = go.Scatter(
-	  x = time, 
-	  y = phi,
-	  mode = "lines",
-	  name = "Phi"
-	)
 	
-	dataOPT=[traceOPT]
-	
-	layoutOPT = go.Layout(
-	  title = "Orbital Phase vs. Time for BBH System",
-	  hovermode = "closest",
-	  xaxis = dict(
-	    title = "Time"
-	  ),
-	  yaxis = dict(
-	    title = "Orbital Phase"
-	  )
-	)
-	
-	plotOPT = go.Figure(data=dataOPT, layout=layoutOPT)
-	py.plot(plotOPT, filename=dynfigdir + "Psi4_phase.html") 
-	
+	plyopt = plyplot1(time, phi, "Time", "Phase", "Phase Plot") #see common functions for details; RU
+	py.plot(plyopt, filenme=dynfigdir + "Psi4_phase.html")#basic plot method, object and path/name
 	
 	if locate_merger:
 		plt.xlim(t_hrzn-20, t_qnm_phi+50)
@@ -603,8 +583,9 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
 	    plt.savefig(os.path.join(statfigdir, "Psi4_ampfit.png"), dpi=1000)
 	    plt.close()
 	   
-binQC0 = "/home/rudall/Runview/TestCase/OutputDirectory/QC0_p1_l11_M192-all/data/"
-outDir = "/home/rudall/Runview/TestCase/OutputDirectory/SOetc_2/"
+outDirSO = "/home/rudall/Runview/TestCase/OutputDirectory/SOetc_2/"
 binSO = "/home/rudall/Runview/TestCase/BBH/SO_D9_q1.5_th2_135_ph1_90_m140/"
+binQC = "/home/rudall/Runview/TestCase/OutputDirectory/QC0_p1_l11_M192-all/"
+outDirQC = "/home/rudall/Runview/TestCase/OutputDirectory/QC0_2/"
 
-Psi4_Plots(binSO, outDir)
+Psi4_Plots(binQC, outDirQC)

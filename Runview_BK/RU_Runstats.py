@@ -32,11 +32,12 @@ def runstats(wfdir, outdir):
 	cputime_total = cputime[-1]
 
 	plot1(coord_time, speed, 'Time (M)', 'Speed (M/hour)', 'Runstats', statfigdir)
-	plystatplot = plyplot1(coord_time, speed, 'Time (M)', 'Speed (M/hour)', 'Runstats')
-	py.plot(plystatplot, filename=dynfigdir+"Runstats.html")
+	plystatplot = plyplot1(coord_time, speed, 'Time (M)', 'Speed (M/hour)', 'Runstats') #see common functions for details, RU
+	py.plot(plystatplot, filename=dynfigdir+"Runstats.html") #standard plot, object + path/filename
 
-
-outDir = "/home/rudall/Runview/TestCase/OutputDirectory/SOetc_2/"
+outDirSO = "/home/rudall/Runview/TestCase/OutputDirectory/SOetc_2/"
 binSO = "/home/rudall/Runview/TestCase/BBH/SO_D9_q1.5_th2_135_ph1_90_m140/"
+binQC = "/home/rudall/Runview/TestCase/OutputDirectory/QC0_p1_l11_M192-all/"
+outDirQC = "/home/rudall/Runview/TestCase/OutputDirectory/QC0_2/"
 
-runstats(binSO,outDir)
+runstats(binQC,outDirQC)

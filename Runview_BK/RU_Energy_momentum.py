@@ -1,4 +1,4 @@
-import plotly.offline as ply
+import plotly.offline as ply #different tag than everywhere else due to variable naming
 import plotly.graph_objs as go
 import numpy as np 
 import matplotlib.pyplot as plt
@@ -39,8 +39,8 @@ def Energy_Momentum(wfdir, outdir):
 
 #  Angular Momentum and dJ/dt plots
 	Jplot = plot1(time, Jmag, 'Time', '|J|', 'AngMom',statfigdir)
-	plyJplot= plyplot1(time, Jmag,'Time', 'Jmag', 'Angular Momentum')
-	ply.plot(plyJplot,filename= dynfigdir + "AngMom.html")
+	plyJplot= plyplot1(time, Jmag,'Time', 'Jmag', 'Angular Momentum') #for details, see common functions; RU
+	ply.plot(plyJplot,filename= dynfigdir + "AngMom.html") #basic plot method, object + path/filename
 	
 	Jderplot = plot1(time, Jder, 'Time', 'dJ/dt', 'AngMomDer', statfigdir)
 	plyJderplot = plyplot1(time, Jder, 'Time', "dJ/dt","Derivative of Anular Momentum")
@@ -87,7 +87,9 @@ def Energy_Momentum(wfdir, outdir):
 	fig.savefig(statfigdir+'/Momentum_components.png', dpi = 500)
 	plt.close()
 
-outDir = "/home/rudall/Runview/TestCase/OutputDirectory/SOetc_2/"
+outDirSO = "/home/rudall/Runview/TestCase/OutputDirectory/SOetc_2/"
 binSO = "/home/rudall/Runview/TestCase/BBH/SO_D9_q1.5_th2_135_ph1_90_m140/"
+binQC = "/home/rudall/Runview/TestCase/OutputDirectory/QC0_p1_l11_M192-all/"
+outDirQC = "/home/rudall/Runview/TestCase/OutputDirectory/QC0_2/"
 
-Energy_Momentum(binSO, outDir)
+Energy_Momentum(binQC, outDirQC)

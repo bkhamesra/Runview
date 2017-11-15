@@ -141,7 +141,21 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	data_der = np.column_stack((time_bh1[use_idx], rdot[use_idx], phdot[use_idx]))
 	hdr = '# Time \t R_dot \t Theta_dot \n'
 	write_sep_data('ShiftTrackerRdotThdot.asc', hdr, datadir, data_der)
+
+	plyxt=plyplot2(time_bh1, time_bh2, x_bh1, x_bh2, "BH1", "BH2", "Time", "X", "X vs. Time for 2 Black Holes") #see common functions for details, RU
+	plyyt=plyplot2(time_bh1, time_bh2, y_bh1, y_bh2, "BH1", "BH2", "Time", "Y", "Y vs. Time for 2 Black Holes")
+	plysep=plyplot1(time_bh1, separation, "Time", "Separation", "Separation vs. Time for 2 Black Holes", Ly2=log_sep) #note use of log option
+	plyopt=plyplot1(time_bh1, phi, "Time", "Phase", "Phase vs. Time for 2 Black Holes", Ly2=logphi)
+	plyvost=plyplot1(time_bh1, rdot, "Time", "Velocity of Separation", "Velocity of Separation vs Time for 2 Black Holes")
+	plyvopt=plyplot1(time_bh1, vph_bh1, "Time", "Velocity of Phase", "Velocity of Phase vs Time for 2 Black Holes")
+	py.plot(plyxt, filename=dynfigdir + "Trajectory_xvstime.html") #standard plot method: object + path/filename
+	py.plot(plyyt, filename=dynfigdir + "Trajectory_yvstime.html")
+	py.plot(plysep, filename=dynfigdir + "Trajectory_separation.html")
+	py.plot(plyopt, filename=dynfigdir + "Trajectory_phase.html")
+	py.plot(plyvost, filename=dynfigdir + "Trajectory_separation_velocity.html")
+	py.plot(plyvopt, filename=dynfigdir + "Trajectory_phase_velocity.html")
 	
+	"""Legacy Code, replaced by common functions methods
 	#data sets follow key:category name(e.g. trace, data) + object (e.g. BH1) + variables (X,Y,Sep,T)
 	#Plot 1 X vs T  
 	traceBH1XT= go.Scatter( #scatter is standard data type, accomodates discrete points and lines, the latter used here
@@ -255,7 +269,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	py.plot(plotSepT, filename=dynfigdir + "Trajectory_separation.html")
 
 	#Plot 4: Log Sep vs T
-	"""obsolete but kept for reference
+	#obsolete but kept for reference
 	traceLSepT = go.Scatter(
 	  x = time_bh1, 
 	  y = log_sep,
@@ -278,7 +292,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	plotLSepT = go.Figure(data=dataLSepT, layout=layoutLSepT)
 	py.plot(plotLSepT, filename=dynfigdir + "Trajectory_logseparation.html")
 	
-	"""
+
 	#Plot 5: Orbital Phase vs T
 	#methods essentially identical to sep above, including log toggle
 	traceOPT = go.Scatter(
@@ -328,7 +342,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	py.plot(plotOPT, filename=dynfigdir + "Trajectory_phase.html") 
 	
 	#Plot 6: Log Orbital Phase vs T
-	"""obsolete but kept for reference
+	#obsolete but kept for reference
 	traceLOPT = go.Scatter(
 	  x = time_bh1, 
 	  y = logphi,
@@ -351,7 +365,6 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	plotLOPT = go.Figure(data=dataLOPT, layout=layoutLOPT)
 	py.plot(plotLOPT, filename=dynfigdir + "Trajectory_logphase.html")
 	
-	"""
 	#Plot 7: Velocity of Orbital Separation vs T
 	#methods as above, although data reading is taken from Puncture Dynamics, unlike the rest taken from Trajectories
 	traceVOST = go.Scatter(
@@ -406,6 +419,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	
 	plotVOPT = go.Figure(data=dataVOPT, layout=layoutVOPT)
 	py.plot(plotVOPT, filename=dynfigdir + "Trajectory_phase_velocity.html")
+	"""
 	
 	#Animation 1: X vs Y animation:
 	
@@ -502,22 +516,9 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	figureXY['frames'] = framesXY
 	py.plot(figureXY, filename=dynfigdir+'Trajectory_xy_animation.html')
 	
-	"""
-	layoutXY=dict(xaxis=dict(range=[xm,xM], autorange=False, zeroline=False),
-		      yaxis=dict(range=[ym,yM], autorange=False, zeroline=False),
-		      title="X vs Y for Two Black Holes Approaching Merger",
-		      updatemenus=[{'type': 'buttons', 
-				    'buttons':[{'label':'Play',
-						'method': 'animate',
-						'args': [None,{'frame']},
-					       {'label':'pause',
-						'method': 'animate',
-						'args':[None]}
-						]}])
-	"""
-	
-binQC0 = "/home/rudall/Runview/TestCase/OutputDirectory/QC0_p1_l11_M192-all/data/"
-outDir = "/home/rudall/Runview/TestCase/OutputDirectory/SOetc_2/"
+outDirSO = "/home/rudall/Runview/TestCase/OutputDirectory/SOetc_2/"
 binSO = "/home/rudall/Runview/TestCase/BBH/SO_D9_q1.5_th2_135_ph1_90_m140/"
-  
-Trajectory(binSO, outDir)
+binQC = "/home/rudall/Runview/TestCase/OutputDirectory/QC0_p1_l11_M192-all/"
+outDirQC = "/home/rudall/Runview/TestCase/OutputDirectory/QC0_2/"
+
+Trajectory(binSO, outDirSO)

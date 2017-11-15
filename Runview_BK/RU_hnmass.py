@@ -47,9 +47,9 @@ def Mass_Plots(wfdir, outdir):
 		time_bh2, irr_m2 = np.genfromtxt(bh_diag1, usecols = (1,26,), unpack =True, comments = '#')
 		minlen = min(len(time_bh1), len(time_bh2))-1
 		plot1(time_bh1, irr_m1, 'Time', 'BH1 Mass ', 'Mass_BH1', statfigdir)	
-		plybh1m = plyplot1(time_bh1, irr_m1, 'Time', 'BH1 Mass ', 'Mass_BH1', dynfigdir)
+		plybh1m = plyplot1(time_bh1, irr_m1, 'Time', 'BH1 Mass ', 'Mass_BH1') #for details on behavior, see common functions RU
 		plot1(time_bh2, irr_m2, 'Time', 'BH2 Mass', 'Mass_BH2', statfigdir)	
-		plybh2m = plyplot1(time_bh2, irr_m2, 'Time', 'BH2 Mass', 'Mass_BH2', dynfigdir)
+		plybh2m = plyplot1(time_bh2, irr_m2, 'Time', 'BH2 Mass', 'Mass_BH2')
 		plt.plot(time_bh1, irr_m1, color='b', label="BH1")
 		plt.plot(time_bh2, irr_m2, color='k', label="BH2")
 		plt.xlabel("Time (in M)")
@@ -58,7 +58,7 @@ def Mass_Plots(wfdir, outdir):
 		plt.savefig(os.path.join(statfigdir, "IrreducibleMasses.png"))
 		plt.close()
 		plyirrm = plyplot2(time_bh1, time_bh2, irr_m1, irr_m2, "BH1", "BH2", "Irreducible Masses", "Time (in M)", "Irreducible Mass")
-		py.plot(plybh1m ,filname= dynfigdir + "Mass_BH1.html")
+		py.plot(plybh1m ,filname= dynfigdir + "Mass_BH1.html") #basic plot function, object + path/filename
 		py.plot(plybh2m ,filname= dynfigdir + "Mass_BH2.html")
 		py.plot(plyirrm ,filname= dynfigdir + "IrreducibleMasses.html")
 		    
@@ -122,7 +122,9 @@ def Mass_Plots(wfdir, outdir):
 		    #write_massspin_data(datadir, 'hn_mass_spin_0', data1)
 		    #write_massspin_data(datadir, 'hn_mass_spin_1', data2)
 
-outDir = "/home/rudall/Runview/TestCase/OutputDirectory/SOetc_2/"
+outDirSO = "/home/rudall/Runview/TestCase/OutputDirectory/SOetc_2/"
 binSO = "/home/rudall/Runview/TestCase/BBH/SO_D9_q1.5_th2_135_ph1_90_m140/"
+binQC = "/home/rudall/Runview/TestCase/OutputDirectory/QC0_p1_l11_M192-all/"
+outDirQC = "/home/rudall/Runview/TestCase/OutputDirectory/QC0_2/"
 
-Mass_Plots(binSO, outDir)
+Mass_Plots(binQC, outDirQC)

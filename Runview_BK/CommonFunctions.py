@@ -107,7 +107,7 @@ def plyplot1(x,y1,x_label,y_label,title, Ly2=None):
 	    name = "Log " + y_label
 	  )
 	  
-	  data = [trace,trace]
+	  data = [trace1,trace2]
 	  
 	  updatemenus = list([
 	    dict(type="buttons",
@@ -151,7 +151,7 @@ def plyplot1(x,y1,x_label,y_label,title, Ly2=None):
 	plot = go.Figure(data=data, layout=layout)
 	return plot
 	
-def plyplot2(x1, x2, y1, y2, name1, name2, title, x_label, y_label): #for 2 objects; directly from trajectories, with comments included
+def plyplot2(x1, x2, y1, y2, name1, name2, x_label, y_label, title ): #for 2 objects; directly from trajectories, with comments included
 	trace1= go.Scatter( #scatter is standard data type, accomodates discrete points and lines, the latter used here
 	  x = x1, 
 	  y = y1,
@@ -165,8 +165,8 @@ def plyplot2(x1, x2, y1, y2, name1, name2, title, x_label, y_label): #for 2 obje
 	  name = name2
 	)
 	
-	dataXT = [trace1, trace2] #data is a list containing all the graph objects. It could be initialized with the object initializations inside, but that quickly gets ugly
-	layoutXT = go.Layout( #layout objects do exactly what you think they do
+	data = [trace1, trace2] #data is a list containing all the graph objects. It could be initialized with the object initializations inside, but that quickly gets ugly
+	layout = go.Layout( #layout objects do exactly what you think they do
 	  title = title, #obvious
 	  hovermode = "closest", #sets what data point the hover info will display for
 	  xaxis = dict( #obvious, but note use of dict for these, although it doesn't follow dictionary notation. If in doubt, read the syntax errors
