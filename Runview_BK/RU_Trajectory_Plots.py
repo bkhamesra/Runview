@@ -141,8 +141,9 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	data_der = np.column_stack((time_bh1[use_idx], rdot[use_idx], phdot[use_idx]))
 	hdr = '# Time \t R_dot \t Theta_dot \n'
 	write_sep_data('ShiftTrackerRdotThdot.asc', hdr, datadir, data_der)
+	print(t_hrzn3)
 
-	plyxt=plyplot2(time_bh1, time_bh2, x_bh1, x_bh2, "BH1", "BH2", "Time", "X", "X vs. Time for 2 Black Holes") #see common functions for details, RU
+	plyxt=plyplot2(time_bh1, time_bh2, x_bh1, x_bh2, "BH1", "BH2", "Time", "X", "X vs. Time for 2 Black Holes", locate_merger=locate_merger, point_hrzn=t_hrzn3, point_maxamp=t_maxamp) #see common functions for details, RU
 	plyyt=plyplot2(time_bh1, time_bh2, y_bh1, y_bh2, "BH1", "BH2", "Time", "Y", "Y vs. Time for 2 Black Holes")
 	plysep=plyplot1(time_bh1, separation, "Time", "Separation", "Separation vs. Time for 2 Black Holes", Ly2=log_sep) #note use of log option
 	plyopt=plyplot1(time_bh1, phi, "Time", "Phase", "Phase vs. Time for 2 Black Holes", Ly2=logphi)
@@ -521,4 +522,4 @@ binSO = "/home/rudall/Runview/TestCase/BBH/SO_D9_q1.5_th2_135_ph1_90_m140/"
 binQC = "/home/rudall/Runview/TestCase/OutputDirectory/QC0_p1_l11_M192-all/"
 outDirQC = "/home/rudall/Runview/TestCase/OutputDirectory/QC0_2/"
 
-Trajectory(binSO, outDirSO)
+Trajectory(binSO, outDirSO, locate_merger=True)

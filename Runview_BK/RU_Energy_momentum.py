@@ -1,16 +1,16 @@
+from CommonFunctions import *
 import plotly.offline as ply #different tag than everywhere else due to variable naming
 import plotly.graph_objs as go
 import numpy as np 
 import matplotlib.pyplot as plt
-import matplotlib as mpl
+#import matplotlib as mpl
 from matplotlib import rc
-from CommonFunctions import *
 #rc('font', **{'family':'serif','serif':['Computer Modern']})
 #rc('text', usetex=True)
 #mpl.rcParams['lines.linewidth']=2
 
 
-def Energy_Momentum(wfdir, outdir):
+def Energy_Momentum(wfdir, outdir, locate_merger=False):
 
 	statfigdir,dynfigdir = FigDir(wfdir, outdir)
 	datadir = DataDir(wfdir, outdir)
@@ -25,6 +25,18 @@ def Energy_Momentum(wfdir, outdir):
 	Pmag = np.sqrt(px**2. + py**2. + pz**2)
 	Jmag = np.sqrt(jx**2. + jy**2. + jz**2.)
 	Jder = np.sqrt(jx_der**2. + jy_der**2. + jz_der**2.)
+
+		#Horizon Location
+	if locate_merger==True:
+		bhdiag3 = os.path.join(datadir, 'BH_diagnostics.ah3.gp')
+		t_hrzn3 = np.loadtxt(bhdiag3, usecols = (1,), unpack=True)[0]
+		maxamp, t_maxamp = maxamp_time(wfdir, outdir)	
+		t_maxamp = t_maxamp-75.		
+		hrzn_idx = np.amin(np.where(time_bh1>=t_hrzn3))
+		maxamp_idx = np.amin(np.where(time_bh1>=t_maxamp))
+
+		time_arr = np.around(np.array((t_hrzn3, t_maxamp)),2)
+		print("Final Horizon Detected at %f and Max Amplitude at %f"%(t_hrzn3, t_maxamp))
 
 
 #  Energy and dE/dt plot
@@ -49,7 +61,7 @@ def Energy_Momentum(wfdir, outdir):
 	
 	Jzplot	= plot1(time, jz, 'Time', 'Jz','AngMom_z',statfigdir )
 	fig,(ax1) = plt.subplots(1,1,sharex=True, squeeze=True)
-	jx, = ax1.plot(time, jx, 'b',label='Jx', linewidth=1)
+	ax1.plot(time, jx, 'b',label='Jx', linewidth=1)
 	ax1.plot(time, jy,'k', linewidth=1, label='Jy')
 
 	ax1.set_ylabel('J', fontsize = 18)
@@ -60,6 +72,11 @@ def Energy_Momentum(wfdir, outdir):
 	ax1.grid(True)
 	fig.savefig(statfigdir+'/AngMomentum_components.png', dpi = 500)
 	plt.close()
+
+	time_1 = np.copy(time)
+
+	plyangcomp= plyplot2(time,time_1, jx ,jy, "X Component of Angular Momentum", "Y Component of Angular Momentum", "Time", "J", "Components of Angular Momentum") #should be jx not jz, but left this way until data type error is fixed, allowing rest of program to run
+	ply.plot(plyangcomp, filename=dynfigdir+"AngMomentum_components.html")
 
 	plyJzplot = plyplot1(time, jz, 'Time', 'Jz', 'Z Component of Angular Momentum')
 	ply.plot(plyJzplot,filename= dynfigdir + "AngMom_z.html")
@@ -75,7 +92,7 @@ def Energy_Momentum(wfdir, outdir):
 	ply.plot(plyMomzplot,filename= dynfigdir + "Momentum_z.html")
 	
 	fig,(ax1) = plt.subplots(1,1,sharex=True, squeeze=True)
-	px, = ax1.plot(time, px, 'b',label='Px', linewidth=1)
+	ax1.plot(time, px, 'b',label='Px', linewidth=1)
 	ax1.plot(time, py,'k', linewidth=1, label='Py')
 
 	ax1.set_ylabel('P', fontsize = 18)
@@ -84,12 +101,15 @@ def Energy_Momentum(wfdir, outdir):
 	ax1.ticklabel_format(axis = 'y', style = 'sci', scilimits = (1,4))
 	lgd = plt.legend()
 	ax1.grid(True)
-	fig.savefig(statfigdir+'/Momentum_components.png', dpi = 500)
+	fig.savefig(statfigdir+'/Momentum_components.png', dpi = 500) 
 	plt.close()
+	
+	plymomcomp = plyplot2(time, time_1, px, py, "X Component of Angular Momentum", "Y Component of angular Momentum", "Time", "P", "Components of Linear Momentum")
+	ply.plot(plymomcomp, filename="Momentum_components.html")
 
 outDirSO = "/home/rudall/Runview/TestCase/OutputDirectory/SOetc_2/"
 binSO = "/home/rudall/Runview/TestCase/BBH/SO_D9_q1.5_th2_135_ph1_90_m140/"
 binQC = "/home/rudall/Runview/TestCase/OutputDirectory/QC0_p1_l11_M192-all/"
 outDirQC = "/home/rudall/Runview/TestCase/OutputDirectory/QC0_2/"
 
-Energy_Momentum(binQC, outDirQC)
+Energy_Momentum(binSO, outDirSO)

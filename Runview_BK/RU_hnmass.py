@@ -26,7 +26,7 @@ def horizon_mass(irr_m1, irr_m2, spin1, spin2):
 		raise ValueError('Negative Masses Encountered for m1 = {} and m2={}. Please check the data'.format(m2[np.where(m2<0)]))
 	return m1, m2
 
-def Mass_Plots(wfdir, outdir):
+def Mass_Plots(wfdir, outdir,locate_merger=False):
 
 	statfigdir, dynfigdir = FigDir(wfdir, outdir)
 	datadir = DataDir(wfdir, outdir)
@@ -40,6 +40,18 @@ def Mass_Plots(wfdir, outdir):
 	if not os.path.exists(ihspin0):	
 		ihspin0 = os.path.join(datadir,"ihspin_hn_3.asc")
 		ihspin1 = os.path.join(datadir,"ihspin_hn_4.asc")
+
+		#Horizon Location
+	if locate_merger==True:
+		bhdiag3 = os.path.join(datadir, 'BH_diagnostics.ah3.gp')
+		t_hrzn3 = np.loadtxt(bhdiag3, usecols = (1,), unpack=True)[0]
+		maxamp, t_maxamp = maxamp_time(wfdir, outdir)	
+		t_maxamp = t_maxamp-75.		
+		hrzn_idx = np.amin(np.where(time_bh1>=t_hrzn3))
+		maxamp_idx = np.amin(np.where(time_bh1>=t_maxamp))
+
+		time_arr = np.around(np.array((t_hrzn3, t_maxamp)),2)
+		print("Final Horizon Detected at %f and Max Amplitude at %f"%(t_hrzn3, t_maxamp))
 
 
 	if os.path.exists(bh_diag1):

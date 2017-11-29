@@ -10,6 +10,8 @@ from CommonFunctions import *
 #rc('text', usetex=True)
 #mpl.rcParams['lines.linewidth']=2
 
+
+
 def spinplots(file1, file2, statfigdir, dynfigdir):
 	ihspin_0 = open(file1)
 	ihspin_1 = open(file2)
@@ -32,7 +34,19 @@ def spinplots(file1, file2, statfigdir, dynfigdir):
 	py.plot(plyszplot,filename = dynfigdir + "Spinz")
 	py.plot(plysmag_plot,filename = dynfigdir + "Spinmag")
 	
-def Spins(wfdir, outdir):
+def Spins(wfdir, outdir,locate_merger=False):
+
+		#Horizon Location
+	if locate_merger==True:
+		bhdiag3 = os.path.join(datadir, 'BH_diagnostics.ah3.gp')
+		t_hrzn3 = np.loadtxt(bhdiag3, usecols = (1,), unpack=True)[0]
+		maxamp, t_maxamp = maxamp_time(wfdir, outdir)	
+		t_maxamp = t_maxamp-75.		
+		hrzn_idx = np.amin(np.where(time_bh1>=t_hrzn3))
+		maxamp_idx = np.amin(np.where(time_bh1>=t_maxamp))
+
+		time_arr = np.around(np.array((t_hrzn3, t_maxamp)),2)
+		print("Final Horizon Detected at %f and Max Amplitude at %f"%(t_hrzn3, t_maxamp))
 
 	statfigdir, dynfigdir = FigDir(wfdir, outdir)
 	datadir = DataDir(wfdir, outdir)

@@ -91,7 +91,7 @@ def plot2(x1,y1, x2, y2, xlabel, ylabel, plotname, outdir):
 #Generic Functions for 1 and 2 object plots. Adaptations (read: basically copies) of trajectories plots, comments and all. Go to those to figure out how they work more clearly
 
 #1 variable plot, with added log toggle
-def plyplot1(x,y1,x_label,y_label,title, Ly2=None): 
+def plyplot1(x,y1,x_label,y_label,title, Ly2=None, locate_merger=False, point_hrzn=0, point_maxamp=0): 
 	trace1 = go.Scatter(
 	  x = x, 
 	  y = y1,
@@ -137,6 +137,7 @@ def plyplot1(x,y1,x_label,y_label,title, Ly2=None):
 	else:
 	  data = [trace1]
 	  
+	if locate_merger==True:
 	  layout = go.Layout(
 	    title = title,
 	    hovermode = "closest",
@@ -146,17 +147,52 @@ def plyplot1(x,y1,x_label,y_label,title, Ly2=None):
 	    yaxis = dict(
 	      title = y_label
 	    ),
+	    shapes = [
+	    {
+            'type': 'line',
+            'x0': point_hrzn,
+            'y0': 0,
+            'x1': point_hrzn,
+            'y1': y1[int(point_hrzn)],
+            'line': {
+                'color': 'rgb(255, 0, 0)',
+                'width': 1,
+	      },
+	    },
+	    {
+            'type': 'line',
+            'x0': point_maxamp,
+            'y0': 0,
+            'x1': point_maxamp,
+            'y1': y1[int(point_maxamp)],
+            'line': {
+                'color': 'rgb(0, 255, 0)',
+                'width': 1,
+	      },
+	    }]
+	    )
+	else:
+	  layout = go.Layout(
+	    title = title,
+	    hovermode = "closest",
+	    xaxis = dict(
+	      title = x_label
+	    ),
+	    yaxis = dict(
+	      title = y_label
+	    )
 	  )
+
 	  
 	plot = go.Figure(data=data, layout=layout)
 	return plot
 	
-def plyplot2(x1, x2, y1, y2, name1, name2, x_label, y_label, title ): #for 2 objects; directly from trajectories, with comments included
+def plyplot2(x1, x2, y1, y2, name1, name2, x_label, y_label, title, locate_merger=False, point_hrzn=0, point_maxamp=0 ): #for 2 objects; directly from trajectories, with comments included
 	trace1= go.Scatter( #scatter is standard data type, accomodates discrete points and lines, the latter used here
 	  x = x1, 
 	  y = y1,
 	  mode = "lines",
-	  name = name2 #variables and labels should be fairly intuitive
+	  name = name1 #variables and labels should be fairly intuitive
 	)
 	trace2 = go.Scatter( #I call them traces because that's what plotly calls them
 	  x = x2, 
@@ -166,16 +202,54 @@ def plyplot2(x1, x2, y1, y2, name1, name2, x_label, y_label, title ): #for 2 obj
 	)
 	
 	data = [trace1, trace2] #data is a list containing all the graph objects. It could be initialized with the object initializations inside, but that quickly gets ugly
-	layout = go.Layout( #layout objects do exactly what you think they do
-	  title = title, #obvious
-	  hovermode = "closest", #sets what data point the hover info will display for
-	  xaxis = dict( #obvious, but note use of dict for these, although it doesn't follow dictionary notation. If in doubt, read the syntax errors
-	    title = x_label
-	  ),
-	  yaxis = dict(
-	    title = y_label
+	if locate_merger==True:
+	  layout = go.Layout( #layout objects do exactly what you think they do
+	    title = title, #obvious
+	    hovermode = "closest", #sets what data point the hover info will display for
+	    xaxis = dict( #obvious, but note use of dict for these, although it doesn't follow dictionary notation. If in doubt, read the syntax errors
+	      title = x_label
+	    ),
+	    yaxis = dict(
+	      title = y_label
+	    ),
+	    shapes = [
+	  {
+	      'type': 'line',
+	      'x0': point_hrzn,
+	      'y0': 0,
+	      'x1': point_hrzn,
+	      'y1': y1[int(point_hrzn)],
+	      'line': {
+		  'color': 'rgb(255,0 ,0)',
+		  'width': 1,
+	      },
+	  },
+	  {
+	      'type': 'line',
+	      'x0': point_maxamp,
+	      'y0': 0,
+	      'x1': point_maxamp,
+	      'y1': y1[int(point_maxamp)],
+	      'line': {
+		  'color': 'rgb(0, 255, 0)',
+		  'width': 1,
+	      },
+	  }]
 	  )
-	)
+	else:
+	  layout = go.Layout( #layout objects do exactly what you think they do
+	    title = title, #obvious
+	    hovermode = "closest", #sets what data point the hover info will display for
+	    xaxis = dict( #obvious, but note use of dict for these, although it doesn't follow dictionary notation. If in doubt, read the syntax errors
+	      title = x_label
+	    ),
+	    yaxis = dict(
+	      title = y_label
+	    ),
+	  )
+	
+	
+	  
 	
 	plot = go.Figure(data=data, layout=layout) #creates the figure object		
 	return plot #do the final step of actually plotting inside the appropriate file, with the appropriate folder paths
