@@ -39,6 +39,7 @@ def CombineData(wfdir, outdir, filename, time_clm):
 		data_save = np.vstack((data_save, data))
 
 	try:
+	    if len(filepath)>0:
 		shtr_output = open(os.path.join(outdir, '%s'%filename),'w')
 		np.savetxt(shtr_output, data_save, header=hdr, delimiter='\t', newline='\n')
 		shtr_output.close()
@@ -75,10 +76,12 @@ def StitchData(wfdir, save_hrzn=True):
 	CombineData(wfdir, combine_dir, 'BH_diagnostics.ah1.gp', 1)
 	CombineData(wfdir, combine_dir, 'BH_diagnostics.ah2.gp', 1)
 	CombineData(wfdir, combine_dir, 'BH_diagnostics.ah3.gp', 1)	
+	CombineData(wfdir, combine_dir, 'BH_diagnostics.ah4.gp', 1)	
+	CombineData(wfdir, combine_dir, 'BH_diagnostics.ah5.gp', 1)	
 
 
-	for k in np.array((0,1,3,4)):
-		if not glob.glob(wfdir+'/output-000?/*/ihspin_hn_%d.asc'%k)==[]:
+	for k in np.array((0,1,2,3,4)):
+		if not glob.glob(wfdir+'/output-0???/*/ihspin_hn_%d.asc'%k)==[]:
 			CombineData(wfdir, combine_dir, 'ihspin_hn_%d.asc'%k,0)
 	
 	for f in glob.glob(wfdir+'/output-0000/*/Ylm_*'):

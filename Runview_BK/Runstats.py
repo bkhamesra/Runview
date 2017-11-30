@@ -28,8 +28,8 @@ def runstats(wfdir, outdir):
 
 	avg_speed = np.mean(speed)
 	cputime_total = cputime[-1]
-
-	plot1(coord_time, speed, 'Time (M)', 'Speed (M/hour)', 'Runstats', figdir)
+	kwargs = {'locate_merger':False}
+	plot1(coord_time, speed, 'Time (M)', 'Speed (M/hour)', 'Runstats', figdir, **kwargs)
 	
 
 

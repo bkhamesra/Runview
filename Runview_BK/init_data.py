@@ -8,11 +8,15 @@ def output_data(parfile, data):
 	
 	datafile = file(parfile)	
 	datafile.seek(0)
+	data_value=None
 	for line in datafile:
-		if data in line:
-			break
-	line = line.split()
-	data_value = float(line[-1])
+	    if data in line:
+		line = line.split()
+		data_value = float(line[-1])
+		break
+	if data_value==None:
+	    data_value=0
+	
 	datafile.close()
 	return data_value
 

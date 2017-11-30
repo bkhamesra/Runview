@@ -52,12 +52,12 @@ if puncdyn==True:
 	webpage_pd(dirpath, outdir, locate_merger=findmerger)
 else:
 	Trajectory(dirpath, outdir, locate_merger=findmerger)
-	Energy_Momentum(dirpath, outdir)
+	Energy_Momentum(dirpath, outdir, locate_merger=findmerger)
 	runstats(dirpath, outdir)
 	Psi4_Plots(dirpath, outdir, locate_merger=findmerger, locate_qnm=findqnm)
-	Spins(dirpath, outdir)
-	Mass_Plots(dirpath, outdir)
+	Spins(dirpath, outdir, locate_merger=findmerger)
+	Mass_Plots(dirpath, outdir, locate_merger=findmerger)
 	webpage(dirpath, outdir, locate_merger=findmerger)
 
-if AHF:
-	animate_trajectories(dirpath, outdir)
+#if AHF:
+#	animate_trajectories(dirpath, outdir)

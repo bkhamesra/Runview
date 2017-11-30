@@ -50,8 +50,10 @@ def CollectFiles(dirpath, outdir):
 	bhdiag1 = "BH_diagnostics.ah1.gp"
 	bhdiag2 = "BH_diagnostics.ah2.gp"
 	bhdiag3 = "BH_diagnostics.ah3.gp"
+	bhdiag4 = "BH_diagnostics.ah4.gp"
+	bhdiag5 = "BH_diagnostics.ah5.gp"
 	filelist_mand = [parfile, shifttracker0, shifttracker1]
-	filelist_opt = [ihspin0, ihspin1, ihspin3, ihspin4, runstat, psi4_ylm,psi4r_ylm, psi4_anal, bhdiag1, bhdiag2, bhdiag3, propdist]
+	filelist_opt = [ihspin0, ihspin1, ihspin2, ihspin3, ihspin4, runstat, psi4_ylm,psi4r_ylm, psi4_anal, bhdiag1, bhdiag2, bhdiag3, bhdiag4, bhdiag5, propdist]
 	
 	for mfile in filelist_mand:
 		copyfiles( dirpath,datadir, mfile )

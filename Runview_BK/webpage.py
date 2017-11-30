@@ -27,18 +27,25 @@ ul {{margin: 50px}}\n  </style>\n
 \n <li> Sim-Type = {}</li> 
 \n <li> Mass Ratio = {}</li>
 \n <li> Initial Separation = {}</li>
-\n <li> Spin of BH1 = {}</li>
-\n <li> Spin of BH2 = {}</li>
-\n </ul>	""".format(metadata['alternative-names'], metadata['simulation-type'], metadata['mass-ratio'], metadata['init_sep'], metadata['spin1'], metadata['spin2'])
+\n <li> Spin of BH1 = ({}, {}, {})</li>
+\n <li> Spin of BH2 = ({}, {}, {})</li>
+\n </ul>	""".format(metadata['alternative-names'], metadata['simulation-type'], metadata['mass-ratio'], metadata['init_sep'], metadata['spin1'][0], metadata['spin1'][1],metadata['spin1'][2],metadata['spin2'][0],metadata['spin2'][1],metadata['spin2'][2])
 
 
 	if locate_merger:
 		html_txt = html_txt + """
-		\n <ul>
+		 <ul>
+		\n <li> Spin of final Black Hole = ({}, {}, {})</li>
+		\n <li> Mass of final black hole = {}</li>
+		\n </ul> <ul>
 		\n <li> Final Horizon detected (in center of mass frame) at t = {}</li>
 		\n <li> Final Horizon detected (at r=75M) at t = {}</li>
 		\n <li> Maximum Amplitude in Psi4 (at r=75M) achieved at t = {}</li>
-		\n </ul>	""".format(metadata['final_horizon'], metadata['final_horizon']+75, metadata['max_amp'])
+		\n <li> Quasi normal mode begin in Psi4 (at r=75M) at t = {}</li>
+		\n \n <li> Number of GW cycles between common horizon and Max Amplitude = {}</li>
+		\n <li> Number of GW cycles between Max Amplitude and QNM = {}</li>
+		\n <li> Number of GW cycles between common horizon and QNM = {}</li>
+		\n </ul>	""".format(metadata['spin_bh3'][0], metadata['spin_bh3'][1], metadata['spin_bh3'][2], metadata['mass_bh3'], metadata['final_horizon'], metadata['final_horizon'] +75, metadata['max_amp'], metadata['qnm'], metadata['numcyc_amphrzn'], metadata['numcyc_qnmamp'], metadata['numcyc_qnmhrzn'])
 
 	html_txt = html_txt + """
 
@@ -68,7 +75,7 @@ ul {{margin: 50px}}\n  </style>\n
 \n <p> <a href=\"figures/Spinmag.png\"><img src=\"figures/Spinmag.png\" alt=\"Spin_Magnitude.png\" width=\"700\" height=\"600\" hspace=20></a>
 \n  <a href=\"figures/Spinz.png\"><img src=\"figures/Spinz.png\" alt=\"Spin-z.png\" width=\"700\" height=\"600\"></a></p>
 \n 
-\n <h2 style=\"text-align:left;font-size:150%;font-family:verdana\"><a href=\"HTML/Masses.html\"> Irreducible Masses Plots </a></h2>
+\n <h2 style=\"text-align:left;font-size:150%;font-family:verdana\"><a href=\"HTML/Mass.html\"> Irreducible Masses Plots </a></h2>
 \n <p> <a href=\"figures/Mass_BH1.png\"><img src=\"figures/Mass_BH1.png\" alt=\"Mass_BH1.png\" width=\"700\" height=\"600\" hspace=20></a>
 \n  <a href=\"figures/Mass_BH2.png\"><img src=\"figures/Mass_BH2.png\" alt=\"Mass_BH2.png\" width=\"700\" height=\"600\"></a></p>
 \n 
@@ -91,7 +98,7 @@ ul {{margin: 50px}}\n  </style>\n
 def webpage(wfdir, outdir,locate_merger):
 	
 	datadir = DataDir(wfdir, outdir) 
-	filename = open(os.path.join(datadir+'/..','webpage.html'),'w+')
+	filename = open(os.path.join(datadir+'/..','index.html'),'w+')
 
 	meta_data, parfile = metadata(wfdir, outdir,locate_merger)
 	webdata = webpage_data(meta_data, parfile, locate_merger)

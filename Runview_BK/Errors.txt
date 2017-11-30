@@ -2,13 +2,15 @@
 2. Mass Plots failing - Repeated Values Error
 3. Include the eccentricity plots.
 4. Make all plots consistent - Check Font Size, Colors, Legends
-5. Include the mass plots
+5. Correct the horizon mass plots
 6. Overwrite does not work. As a result if an error is due to some file in data directory, it continues to exist even if you recompile everything. Solution is to delete the entire data and plot directory (not the stitched directory)
 7. hnmass files
 8. Save ShiftTracker-generate files in output directory
 9. For stampede, stdout files are .out files. Insert that logic else causses issue in building the waveform
-10. Check that ihspin and ShiftTracker should have same data in time for both BH1 and BH2
+10. Check that ihspin and ShiftTracker should have same data in time for both BH1 and BH2 - done for ShiftTracker
 11. In CollectFiles, the code creates empty files if it does not find one (like proper distance) which leads to error
+12. Output directory created even if the simulation data is missing. Change this so that output directory is only created after stitching the files. 
+13. Insert proper errors for each file (if file is missing, if it has insufficient data, if it has missing data etc.) 
 
 Assumptions - 
 

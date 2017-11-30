@@ -4,7 +4,7 @@ import os, glob
 from eccentricity import *
 import time
 from CommonFunctions import *
-from Psi4 import maxamp_time
+from Psi4 import Compute_gwCycles
 
 def mag(vector):
 
@@ -83,12 +83,21 @@ def metadata(wfdir, outdir, locate_merger):
 	eta = m_plus*m_minus/(m_plus + m_minus)**2.
 	
 	if locate_merger:
-		maxamp, t_maxamp = maxamp_time(wfdir, outdir)
-		t_hrzn = func_t_hrzn(datadir, locate_merger)
+	    maxamp, t_maxamp = maxamp_time(wfdir, outdir)
+	    t_hrzn = func_t_hrzn(datadir, locate_merger) - 75
+	    t_qnm = max(qnm_time(datadir, outdir))
 
- 	
-		#Computing eccentricity and mean anomaly
-	eccentricity = ecc_and_anomaly(datadir, 75.)[0]
+	    numcyc_amphrzn, numcyc_qnmamp, numcyc_qnmhrzn = Compute_gwCycles(wfdir, outdir, locate_merger)
+ 	   
+	    ihspin2 = os.path.join(datadir, "ihspin_hn_2.asc") 	
+	    bh_diag3 = os.path.join(datadir, "BH_diagnostics.ah3.gp")
+
+	    if os.path.exists(ihspin2):
+		s_bh3 = np.array(np.loadtxt(ihspin2)[-1][1:4])
+		mass_bh3 = np.loadtxt(bh_diag3)[-1][26]
+	
+	#Computing eccentricity and mean anomaly
+	#eccentricity = ecc_and_anomaly(datadir, 75.)[0]
 
 	#print("*(metadata) >> Final Information \n")
 	#print("*(metadata) >> Mass Ratio of system = {} \n".format(q))
@@ -126,6 +135,12 @@ def metadata(wfdir, outdir, locate_merger):
 	if locate_merger:
 		nr_metadata['final_horizon'] = t_hrzn
 		nr_metadata['max_amp'] = t_maxamp
+		nr_metadata['qnm'] = t_qnm
+		nr_metadata['numcyc_amphrzn'] = numcyc_amphrzn
+		nr_metadata['numcyc_qnmamp'] = numcyc_qnmamp
+		nr_metadata['numcyc_qnmhrzn'] = numcyc_qnmhrzn
+		nr_metadata['spin_bh3'] = s_bh3
+		nr_metadata['mass_bh3'] = mass_bh3
 	#nr_metadata['eccentricity'] = eccentricity
 	#nr_metadata['mean_anomaly'] = mean_anomaly
 
