@@ -123,15 +123,16 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
 		idx_hrzn = np.amin( np.where(time>=t_hrzn))
 		real_hrzn, imag_hrzn = real[idx_hrzn], imag[idx_hrzn]
 		amp_hrzn, phi_hrzn = amp[idx_hrzn], phi[idx_hrzn] 
-		logamp_hrzn = log_amp[idx_hrzn]
+		#logamp_hrzn = log_amp[idx_hrzn]
 
 		t_qnm_amparr = np.around(np.array((t_hrzn, t_maxamp)),2)
 		amp_arr = np.around(np.array((amp_hrzn, max_amp)),4)
-		logamp_arr = np.around(np.array((logamp_hrzn, logamp_max)),4)
+		#logamp_arr = np.around(np.array((logamp_hrzn, logamp_max)),4)
 		phi_arr = np.around(np.array((phi_hrzn, phi_at_maxamp)),4)
 		
 		#maxamp again to prevent stupid stuff
 		t_maxamp = time[np.where(amp==np.amax(amp))][0]
+		t1_idx = np.amin(np.where(time>=t_maxamp+50))
 
 	if real_at_maxamp>=imag_at_maxamp: maxpsi4 = real_at_maxamp
 	else: maxpsi4 = imag_at_maxamp
@@ -307,8 +308,8 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
 		plt.text(t_maxamp,max_amp+0.00003,'Max Amplitude', horizontalalignment='center', fontsize=12)
 		plt.plot([t_hrzn,t_hrzn], [starty,amp_hrzn], 'k--', linewidth =1.5)
 		plt.text(t_hrzn,amp_hrzn+0.00005,'AH3', horizontalalignment='right', fontsize=12)
-		plt.plot([t_qnm_amp,t_qnm_amp], [starty,amp_qnm], 'k--', linewidth =1.5)
-		plt.text(t_qnm_amp,amp_qnm+0.00005,'QNM', horizontalalignment='left', fontsize=12)
+		#plt.plot([t_qnm_amp,t_qnm_amp], [starty,amp_qnm], 'k--', linewidth =1.5)
+		#plt.text(t_qnm_amp,amp_qnm+0.00005,'QNM', horizontalalignment='left', fontsize=12)
 
 
 
@@ -332,8 +333,8 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
 		plt.text(t_maxamp,max_amp+0.00003,'Max Amplitude', horizontalalignment='center', fontsize=10)
 		plt.plot([t_hrzn,t_hrzn], [starty,amp_hrzn], 'k--', linewidth =1.5)
 		plt.text(t_hrzn,amp_hrzn,'AH3', horizontalalignment='right', fontsize=10)
-		plt.plot([t_qnm_amp,t_qnm_amp], [starty,amp_qnm], 'k--', linewidth =1.5)
-		plt.text(t_qnm_amp,amp_qnm,'QNM', horizontalalignment='left', fontsize=10)
+		#plt.plot([t_qnm_amp,t_qnm_amp], [starty,amp_qnm], 'k--', linewidth =1.5)
+		#plt.text(t_qnm_amp,amp_qnm,'QNM', horizontalalignment='left', fontsize=10)
 	    	#for xy in zip(t_qnm_amparr, amp_arr):
 	            #plt.annotate('(%s, %s)' % xy, xy=xy, textcoords='data')
 
@@ -420,7 +421,7 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
 	
 	plt.plot(time,amp, 'b', linewidth=1, label="Amplitude")
 	if locate_merger:
-		plt.xlim(t_hrzn-20, time[qnm_amp_idx]+20)
+		#plt.xlim(t_hrzn-20, time[qnm_amp_idx]+20)
 		startx,endx = plt.gca().get_xlim()
 		starty,endy = plt.gca().get_ylim()
 	
@@ -428,12 +429,12 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
 		plt.text(t_maxamp,max_amp+0.00003,'Max Amplitude', horizontalalignment='center', fontsize=12)
 		plt.plot([t_hrzn,t_hrzn], [starty,amp_hrzn], 'k--', linewidth =1.5)
 		plt.text(t_hrzn,amp_hrzn+0.00003,'AH3', horizontalalignment='right', fontsize=12)
-		plt.plot([t_qnm_amp,t_qnm_amp], [starty,amp_qnm], 'k--', linewidth =1.5)
-		plt.text(t_qnm_amp,amp_qnm+0.00003,'QNM', horizontalalignment='left', fontsize=12)
+		#plt.plot([t_qnm_amp,t_qnm_amp], [starty,amp_qnm], 'k--', linewidth =1.5)
+		#plt.text(t_qnm_amp,amp_qnm+0.00003,'QNM', horizontalalignment='left', fontsize=12)
 	        
 		plt.annotate('(%.2f, %.2g)' % (t_hrzn,amp_hrzn), xy=(t_hrzn,amp_hrzn), xytext=(t_hrzn-7,amp_hrzn), textcoords='data')
 	        plt.annotate('(%.2f, %.2g)' % (t_maxamp,max_amp), xy=(t_maxamp,max_amp), xytext=(t_maxamp-8,max_amp+0.000005), textcoords='data')
-	        plt.annotate('(%.2f, %.2g)' % (t_qnm_amp,amp_qnm), xy=(t_qnm_amp,amp_qnm), xytext=(t_qnm_amp-5,amp_qnm+0.000005), textcoords='data')
+	        #plt.annotate('(%.2f, %.2g)' % (t_qnm_amp,amp_qnm), xy=(t_qnm_amp,amp_qnm), xytext=(t_qnm_amp-5,amp_qnm+0.000005), textcoords='data')
 
 	plt.xlabel('Time', fontsize=18)
 	plt.ylabel("Amplitude", fontsize=18)
@@ -456,8 +457,8 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
 		plt.text(t_maxamp,phi_at_maxamp+0.00003,'Max \n Amp', horizontalalignment='center', fontsize=10)	
 		plt.plot([t_hrzn,t_hrzn], [starty,phi_hrzn], 'k--', linewidth =1.5)
 		plt.text(t_hrzn,starty+5,'AH3', horizontalalignment='right', fontsize=10)
-		plt.plot([t_qnm_phi,t_qnm_phi], [starty,phi_qnm], 'k--', linewidth =1.5)
-		plt.text(t_qnm_phi,starty+5,'QNM', horizontalalignment='left', fontsize=10)
+		#plt.plot([t_qnm_phi,t_qnm_phi], [starty,phi_qnm], 'k--', linewidth =1.5)
+		#plt.text(t_qnm_phi,starty+5,'QNM', horizontalalignment='left', fontsize=10)
 
 	
 	##plt.xticks(np.arange(startx, endx, 50))
@@ -471,7 +472,7 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
 	
 	plt.plot(time, phi, lw=1 )
 	
-	plyopt = plyplot1(time, phi, "Time", "Phase", "Phase Plot") #see common functions for details; RU
+	plyopt = plyplot1(time, phi, "Time", "Phase", "Phase Plot", locate_merger=locate_merger, time_hrzn=t_hrzn3, time_maxamp=t_maxamp, idx_hrzn=idx_hrzn, idx_maxamp=t1_idx) #see common functions for details; RU
 	py.plot(plyopt, filename=dynfigdir + "Psi4_phase.html")#basic plot method, object and path/name
 	
 	if locate_merger:
@@ -483,11 +484,11 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
 		plt.text(t_maxamp,phi_at_maxamp+3,'Max Amp', horizontalalignment='left', fontsize=12)	
 		plt.plot([t_hrzn,t_hrzn], [starty,phi_hrzn], 'k--', linewidth =1.5)
 		plt.text(t_hrzn,phi_hrzn+3,'AH3', horizontalalignment='right', fontsize=12)
-		plt.plot([t_qnm_phi,t_qnm_phi], [starty,phi_qnm], 'k--', linewidth =1.5)
-		plt.text(t_qnm_phi,phi_qnm+3,'QNM', horizontalalignment='right', fontsize=12)
+		#plt.plot([t_qnm_phi,t_qnm_phi], [starty,phi_qnm], 'k--', linewidth =1.5)
+		#plt.text(t_qnm_phi,phi_qnm+3,'QNM', horizontalalignment='right', fontsize=12)
 		plt.annotate('(%.2f, %.2g)' % (t_hrzn,phi_hrzn), xy=(t_hrzn,phi_hrzn), xytext=(t_hrzn-7,phi_hrzn+1), textcoords='data')
 	        plt.annotate('(%.2f, %.2g)' % (t_maxamp,phi_at_maxamp), xy=(t_maxamp,phi_at_maxamp), xytext=(t_maxamp-7,phi_at_maxamp+1), textcoords='data')
-	        plt.annotate('(%.2f, %.2g)' % (t_qnm_phi,phi_qnm), xy=(t_qnm_phi,phi_qnm), xytext=(t_qnm_phi,phi_qnm+1), textcoords='data')
+	        #plt.annotate('(%.2f, %.2g)' % (t_qnm_phi,phi_qnm), xy=(t_qnm_phi,phi_qnm), xytext=(t_qnm_phi,phi_qnm+1), textcoords='data')
 	    	#for xy in zip(t_qnm_amparr, phi_arr):
 	        #    plt.annotate('(%s, %s)' % xy, xy=xy, textcoords='data')
 
@@ -537,8 +538,8 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
 		ax1.text(t_maxamp,phi_at_maxamp+3,'Max Amp', horizontalalignment='center', fontsize=10)	
 		ax1.plot([t_hrzn,t_hrzn], [starty,phi_hrzn], 'k--', linewidth =1.5)
 		ax1.text(t_hrzn-1,starty+3,'AH3', horizontalalignment='right', fontsize=10)
-		ax1.plot([t_qnm_phi,t_qnm_phi], [starty,phi_qnm], 'k--', linewidth =1.5)
-		ax1.text(t_qnm_phi,phi_qnm+3,'QNM', horizontalalignment='center', fontsize=10)	
+		#ax1.plot([t_qnm_phi,t_qnm_phi], [starty,phi_qnm], 'k--', linewidth =1.5)
+		#ax1.text(t_qnm_phi,phi_qnm+3,'QNM', horizontalalignment='center', fontsize=10)	
 
 	    ax1.set_xlabel("time")
 	    ax1.set_ylabel("Phase")
@@ -556,7 +557,7 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
 		ax2.text(t_maxamp,logamp_max+1,'Max Amp', horizontalalignment='center', fontsize=10)
 		ax2.plot([t_hrzn,t_hrzn], [starty,logamp_hrzn], 'k--', linewidth =1.5)
 		ax2.text(t_hrzn-1,starty+0.00003,'AH3', horizontalalignment='right', fontsize=10)
-		ax2.plot([t_qnm_amp,t_qnm_amp], [starty,logamp_hrzn], 'k--', linewidth =1.5)
+		#ax2.plot([t_qnm_amp,t_qnm_amp], [starty,logamp_hrzn], 'k--', linewidth =1.5)
 		ax2.text(t_hrzn-1,starty+0.00003,'AH3', horizontalalignment='right', fontsize=10)
 	    ax2.set_xlabel("Time")
 	    ax2.set_ylabel("log(Amp)")
@@ -588,4 +589,4 @@ binSO = "/home/rudall/Runview/TestCase/BBH/SO_D9_q1.5_th2_135_ph1_90_m140/"
 binQC = "/home/rudall/Runview/TestCase/OutputDirectory/QC0_p1_l11_M192-all/"
 outDirQC = "/home/rudall/Runview/TestCase/OutputDirectory/QC0_2/"
 
-Psi4_Plots(binSO, outDirSO)
+Psi4_Plots(binSO, outDirSO, locate_merger=True)

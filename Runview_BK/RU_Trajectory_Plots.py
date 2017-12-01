@@ -98,7 +98,8 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 		bhdiag3 = os.path.join(datadir, 'BH_diagnostics.ah3.gp')
 		t_hrzn3 = np.loadtxt(bhdiag3, usecols = (1,), unpack=True)[0]
 		maxamp, t_maxamp = maxamp_time(wfdir, outdir)	
-		t_maxamp = t_maxamp-75.		
+		t_maxamp = t_maxamp-75.
+		time_maxamp=t_maxamp[0]
 		hrzn_idx = np.amin(np.where(time_bh1>=t_hrzn3))
 		maxamp_idx = np.amin(np.where(time_bh1>=t_maxamp))
 
@@ -141,14 +142,15 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	data_der = np.column_stack((time_bh1[use_idx], rdot[use_idx], phdot[use_idx]))
 	hdr = '# Time \t R_dot \t Theta_dot \n'
 	write_sep_data('ShiftTrackerRdotThdot.asc', hdr, datadir, data_der)
-	print(t_hrzn3)
+	print(t_maxamp)
+	print(time_maxamp)
 
-	plyxt=plyplot2(time_bh1, time_bh2, x_bh1, x_bh2, "BH1", "BH2", "Time", "X", "X vs. Time for 2 Black Holes", locate_merger=locate_merger, point_hrzn=t_hrzn3, point_maxamp=t_maxamp) #see common functions for details, RU
-	plyyt=plyplot2(time_bh1, time_bh2, y_bh1, y_bh2, "BH1", "BH2", "Time", "Y", "Y vs. Time for 2 Black Holes")
-	plysep=plyplot1(time_bh1, separation, "Time", "Separation", "Separation vs. Time for 2 Black Holes", Ly2=log_sep) #note use of log option
-	plyopt=plyplot1(time_bh1, phi, "Time", "Phase", "Phase vs. Time for 2 Black Holes", Ly2=logphi)
-	plyvost=plyplot1(time_bh1, rdot, "Time", "Velocity of Separation", "Velocity of Separation vs Time for 2 Black Holes")
-	plyvopt=plyplot1(time_bh1, vph_bh1, "Time", "Velocity of Phase", "Velocity of Phase vs Time for 2 Black Holes")
+	plyxt=plyplot2(time_bh1, time_bh2, x_bh1, x_bh2, "BH1", "BH2", "Time", "X", "X vs. Time for 2 Black Holes", locate_merger=locate_merger, time_hrzn=t_hrzn3, time_maxamp=time_maxamp, idx_hrzn=hrzn_idx, idx_maxamp=maxamp_idx) #see common functions for details, RU
+	plyyt=plyplot2(time_bh1, time_bh2, y_bh1, y_bh2, "BH1", "BH2", "Time", "Y", "Y vs. Time for 2 Black Holes", locate_merger=locate_merger, time_hrzn=t_hrzn3, time_maxamp=time_maxamp, idx_hrzn=hrzn_idx, idx_maxamp=maxamp_idx)
+	plysep=plyplot1(time_bh1, separation, "Time", "Separation", "Separation vs. Time for 2 Black Holes", Ly2=log_sep, locate_merger=locate_merger, time_hrzn=t_hrzn3, time_maxamp=time_maxamp, idx_hrzn=hrzn_idx, idx_maxamp=maxamp_idx) #note use of log option
+	plyopt=plyplot1(time_bh1, phi, "Time", "Phase", "Phase vs. Time for 2 Black Holes", Ly2=logphi, locate_merger=locate_merger, time_hrzn=t_hrzn3, time_maxamp=time_maxamp, idx_hrzn=hrzn_idx, idx_maxamp=maxamp_idx)
+	plyvost=plyplot1(time_bh1, rdot, "Time", "Velocity of Separation", "Velocity of Separation vs Time for 2 Black Holes", locate_merger=locate_merger, time_hrzn=t_hrzn3, time_maxamp=time_maxamp, idx_hrzn=hrzn_idx, idx_maxamp=maxamp_idx)
+	plyvopt=plyplot1(time_bh1, vph_bh1, "Time", "Velocity of Phase", "Velocity of Phase vs Time for 2 Black Holes", locate_merger=locate_merger, time_hrzn=t_hrzn3, time_maxamp=time_maxamp, idx_hrzn=hrzn_idx, idx_maxamp=maxamp_idx)
 	py.plot(plyxt, filename=dynfigdir + "Trajectory_xvstime.html") #standard plot method: object + path/filename
 	py.plot(plyyt, filename=dynfigdir + "Trajectory_yvstime.html")
 	py.plot(plysep, filename=dynfigdir + "Trajectory_separation.html")
@@ -156,7 +158,108 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	py.plot(plyvost, filename=dynfigdir + "Trajectory_separation_velocity.html")
 	py.plot(plyvopt, filename=dynfigdir + "Trajectory_phase_velocity.html")
 	
-	"""Legacy Code, replaced by common functions methods
+	#Animation 1: X vs Y animation:
+	
+	if np.min(x_bh1)< np.min(x_bh2): #finds the actual minima and maxima then sets them, for layout purposes
+	  xm = np.min(x_bh1)-0.5
+	else:
+	  xm = np.min(x_bh2)-0.5
+	if np.min(y_bh1)< np.min(y_bh2): 
+	  ym = np.min(y_bh1)-0.5
+	else:
+	  ym = np.min(y_bh2)-0.5
+	if np.max(x_bh1)> np.max(x_bh2): 
+	  xM = np.max(x_bh1)+0.5
+	else:
+	  xM = np.max(x_bh2)+0.5
+	if np.max(y_bh1)> np.max(y_bh2):
+	  yM = np.max(y_bh1)+0.5
+	else:
+	  yM = np.max(y_bh2)+0.5
+	
+	
+	figureXY = { #the figure is initialized ahead of time here to make things a bit cleaner
+	    'data': [],
+	    'layout': {},
+	    'frames': []
+	}
+	
+	dataXY=[dict(x=x_bh1, y=y_bh1, #data is needed even for animations, although it likely will not be used
+		     mode='lines',
+		     name='BH1',
+		     line=dict(width=2, color='orange')
+		     ),
+		dict(x=x_bh2, y=y_bh2,
+		     mode='lines',
+		     name='BH2',
+		     line=dict(width=2, color='blue')
+		   )
+		#dict(x=x_bh1[::100], y=y_bh1[::100], #if you wish to have static lines accompanying your frames, repeat the data a second time to make them appear
+		#     mode='lines',
+		#     name='BH1',
+		#     line=dict(width=2, color='orange')
+		#     ),
+		#dict(x=x_bh2[::100], y=y_bh2[::100],
+		#     mode='lines',
+		#     name='BH2',
+		#     line=dict(width=2, color='blue')
+		#    )
+		]
+	framesXY=[dict(data=[ #frames are the core of the animation, fairly intuitive
+			#dict(x=[x_bh1[100*k]], #sets x and y data for a single point (note marker mode)
+			#     y=[y_bh1[100*k]], #100*k means only sampling 1/100th of the actual data, else the animation lags severely
+			#     mode='markers',
+			#     name='BH1',
+			#     marker=dict(color='red',size=10)
+			#    ),
+			#dict(x=[x_bh2[100*k]],
+			#     y=[y_bh2[100*k]],
+			#     mode='markers',
+			#     name='BH2',
+			#     marker=dict(color='green',size=10)
+			#    ),
+			dict(x=x_bh1[:100*k:100], #arrays generate a line which can be viewed. Note how the data above was in fact an array as well, but here we do not include the extra brackets
+			       y=y_bh1[:100*k:100], #per numpy slicing, we go to the same point as above, step size 100
+			       mode='lines',
+			       line=dict(color='orange',width=2)
+			    ),
+			dict(x=x_bh2[:100*k:100],
+			       y=y_bh2[:100*k:100],
+			       mode='lines',
+			       line=dict(color='blue',width=2)
+			      )
+			 ], 
+			  ) for k in range(len(time_bh1)//100)] #k iteration sets the frames, note how range follows from the above iteration over k
+			
+	
+	figureXY['data'] = dataXY 
+	figureXY['layout']['xaxis'] = {'range':[xm,xM], 'autorange': False, 'zeroline': False, 'title': "X Position"} # this is why we initialized the figure first - this would be very messy otherwise
+	figureXY['layout']['yaxis'] = {'range':[ym,yM], 'autorange': False, 'zeroline': False, 'title': "Y Position"} #autorange: False prevents it from autoscaling, I'm not sure what zeroline is for
+	figureXY['layout']['title'] = "X vs Y for Two Black Holes Approaching Merger"
+	figureXY['layout']['updatemenus'] = [ #updatemenus controls buttons, sliders, etc
+	  {
+	    'buttons':[
+		{'label': 'Play', #label is just the text
+		 'method': 'animate', #method:animate for controlling animations
+		 'args': [None, {'frame':{'duration': 10, 'redraw':False}, 'fromcurrent':True}] #passing None as the first argument makes it a play button. I have no idea what units duration is in. the rest should be decently intuitive
+		},
+		{'label': 'Pause',
+		 'method': 'animate',
+		 'args': [[None], {'frame':{'duration': 0, 'redraw': False}, 'mode': 'immediate', 'transition':{'duration':0}, 'fromcurrent': True}] #[None] corresponds to a pause button. I have no explanation why. 
+		}
+		]
+	  }
+	]
+	figureXY['frames'] = framesXY
+	py.plot(figureXY, filename=dynfigdir+'Trajectory_xy_animation.html')
+	
+outDirSO = "/home/rudall/Runview/TestCase/OutputDirectory/SOetc_2/"
+binSO = "/home/rudall/Runview/TestCase/BBH/SO_D9_q1.5_th2_135_ph1_90_m140/"
+binQC = "/home/rudall/Runview/TestCase/OutputDirectory/QC0_p1_l11_M192-all/"
+outDirQC = "/home/rudall/Runview/TestCase/OutputDirectory/QC0_2/"
+
+Trajectory(binSO, outDirSO, locate_merger=True)
+"""Legacy Code, replaced by common functions methods
 	#data sets follow key:category name(e.g. trace, data) + object (e.g. BH1) + variables (X,Y,Sep,T)
 	#Plot 1 X vs T  
 	traceBH1XT= go.Scatter( #scatter is standard data type, accomodates discrete points and lines, the latter used here
@@ -422,104 +525,3 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	py.plot(plotVOPT, filename=dynfigdir + "Trajectory_phase_velocity.html")
 	"""
 	
-	#Animation 1: X vs Y animation:
-	
-	if np.min(x_bh1)< np.min(x_bh2): #finds the actual minima and maxima then sets them, for layout purposes
-	  xm = np.min(x_bh1)-0.5
-	else:
-	  xm = np.min(x_bh2)-0.5
-	if np.min(y_bh1)< np.min(y_bh2): 
-	  ym = np.min(y_bh1)-0.5
-	else:
-	  ym = np.min(y_bh2)-0.5
-	if np.max(x_bh1)> np.max(x_bh2): 
-	  xM = np.max(x_bh1)+0.5
-	else:
-	  xM = np.max(x_bh2)+0.5
-	if np.max(y_bh1)> np.max(y_bh2):
-	  yM = np.max(y_bh1)+0.5
-	else:
-	  yM = np.max(y_bh2)+0.5
-	
-	
-	figureXY = { #the figure is initialized ahead of time here to make things a bit cleaner
-	    'data': [],
-	    'layout': {},
-	    'frames': []
-	}
-	
-	dataXY=[dict(x=x_bh1, y=y_bh1, #data is needed even for animations, although it likely will not be used
-		     mode='lines',
-		     name='BH1',
-		     line=dict(width=2, color='orange')
-		     ),
-		dict(x=x_bh2, y=y_bh2,
-		     mode='lines',
-		     name='BH2',
-		     line=dict(width=2, color='blue')
-		   )
-		#dict(x=x_bh1[::100], y=y_bh1[::100], #if you wish to have static lines accompanying your frames, repeat the data a second time to make them appear
-		#     mode='lines',
-		#     name='BH1',
-		#     line=dict(width=2, color='orange')
-		#     ),
-		#dict(x=x_bh2[::100], y=y_bh2[::100],
-		#     mode='lines',
-		#     name='BH2',
-		#     line=dict(width=2, color='blue')
-		#    )
-		]
-	framesXY=[dict(data=[ #frames are the core of the animation, fairly intuitive
-			#dict(x=[x_bh1[100*k]], #sets x and y data for a single point (note marker mode)
-			#     y=[y_bh1[100*k]], #100*k means only sampling 1/100th of the actual data, else the animation lags severely
-			#     mode='markers',
-			#     name='BH1',
-			#     marker=dict(color='red',size=10)
-			#    ),
-			#dict(x=[x_bh2[100*k]],
-			#     y=[y_bh2[100*k]],
-			#     mode='markers',
-			#     name='BH2',
-			#     marker=dict(color='green',size=10)
-			#    ),
-			dict(x=x_bh1[:100*k:100], #arrays generate a line which can be viewed. Note how the data above was in fact an array as well, but here we do not include the extra brackets
-			       y=y_bh1[:100*k:100], #per numpy slicing, we go to the same point as above, step size 100
-			       mode='lines',
-			       line=dict(color='orange',width=2)
-			    ),
-			dict(x=x_bh2[:100*k:100],
-			       y=y_bh2[:100*k:100],
-			       mode='lines',
-			       line=dict(color='blue',width=2)
-			      )
-			 ], 
-			  ) for k in range(len(time_bh1)//100)] #k iteration sets the frames, note how range follows from the above iteration over k
-			
-	
-	figureXY['data'] = dataXY 
-	figureXY['layout']['xaxis'] = {'range':[xm,xM], 'autorange': False, 'zeroline': False, 'title': "X Position"} # this is why we initialized the figure first - this would be very messy otherwise
-	figureXY['layout']['yaxis'] = {'range':[ym,yM], 'autorange': False, 'zeroline': False, 'title': "Y Position"} #autorange: False prevents it from autoscaling, I'm not sure what zeroline is for
-	figureXY['layout']['title'] = "X vs Y for Two Black Holes Approaching Merger"
-	figureXY['layout']['updatemenus'] = [ #updatemenus controls buttons, sliders, etc
-	  {
-	    'buttons':[
-		{'label': 'Play', #label is just the text
-		 'method': 'animate', #method:animate for controlling animations
-		 'args': [None, {'frame':{'duration': 10, 'redraw':False}, 'fromcurrent':True}] #passing None as the first argument makes it a play button. I have no idea what units duration is in. the rest should be decently intuitive
-		},
-		{'label': 'Pause',
-		 'method': 'animate',
-		 'args': [[None], {'frame':{'duration': 0, 'redraw': False}, 'mode': 'immediate', 'transition':{'duration':0}, 'fromcurrent': True}] #[None] corresponds to a pause button. I have no explanation why. 
-		}
-		]
-	  }
-	]
-	figureXY['frames'] = framesXY
-	py.plot(figureXY, filename=dynfigdir+'Trajectory_xy_animation.html')
-	
-outDirSO = "/home/rudall/Runview/TestCase/OutputDirectory/SOetc_2/"
-binSO = "/home/rudall/Runview/TestCase/BBH/SO_D9_q1.5_th2_135_ph1_90_m140/"
-binQC = "/home/rudall/Runview/TestCase/OutputDirectory/QC0_p1_l11_M192-all/"
-outDirQC = "/home/rudall/Runview/TestCase/OutputDirectory/QC0_2/"
-
-Trajectory(binSO, outDirSO, locate_merger=True)

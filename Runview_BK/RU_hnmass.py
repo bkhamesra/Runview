@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 from matplotlib import rc
 from CommonFunctions import *
-
+from Psi4 import maxamp_time
 
 def write_massspin_data(outdir, filename, data):
 
@@ -42,26 +42,28 @@ def Mass_Plots(wfdir, outdir,locate_merger=False):
 		ihspin1 = os.path.join(datadir,"ihspin_hn_4.asc")
 
 		#Horizon Location
-	if locate_merger==True:
-		bhdiag3 = os.path.join(datadir, 'BH_diagnostics.ah3.gp')
-		t_hrzn3 = np.loadtxt(bhdiag3, usecols = (1,), unpack=True)[0]
-		maxamp, t_maxamp = maxamp_time(wfdir, outdir)	
-		t_maxamp = t_maxamp-75.		
-		hrzn_idx = np.amin(np.where(time_bh1>=t_hrzn3))
-		maxamp_idx = np.amin(np.where(time_bh1>=t_maxamp))
-
-		time_arr = np.around(np.array((t_hrzn3, t_maxamp)),2)
-		print("Final Horizon Detected at %f and Max Amplitude at %f"%(t_hrzn3, t_maxamp))
-
-
+	
 	if os.path.exists(bh_diag1):
-		time_bh1, irr_m1 = np.genfromtxt(bh_diag0, usecols = (1,26,), unpack=True, comments = '#')
+	 time_bh1, irr_m1 = np.genfromtxt(bh_diag0, usecols = (1,26,), unpack=True, comments = '#')
 		time_bh2, irr_m2 = np.genfromtxt(bh_diag1, usecols = (1,26,), unpack =True, comments = '#')
 		minlen = min(len(time_bh1), len(time_bh2))-1
+		
+	 if locate_merger==True:
+		  bhdiag3 = os.path.join(datadir, 'BH_diagnostics.ah3.gp')
+		  t_hrzn3 = np.loadtxt(bhdiag3, usecols = (1,), unpack=True)[0]
+		  maxamp, t_maxamp = maxamp_time(wfdir, outdir)	
+		  t_maxamp = t_maxamp-75.		
+		  hrzn_idx = np.amin(np.where(time_bh1>=t_hrzn3))
+		  maxamp_idx = np.amin(np.where(time_bh1>=t_maxamp))
+		  time_maxamp=t_maxamp[0]
+
+		  time_arr = np.around(np.array((t_hrzn3, t_maxamp)),2)
+		  print("Final Horizon Detected at %f and Max Amplitude at %f"%(t_hrzn3, t_maxamp))
+	
 		plot1(time_bh1, irr_m1, 'Time', 'BH1 Mass ', 'Mass_BH1', statfigdir)	
-		plybh1m = plyplot1(time_bh1, irr_m1, 'Time', 'BH1 Mass ', 'Mass_BH1') #for details on behavior, see common functions RU
+		plybh1m = plyplot1(time_bh1, irr_m1, 'Time', 'BH1 Mass ', 'Mass_BH1', locate_merger=locate_merger, time_hrzn=t_hrzn3, time_maxamp=time_maxamp, idx_hrzn=hrzn_idx, idx_maxamp=maxamp_idx) #for details on behavior, see common functions RU
 		plot1(time_bh2, irr_m2, 'Time', 'BH2 Mass', 'Mass_BH2', statfigdir)	
-		plybh2m = plyplot1(time_bh2, irr_m2, 'Time', 'BH2 Mass', 'Mass_BH2')
+		plybh2m = plyplot1(time_bh2, irr_m2, 'Time', 'BH2 Mass', 'Mass_BH2', locate_merger=locate_merger, time_hrzn=t_hrzn3, time_maxamp=time_maxamp, idx_hrzn=hrzn_idx, idx_maxamp=maxamp_idx)
 		plt.plot(time_bh1, irr_m1, color='b', label="BH1")
 		plt.plot(time_bh2, irr_m2, color='k', label="BH2")
 		plt.xlabel("Time (in M)")
@@ -69,7 +71,7 @@ def Mass_Plots(wfdir, outdir,locate_merger=False):
 		plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=2, mode="expand", borderaxespad=0.)
 		plt.savefig(os.path.join(statfigdir, "IrreducibleMasses.png"))
 		plt.close()
-		plyirrm = plyplot2(time_bh1, time_bh2, irr_m1, irr_m2, "BH1", "BH2", "Irreducible Masses", "Time (in M)", "Irreducible Mass")
+		plyirrm = plyplot2(time_bh1, time_bh2, irr_m1, irr_m2, "BH1", "BH2", "Irreducible Masses", "Time (in M)", "Irreducible Mass", locate_merger=locate_merger, time_hrzn=t_hrzn3, time_maxamp=time_maxamp, idx_hrzn=hrzn_idx, idx_maxamp=maxamp_idx)
 		py.plot(plybh1m ,filname= dynfigdir + "Mass_BH1.html") #basic plot function, object + path/filename
 		py.plot(plybh2m ,filname= dynfigdir + "Mass_BH2.html")
 		py.plot(plyirrm ,filname= dynfigdir + "IrreducibleMasses.html")
@@ -139,4 +141,4 @@ binSO = "/home/rudall/Runview/TestCase/BBH/SO_D9_q1.5_th2_135_ph1_90_m140/"
 binQC = "/home/rudall/Runview/TestCase/OutputDirectory/QC0_p1_l11_M192-all/"
 outDirQC = "/home/rudall/Runview/TestCase/OutputDirectory/QC0_2/"
 
-Mass_Plots(binQC, outDirQC)
+Mass_Plots(binSO, outDirSO,locate_merger=True)

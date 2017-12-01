@@ -91,13 +91,25 @@ def plot2(x1,y1, x2, y2, xlabel, ylabel, plotname, outdir):
 #Generic Functions for 1 and 2 object plots. Adaptations (read: basically copies) of trajectories plots, comments and all. Go to those to figure out how they work more clearly
 
 #1 variable plot, with added log toggle
-def plyplot1(x,y1,x_label,y_label,title, Ly2=None, locate_merger=False, point_hrzn=0, point_maxamp=0): 
+def plyplot1(x,y1,x_label,y_label,title, Ly2=None, locate_merger=False, time_hrzn=0, time_maxamp=0, idx_hrzn=0, idx_maxamp=0): 
 	trace1 = go.Scatter(
 	  x = x, 
 	  y = y1,
 	  mode = "lines",
 	  name = y_label
 	)
+	
+	layout = go.Layout(
+	    title = title,
+	    hovermode = "closest",
+	    xaxis = dict(
+	      title = x_label
+	    ),
+	    yaxis = dict(
+	      title = y_label
+	    )
+	  )
+	
 	if Ly2 != None:
 	  trace2 = go.Scatter( #logarithmic data can be plotted on the same and toggled, as performed below
 	    x = x, 
@@ -122,38 +134,21 @@ def plyplot1(x,y1,x_label,y_label,title, Ly2=None, locate_merger=False, point_hr
 			args=[{'visible':[False,True]},
 			      {'title':"Log "+title}])]))])
 	  
-	  layout = go.Layout(
-	    title = title,
-	    hovermode = "closest",
-	    xaxis = dict(
-	      title = x_label
-	    ),
-	    yaxis = dict(
-	      title = y_label
-	    ),
-	    updatemenus=updatemenus
-	  )
+	  
+	  layout['updatemenus']=updatemenus
 	    
 	else:
 	  data = [trace1]
 	  
 	if locate_merger==True:
-	  layout = go.Layout(
-	    title = title,
-	    hovermode = "closest",
-	    xaxis = dict(
-	      title = x_label
-	    ),
-	    yaxis = dict(
-	      title = y_label
-	    ),
-	    shapes = [
+	 
+	    layout['shapes'] = [
 	    {
             'type': 'line',
-            'x0': point_hrzn,
+            'x0': time_hrzn,
             'y0': 0,
-            'x1': point_hrzn,
-            'y1': y1[int(point_hrzn)],
+            'x1': time_hrzn,
+            'y1': y1[idx_hrzn],
             'line': {
                 'color': 'rgb(255, 0, 0)',
                 'width': 1,
@@ -161,33 +156,23 @@ def plyplot1(x,y1,x_label,y_label,title, Ly2=None, locate_merger=False, point_hr
 	    },
 	    {
             'type': 'line',
-            'x0': point_maxamp,
+            'x0': time_maxamp,
             'y0': 0,
-            'x1': point_maxamp,
-            'y1': y1[int(point_maxamp)],
+            'x1': time_maxamp,
+            'y1': y1[idx_maxamp],
             'line': {
-                'color': 'rgb(0, 255, 0)',
+                'color': 'rgb(0, 255, 128)',
                 'width': 1,
 	      },
 	    }]
-	    )
-	else:
-	  layout = go.Layout(
-	    title = title,
-	    hovermode = "closest",
-	    xaxis = dict(
-	      title = x_label
-	    ),
-	    yaxis = dict(
-	      title = y_label
-	    )
-	  )
+	    
+
 
 	  
 	plot = go.Figure(data=data, layout=layout)
 	return plot
 	
-def plyplot2(x1, x2, y1, y2, name1, name2, x_label, y_label, title, locate_merger=False, point_hrzn=0, point_maxamp=0 ): #for 2 objects; directly from trajectories, with comments included
+def plyplot2(x1, x2, y1, y2, name1, name2, x_label, y_label, title, locate_merger=False, time_hrzn=0, time_maxamp=0, idx_hrzn=0, idx_maxamp=0): #for 2 objects; directly from trajectories, with comments included
 	trace1= go.Scatter( #scatter is standard data type, accomodates discrete points and lines, the latter used here
 	  x = x1, 
 	  y = y1,
@@ -215,26 +200,27 @@ def plyplot2(x1, x2, y1, y2, name1, name2, x_label, y_label, title, locate_merge
 	    shapes = [
 	  {
 	      'type': 'line',
-	      'x0': point_hrzn,
+	      'x0': time_maxamp,
 	      'y0': 0,
-	      'x1': point_hrzn,
-	      'y1': y1[int(point_hrzn)],
+	      'x1': time_maxamp,
+	      'y1': y1[idx_maxamp],
 	      'line': {
-		  'color': 'rgb(255,0 ,0)',
+		  'color': 'rgb(0, 255, 128)',
 		  'width': 1,
 	      },
 	  },
 	  {
 	      'type': 'line',
-	      'x0': point_maxamp,
+	      'x0': time_hrzn,
 	      'y0': 0,
-	      'x1': point_maxamp,
-	      'y1': y1[int(point_maxamp)],
+	      'x1': time_hrzn,
+	      'y1': y1[idx_hrzn],
 	      'line': {
-		  'color': 'rgb(0, 255, 0)',
+		  'color': 'rgb(255,0 ,0)',
 		  'width': 1,
 	      },
-	  }]
+	  },
+	  ]
 	  )
 	else:
 	  layout = go.Layout( #layout objects do exactly what you think they do

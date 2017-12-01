@@ -1,0 +1,8 @@
+The apparent horizon/max amp is present, but incomplete:
+  -All the scripts presently only run if locate_merger=True, the plots need to be couched in if statements so that it works better, not hard, but tedious
+  -Aesthetically, the lines are often very difficult to see if they hapen to occur at a point where the graph's magnitude is low
+    -They also aren't labelled. Perhaps replacing the tick marks with labels will make everything cleaner overall?
+  -The animations don't have apparent horizons. Again, the material is there, it just needs to be put in
+  -also want to make it toggleable in the future, can simply add a component to the updatemenus in layout within the if statement in common functions
+  -Psi4 is also completely broken; I don't know why
+  -Also, again for reasons I don't understand, it would appear the time range of the spins does not include the time of maxamp or hrzn, so that doesn't work
