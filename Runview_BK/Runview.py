@@ -24,6 +24,7 @@ parser.add_argument("--stitch_data", help='Use this option to stitch multiple ou
 parser.add_argument("--find_merger", help='Use this option to track the merger and final black hole. \n Usage: --find_merger', action="store_true")
 parser.add_argument("--find_qnm", help='Use this option to find the quasinormal modes using Psi4. \n Usage: --find_qnm', action="store_true")
 parser.add_argument("-pd","--puncture_dynamics", help='Creates the necessary plots for puncture dynamics project. \n Usage: --puncture_dynamics', action="store_true")
+parser.add_argument("--extra_tracker", help='Specify if you want to include any addition AHF tracker apart from three black holes. \n Usage: --extra_tracker', type=int, default=0)
 
 
 args = parser.parse_args()
@@ -34,7 +35,7 @@ verbose = args.verbosity
 findmerger = args.find_merger
 findqnm = args.find_qnm
 puncdyn = args.puncture_dynamics
-
+extra_surf = args.extra_tracker
 
 dirpath = args.source_dir
 outdir =  args.output
@@ -47,7 +48,7 @@ if stitchdata:
 CollectFiles(dirpath, outdir)	
 
 if puncdyn==True:
-	PunctureDynamics(dirpath, outdir, locate_merger=findmerger)
+	PunctureDynamics(dirpath, outdir, locate_merger=findmerger, extra_surf = int(extra_surf ))
 	runstats(dirpath, outdir)
 	webpage_pd(dirpath, outdir, locate_merger=findmerger)
 else:

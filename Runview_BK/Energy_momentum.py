@@ -91,7 +91,7 @@ def Energy_Momentum(wfdir, outdir, locate_merger=False):
             plt.annotate('(%.2f, %.2g)' % (kwargs['t1_max_amp'],kwargs['y1_maxamp']), xy=(kwargs['t1_max_amp'],kwargs['y1_maxamp']), xytext=(kwargs['t1_max_amp'],kwargs['y1_maxamp']+delta_y*10), textcoords='data', fontsize=10)
             plt.annotate('(%.2f, %.2g)' % (kwargs['t1_qnm'],kwargs['y1_qnm']), xy=(kwargs['t1_qnm'],kwargs['y1_qnm']), xytext=(kwargs['t1_qnm'],kwargs['y1_qnm']+delta_y*10), textcoords='data', fontsize=10)
 		
-	ax.set_xlim(kwargs['t1_max_amp']-50, kwargs['t1_max_amp']+50)
+   	    ax.set_xlim(kwargs['t1_max_amp']-50, kwargs['t1_max_amp']+50)
 	lgd = plt.legend()
 	ax.grid(True)
 	fig.savefig(os.path.join(figdir,('AngMomDer_zoom'+'.png')), dpi = 500)

@@ -37,7 +37,7 @@ def Mass_Plots(wfdir, outdir, locate_merger=False):
 
 	ihspin0 = os.path.join(datadir,"ihspin_hn_0.asc")
 	ihspin1 = os.path.join(datadir,"ihspin_hn_1.asc")
-	ihspin1 = os.path.join(datadir,"ihspin_hn_2.asc")
+	ihspin2 = os.path.join(datadir,"ihspin_hn_2.asc")
 
 	if not os.path.exists(ihspin0):	
 		ihspin0 = os.path.join(datadir,"ihspin_hn_3.asc")
@@ -48,20 +48,25 @@ def Mass_Plots(wfdir, outdir, locate_merger=False):
 	    
 	    time_bh1, irr_m1 = np.genfromtxt(bh_diag0, usecols = (1,26,), unpack=True, comments = '#')
 	    time_bh2, irr_m2 = np.genfromtxt(bh_diag1, usecols = (1,26,), unpack =True, comments = '#')
-	    time_bh3, irr_m3 = np.genfromtxt(bh_diag2, usecols = (1,26,), unpack =True, comments = '#')
 	    minlen = min(len(time_bh1), len(time_bh2))-1
 
-	    t_merger = func_t_hrzn(datadir, locate_merger)-75.  #To get time of merger in COM frame	
 	    plot1(time_bh1, irr_m1, 'Time', 'BH1 Mass ', 'Mass_BH1', figdir)		
 	    plot1(time_bh2, irr_m2, 'Time', 'BH2 Mass', 'Mass_BH2', figdir)		
-	    plot1(time_bh3, irr_m3, 'Time', 'BH3 Mass', 'Mass_BH3', figdir)		
 	    
 	    plt.plot(time_bh1, irr_m1, color='blue', label="BH1")
 	    plt.plot(time_bh2, irr_m2, color='green', ls='--', lw=2, label="BH2")
-	    plt.plot(time_bh3, irr_m3, color='red', ls='--', lw=2, label="BH2")
+
+  	    if os.path.exists(bh_diag2):    
+	        
+		time_bh3, irr_m3 = np.genfromtxt(bh_diag2, usecols = (1,26,), unpack =True, comments = '#')
+	        
+		plot1(time_bh3, irr_m3, 'Time', 'BH3 Mass', 'Mass_BH3', figdir)		
+	        plt.plot(time_bh3, irr_m3, color='red', ls='--', lw=2, label="BH2")
+
 	    starty,endy = plt.gca().get_ylim()
 	   
 	    if locate_merger==True:	
+	    	t_merger = func_t_hrzn(datadir, locate_merger)-75.  #To get time of merger in COM frame	
 	        hrzn_idx = np.amin(np.where(time_bh1>=t_merger))		
 	        plt.plot([t_merger,t_merger], [starty,endy], 'k--', linewidth=1.5)
 	        plt.text( t_merger,starty+0.001,'AH3', horizontalalignment='right', fontsize=12)

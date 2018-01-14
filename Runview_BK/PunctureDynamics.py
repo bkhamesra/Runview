@@ -195,8 +195,8 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	#Plot 2: Trajectory - y vs x
 
 	f3, ax3 = plt.subplots()
-	bh1 = ax3.plot(x_bh1,y_bh1, color='b', linewidth=1, label="bh1")
-	bh2 = ax3.plot(x_bh2,y_bh2, 'g', linewidth=1, label="bh2")
+	bh1 = ax3.plot(np.around(x_bh1, 8),np.around(y_bh1,8), color='b', linewidth=1, label="bh1")
+	bh2 = ax3.plot(np.around(x_bh2,8),np.around(y_bh2,8), 'g', linewidth=1, label="bh2")
 	
 	if locate_merger:
 		circle = plt.Circle((0,0), radius,color='orange', alpha =0.7, label="Final Apparent Horizon")
@@ -230,7 +230,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	
 	#Plot 3b: Trajectory - log(separation) vs time
 
-	plt.plot(time_bh1, log_sep, color='b', linewidth=1)
+	plt.semilogy(time_bh1, separation, color='b', linewidth=1)
 	startx,endx = plt.gca().get_xlim()
 	starty,endy = plt.gca().get_ylim()
 
@@ -239,7 +239,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 		plt.text( t_hrzn3,starty+0.1,'AH3', horizontalalignment='right', fontsize=12)
 
 	plt.xlabel('Time', fontsize = 14)
-	plt.ylabel('log(Separation)', fontsize = 14)
+	plt.ylabel('Separation', fontsize = 14)
 	plt.grid(True)
 	plt.tight_layout()
 	plt.savefig(figdir+'/Trajectory_logsep.png', dpi = 500)
@@ -265,7 +265,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 
 	#Plot 4b: Orbital Phase
 
-	plt.plot(time_bh1, logphi, color='b', lw=1)
+	plt.semilogy(time_bh1, phi, color='b', lw=1)
 	startx,endx = plt.gca().get_xlim()
 	starty,endy = plt.gca().get_ylim()
 
@@ -275,7 +275,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 
 
 	plt.xlabel('Time', fontsize=14)
-	plt.ylabel('log(Phase)', fontsize=14)
+	plt.ylabel('Phase', fontsize=14)
 	plt.grid(True)
 	plt.tight_layout()
 	plt.savefig(figdir+'/Trajectory_logphase.png',dpi = 500)
@@ -389,22 +389,40 @@ def RadiusPlots(wfdir, outdir, locate_merger=False, extra_surf=True):
 	time_bh2, rmin2, rmax2, rmean2, r_areal2, grad_ar2 = np.genfromtxt(bh_diag1, usecols = (1,5,6,7,27,32), unpack=True, comments ='#')
 	time_bh3, rmin3, rmax3, rmean3, r_areal3, grad_ar3 = np.genfromtxt(bh_diag2, usecols = (1,5,6,7,27,32), unpack=True, comments ='#')
 	
-	if extra_surf:
+	if extra_surf==1:
+	    bh_diag3 = os.path.join(datadir,'BH_diagnostics.ah4.gp')
+ 	    time_bh4, rmin4, rmax4, rmean4, r_areal4, grad_ar4 = np.genfromtxt(bh_diag3, usecols = (1,5,6,7,27,32), unpack=True, comments ='#')
+	elif extra_surf==2:
 	    bh_diag3 = os.path.join(datadir,'BH_diagnostics.ah4.gp')
 	    bh_diag4 = os.path.join(datadir,'BH_diagnostics.ah5.gp')
  	    time_bh4, rmin4, rmax4, rmean4, r_areal4, grad_ar4 = np.genfromtxt(bh_diag3, usecols = (1,5,6,7,27,32), unpack=True, comments ='#')
 	    time_bh5, rmin5, rmax5, rmean5, r_areal5, grad_ar5 = np.genfromtxt(bh_diag4, usecols = (1,5,6,7,27,32), unpack=True, comments ='#')
 	
+	elif extra_surf==3:
+	    bh_diag3 = os.path.join(datadir,'BH_diagnostics.ah4.gp')
+	    bh_diag4 = os.path.join(datadir,'BH_diagnostics.ah5.gp')
+	    bh_diag5 = os.path.join(datadir,'BH_diagnostics.ah6.gp')
+ 	    time_bh4, rmin4, rmax4, rmean4, r_areal4, grad_ar4 = np.genfromtxt(bh_diag3, usecols = (1,5,6,7,27,32), unpack=True, comments ='#')
+	    time_bh5, rmin5, rmax5, rmean5, r_areal5, grad_ar5 = np.genfromtxt(bh_diag4, usecols = (1,5,6,7,27,32), unpack=True, comments ='#')
+	    time_bh6, rmin6, rmax6, rmean6, r_areal6, grad_ar6 = np.genfromtxt(bh_diag5, usecols = (1,5,6,7,27,32), unpack=True, comments ='#')
+
 	t_merger = merger_time(wfdir, outdir)
 	
 	#Plot 1a: Areal Radius Plots
-	f1, (ax1,ax2) = plt.subplots(2,1)
+#	f1, (ax1,ax2) = plt.subplots(2,1)
+	f1, (ax1) = plt.subplots(1,1)
 	bh1, = ax1.plot(time_bh1, r_areal1, c='b',  linewidth=2, label="BH1")
 	bh2, = ax1.plot(time_bh2, r_areal2, c='g',  linewidth=1, label="BH2")
 	bh3, = ax1.plot(time_bh3, r_areal3, c='r',  linewidth=1, label="Common Horizon")
-	if extra_surf:
-	    bh4, = ax1.plot(time_bh4, r_areal4, c='k', linewidth=1, label="Theta=-0.1")
-	    bh5, = ax1.plot(time_bh5, r_areal5, c='darkviolet',  linewidth=2, label="Theta=0.1")
+	if extra_surf==1:
+	    bh4, = ax1.plot(time_bh4, r_areal4, c='k', linewidth=1, label="Inner Horizon")
+	elif extra_surf==2:
+	    bh4, = ax1.plot(time_bh4, r_areal4, c='k', linewidth=1, label="Pretracker 1")	#"Theta=-0.1")
+	    bh5, = ax1.plot(time_bh5, r_areal5, c='darkviolet',  linewidth=2, label="Pretracker 2")	#"Theta=0.1")
+	elif extra_surf==3:
+	    bh4, = ax1.plot(time_bh4, r_areal4, c='k', linewidth=1, label="Inner Horizon")	#"Theta=-0.1")
+	   # bh5, = ax1.scatter(time_bh5, r_areal5, c='darkviolet', linewidth=1, label="Pretracker")	#"Theta=-0.1")
+	    bh6 = ax1.scatter(time_bh6, r_areal6, c='darkviolet',  linewidth=1, label="Pretracker 2")	#"Theta=0.1")
 	
 	startx,endx = ax1.get_xlim()
 	starty,endy = ax1.get_ylim()
@@ -415,29 +433,32 @@ def RadiusPlots(wfdir, outdir, locate_merger=False, extra_surf=True):
  	    #ax1.text( t_merger,starty+0.001,'AH3', horizontalalignment='right', fontsize=12)
 
 	#Plot 1b: Gradient of Areal Radius	
-	ax2.plot(time_bh1, grad_ar1, c='b',  linewidth=2, label="BH1")
-	ax2.plot(time_bh2, grad_ar2, c='g',  linewidth=1, label="BH2")
-	ax2.plot(time_bh3, grad_ar3, c='r',  linewidth=1, label="Outer Common Horizon")
-	if extra_surf:
-	    ax2.plot(time_bh4, grad_ar4, c='k',  linewidth=1, label="Theta=-0.1")
-	    ax2.plot(time_bh5, grad_ar5, c='darkviolet',  linewidth=1, label="Theta=0.1")
-	
-	startx,endx = ax2.get_xlim()
-	starty,endy = ax2.get_ylim()
-	
-	if locate_merger==True:	
-	    hrzn_idx = np.amin(np.where(time_bh1>=t_merger))		
-	    ax2.plot([t_merger,t_merger], [starty,endy], 'k--', linewidth=1.5)
- 	    ax2.text( t_merger,starty+0.001,'AH3', horizontalalignment='right', fontsize=12)
+#	ax2.plot(time_bh1, grad_ar1, c='b',  linewidth=2, label="BH1")
+#	ax2.plot(time_bh2, grad_ar2, c='g',  linewidth=1, label="BH2")
+#	ax2.plot(time_bh3, grad_ar3, c='r',  linewidth=1, label="Outer Common Horizon")
+#	if extra_surf==1:
+#	    ax2.plot(time_bh4, grad_ar4, c='k',  linewidth=1, label="Inner Horizon")
+#	elif extra_surf==2:
+#	    ax2.plot(time_bh4, grad_ar4, c='k',  linewidth=1, label="Theta=-0.1")
+#	    ax2.plot(time_bh5, grad_ar5, c='darkviolet',  linewidth=1, label="Theta=0.1")
+#	
+#	startx,endx = ax2.get_xlim()
+#	starty,endy = ax2.get_ylim()
+#	
+#	if locate_merger==True:	
+#	    hrzn_idx = np.amin(np.where(time_bh1>=t_merger))		
+#	    ax2.plot([t_merger,t_merger], [starty,endy], 'k--', linewidth=1.5)
+# 	    ax2.text( t_merger,starty+0.001,'AH3', horizontalalignment='right', fontsize=12)
 
 	ax1.set_ylabel('Areal Radius', fontsize = 14)
-	ax2.set_xlabel('Time', fontsize = 14)
-	ax2.set_ylabel('Grad(Areal Radius)', fontsize = 14)
-	ax1.set_xlim(0,70)
-	ax2.set_xlim(0,70)
+	ax1.set_xlabel('Time', fontsize = 14)
+	#ax2.set_xlabel('Time', fontsize = 14)
+	#ax2.set_ylabel('Grad(Areal Radius)', fontsize = 14)
+	#ax1.set_xlim(0,70)
+	#ax2.set_xlim(0,70)
 	ax1.grid(True)
-	lgd = ax1.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
-	ax2.grid(True)
+	lgd = ax1.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=4, mode="expand", borderaxespad=0.)
+	#ax2.grid(True)
 	plt.tight_layout()
 	plt.savefig(figdir + '/ArealRadius.png', dpi = 500, bbox_extra_artists=(lgd,), bbox_inches='tight')
 	plt.close()
@@ -458,11 +479,17 @@ def RadiusPlots(wfdir, outdir, locate_merger=False, extra_surf=True):
 	bh3, = ax1.plot(time_bh3, rmean3, c='r',  linewidth=1, label="BH3:mean radius")
 	ax1.plot(time_bh3, rmin3, ls='--', linewidth=1, c='r', label="BH3:min-max radius")
 	ax1.plot(time_bh3, rmax3, ls='--', linewidth=1, c='r')
-	ax1.fill_between(time_bh3, rmin3, rmax3, color='coral', alpha=0.7)
+	ax1.fill_between(time_bh3, rmin3, rmax3, color='darkviolet', alpha=0.7)
 	
-	if extra_surf:
-	    bh4, = ax1.plot(time_bh4, rmean4, c='k',  linewidth=1, label="Theta=-0.1")
-	    bh5, = ax1.plot(time_bh5, rmean5, c='darkviolet',  linewidth=1, label="Theta=0.1")
+	if extra_surf==1:
+	    bh4, = ax1.plot(time_bh4, rmean4, c='k',  linewidth=1, label="Inner Horizon")
+	elif extra_surf==2:
+	    bh4, = ax1.plot(time_bh4, rmean4, c='k',  linewidth=1, label="Pretracker 1")	#"Theta=-0.1")
+	    bh5, = ax1.plot(time_bh5, rmean5, c='darkviolet',  linewidth=1, label="Pretracker 2")	#"Theta=0.1")
+	elif extra_surf==3:
+	    bh4, = ax1.plot(time_bh4, rmean4, c='k',  linewidth=1, label="Inner Horizon")	#"Theta=-0.1")
+	   # bh5, = ax1.scatter(time_bh5, rmean5, c='darkviolet',  linewidth=1, label="Pretracker ")	#"Theta=-0.1")
+	    bh6 = ax1.scatter(time_bh6, rmean6, c='darkviolet',  linewidth=1, label="Pretracker 2")	#"Theta=0.1")
 	startx,endx = ax1.get_xlim()
 	starty,endy = ax1.get_ylim()
 	
@@ -473,9 +500,9 @@ def RadiusPlots(wfdir, outdir, locate_merger=False, extra_surf=True):
 	
 	ax1.set_xlabel('Time', fontsize = 14)
 	ax1.set_ylabel('Coordinate Radius', fontsize = 14)
-	ax1.set_xlim(0,70)
+	#ax1.set_xlim(0,70)
 	ax1.grid(True)
-	lgd = ax1.legend( loc=4, prop={'size': 8})
+	lgd = ax1.legend( loc=0, prop={'size':9})
 	plt.tight_layout()
 	plt.savefig(figdir + '/CoordRadius.png', dpi = 500, bbox_extra_artists=(lgd,), bbox_inches='tight')
 	plt.close()
@@ -538,7 +565,13 @@ def TrumpetPlot(wfdir, outdir, extra_surf=False, locate_merger=False):
 	r3_mag = norm(r3, 0)
 
 
-	if extra_surf:
+	if extra_surf==1:
+	    bh_diag4 = os.path.join(datadir,'BH_diagnostics.ah4.gp')
+	    time_bh4_diag, x_bh4, y_bh4, z_bh4, rmean_bh4 =np.loadtxt(bh_diag4, unpack=True, usecols=(1,2,3,4,7))	
+	    r4 = np.array((x_bh4, y_bh4, z_bh4))
+	    r4_mag = norm(r4, 0)
+
+	elif extra_surf==2:
 	    bh_diag4 = os.path.join(datadir,'BH_diagnostics.ah4.gp')
 	    bh_diag5 = os.path.join(datadir,'BH_diagnostics.ah5.gp')
 	    time_bh4_diag, x_bh4, y_bh4, z_bh4, rmean_bh4 =np.loadtxt(bh_diag4, unpack=True, usecols=(1,2,3,4,7))	
@@ -546,9 +579,23 @@ def TrumpetPlot(wfdir, outdir, extra_surf=False, locate_merger=False):
 	    
 	    r4 = np.array((x_bh4, y_bh4, z_bh4))
     	    r5 = np.array((x_bh5, y_bh5, z_bh5))
+	    r4_mag = norm(r4, 0)
+	    r5_mag = norm(r5, 0)
+	elif extra_surf==3:
+	    bh_diag4 = os.path.join(datadir,'BH_diagnostics.ah4.gp')
+	    bh_diag5 = os.path.join(datadir,'BH_diagnostics.ah5.gp')
+	    bh_diag6 = os.path.join(datadir,'BH_diagnostics.ah6.gp')
+	    time_bh4_diag, x_bh4, y_bh4, z_bh4, rmean_bh4 =np.loadtxt(bh_diag4, unpack=True, usecols=(1,2,3,4,7))	
+  	    time_bh5_diag, x_bh5, y_bh5, z_bh5, rmean_bh5 =np.loadtxt(bh_diag5, unpack=True, usecols=(1,2,3,4,7))	
+  	    time_bh6_diag, x_bh6, y_bh6, z_bh6, rmean_bh6 =np.loadtxt(bh_diag6, unpack=True, usecols=(1,2,3,4,7))	
+
+	    r4 = np.array((x_bh4, y_bh4, z_bh4))
+    	    r5 = np.array((x_bh5, y_bh5, z_bh5))
+	    r6 = np.array((x_bh6, y_bh6, z_bh6))
 
 	    r4_mag = norm(r4, 0)
 	    r5_mag = norm(r5, 0)
+	    r6_mag = norm(r6, 0)
 
 	#Plot 1: Trumpet Plot
 	f1, ax1 = plt.subplots()
@@ -565,19 +612,39 @@ def TrumpetPlot(wfdir, outdir, extra_surf=False, locate_merger=False):
 	bh3, = ax1.plot(r3_mag, time_bh3_diag, c='r', linewidth=2, label = "bh3")
 	ax1.plot(r3_mag-rmean_bh3, time_bh3_diag, ls='--', linewidth=1,c='r') #Fixed
 	ax1.plot(r3_mag+rmean_bh3, time_bh3_diag, ls='--', linewidth=1,c='r') #Fixed
-	ax1.fill_betweenx(time_bh3_diag, -1.*r3_mag-rmean_bh3, -1.*r3_mag + rmean_bh3, color='coral', alpha=0.2)
+	ax1.fill_betweenx(time_bh3_diag, -1.*r3_mag-rmean_bh3, -1.*r3_mag + rmean_bh3, color='darkviolet', alpha=0.2)
 
-	if extra_surf:
+	if extra_surf==1:
  	    bh4, = ax1.plot(r4_mag, time_bh4_diag, c='k', linewidth=1, label = "Theta=-0.1")
 	    ax1.plot(r4_mag-rmean_bh4, time_bh4_diag, ls='--', linewidth=1,c='k') #Fixed
  	    ax1.plot(r4_mag+rmean_bh4, time_bh4_diag, ls='--', linewidth=1,c='k') #Fixed
- 	    ax1.fill_betweenx(time_bh4_diag, 1.*r4_mag-rmean_bh4, 1.*r4_mag + rmean_bh4, color='lightgrey', alpha=0.2)
- 	    
-	    bh5, = ax1.plot(r5_mag, time_bh5_diag, c='darkviolet', linewidth=1, label = "Theta=0.1")
+ 	    ax1.fill_betweenx(time_bh4_diag, 1.*r4_mag-rmean_bh4, 1.*r4_mag + rmean_bh4, color='darkgrey', alpha=0.2)
+ 	elif extra_surf==2:  
+ 	    bh4, = ax1.plot(r4_mag, time_bh4_diag, c='k', linewidth=1, label ="Pretracker 1")	# "Theta=-0.1")
+	    ax1.plot(r4_mag-rmean_bh4, time_bh4_diag, ls='--', linewidth=1,c='k') #Fixed
+ 	    ax1.plot(r4_mag+rmean_bh4, time_bh4_diag, ls='--', linewidth=1,c='k') #Fixed
+ 	    ax1.fill_betweenx(time_bh4_diag, 1.*r4_mag-rmean_bh4, 1.*r4_mag + rmean_bh4, color='darkgrey', alpha=0.2)
+
+	    bh5, = ax1.plot(r5_mag, time_bh5_diag, c='darkviolet', linewidth=1, label = "Pretracker 2")		# "Theta=0.1")
 	    ax1.plot(r5_mag-rmean_bh5, time_bh5_diag, ls='--', linewidth=1,c='darkviolet') #Fixed
  	    ax1.plot(r5_mag+rmean_bh5, time_bh5_diag, ls='--', linewidth=1,c='darkviolet') #Fixed
  	    ax1.fill_betweenx(time_bh5_diag, 1.*r5_mag-rmean_bh5, 1.*r5_mag + rmean_bh5, color='plum', alpha=0.2)
 
+ 	elif extra_surf==3:  
+ 	    bh4, = ax1.plot(r4_mag, time_bh4_diag, c='k', linewidth=1, label ="Inner Horizon")	# "Theta=-0.1")
+	    ax1.plot(r4_mag-rmean_bh4, time_bh4_diag, ls='--', linewidth=1,c='k') #Fixed
+ 	    ax1.plot(r4_mag+rmean_bh4, time_bh4_diag, ls='--', linewidth=1,c='k') #Fixed
+ 	    ax1.fill_betweenx(time_bh4_diag, 1.*r4_mag-rmean_bh4, 1.*r4_mag + rmean_bh4, color='darkgrey', alpha=0.2)
+
+	   # bh5, = ax1.plot(r5_mag, time_bh5_diag, c='darkviolet', linewidth=1, label = "Pretracker ")		# "Theta=0.1")
+	   # ax1.scatter(r5_mag-rmean_bh5, time_bh5_diag,c='darkviolet')#, ls='--', linewidth=1) #Fixed
+ 	   # ax1.scatter(r5_mag+rmean_bh5, time_bh5_diag,c='darkviolet')#, ls='--', linewidth=1) #Fixed
+ 	   # ax1.fill_betweenx(time_bh5_diag, 1.*r5_mag-rmean_bh5, 1.*r5_mag + rmean_bh5, color='plum', alpha=0.2)
+
+	    bh6, = ax1.plot(r6_mag, time_bh6_diag, c='coral', linewidth=1, label = "Pretracker 2")		# "Theta=0.1")
+	    ax1.scatter(r6_mag-rmean_bh6, time_bh6_diag,c='coral', s=0.1)	#, ls='--', linewidth=1) #Fixed
+ 	    ax1.scatter(r6_mag+rmean_bh6, time_bh6_diag,c='coral', s=0.1)	#, ls='--', linewidth=1,c='darkviolet') #Fixed
+ 	    ax1.fill_betweenx(time_bh6_diag, 1.*r6_mag-rmean_bh6, 1.*r6_mag + rmean_bh6, color='sandybrown', alpha=0.2)
 
 	startx,endx = ax1.get_xlim()
 	starty,endy = ax1.get_ylim()
@@ -585,8 +652,8 @@ def TrumpetPlot(wfdir, outdir, extra_surf=False, locate_merger=False):
 	ax1.set_ylabel('Time', fontsize = 14)
 	ax1.set_xlabel('Radial Distance from Punctures', fontsize = 14)
 	ax1.grid(True)
-	ax1.set_ylim(0,70)
-	lgd = ax1.legend()
+	#ax1.set_ylim(0,17)
+	lgd = ax1.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=4, mode="expand", borderaxespad=0.)
 	plt.tight_layout()
 	plt.savefig(figdir + '/Trumpets.png', dpi = 500, bbox_extra_artists=(lgd,), bbox_inches='tight')
 	plt.close()
@@ -609,9 +676,18 @@ def Area_Mass_Plots(wfdir, outdir, extra_surf=False, locate_merger=False):
 	time_bh2, area2, irr_m2 = np.genfromtxt(bh_diag1, usecols = (1,25,26,), unpack=True, comments ='#')
 	time_bh3, area3, irr_m3 = np.genfromtxt(bh_diag2, usecols = (1,25,26,), unpack=True, comments ='#')
 	
-	if extra_surf:
+	#Temporary: Remove later - To ignore the masses and area of pretrackers
+	if extra_surf==3:
+	    extra_surf=1
+
+	if extra_surf == 1:
 	    bh_diag3 = os.path.join(datadir,'BH_diagnostics.ah4.gp')
 	    time_bh4, area4, irr_m4 = np.genfromtxt(bh_diag3, usecols = (1,25,26,), unpack=True, comments ='#')
+	elif extra_surf == 2:
+	    bh_diag3 = os.path.join(datadir,'BH_diagnostics.ah4.gp')
+	    time_bh4, area4, irr_m4 = np.genfromtxt(bh_diag3, usecols = (1,25,26,), unpack=True, comments ='#')
+	    bh_diag4 = os.path.join(datadir,'BH_diagnostics.ah5.gp')
+	    time_bh5, area5, irr_m5 = np.genfromtxt(bh_diag3, usecols = (1,25,26,), unpack=True, comments ='#')
 	#Time of merger
 	t_merger = merger_time(wfdir, outdir)
 	
@@ -619,8 +695,12 @@ def Area_Mass_Plots(wfdir, outdir, extra_surf=False, locate_merger=False):
 	plt.plot(time_bh1, irr_m1, color='b', ls='--', lw=2, label="BH1")
 	plt.plot(time_bh2, irr_m2, color='g', label="BH2")
 	plt.plot(time_bh3, irr_m3, color='r', label="Common Horizon")
-	#plt.plot(time_bh4, irr_m4, color='k', label="Theta=-0.1")
-	#plt.plot(time_bh5, irr_m5, color='darkviolet', label="Theta=0.1")
+
+	if extra_surf ==1:
+	    plt.plot(time_bh4, irr_m4, color='k', label="Inner Horizon")
+	elif extra_surf==2:
+	    plt.plot(time_bh4, irr_m4, color='k', label="Pretracker 1")	#"Theta=-0.1")
+	    plt.plot(time_bh5, irr_m5, color='darkviolet', label="Pretracker 2")	#"Theta=0.1")
 	
 	starty,endy = plt.gca().get_ylim()
 	if locate_merger==True:	
@@ -630,7 +710,7 @@ def Area_Mass_Plots(wfdir, outdir, extra_surf=False, locate_merger=False):
 	plt.xlabel("Time (in M)")
 	plt.ylabel("Irreducible Mass")
 	plt.grid(True)
-	lgd = plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
+	lgd = plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=4, mode="expand", borderaxespad=0.)
 	plt.tight_layout()
 	plt.savefig(os.path.join(figdir, "IrreducibleMasses.png"), dpi=500, bbox_extra_artists=(lgd,), bbox_inches='tight')
 	plt.close()
@@ -639,8 +719,13 @@ def Area_Mass_Plots(wfdir, outdir, extra_surf=False, locate_merger=False):
 	plt.plot(time_bh1, area1, color='b', ls='--', lw=2, label="BH1")
 	plt.plot(time_bh2, area2, color='g', label="BH2")
 	plt.plot(time_bh3, area3, color='r', label="BH3")
-	#plt.plot(time_bh4, area4, color='k', label="Theta=-0.1")
-	#plt.plot(time_bh5, area5, color='darkviolet', label="Theta=0.1")
+
+	if extra_surf==1:
+	    plt.plot(time_bh4, area4, color='k', label="Inner Horizon")
+
+	elif extra_surf==2:
+	    plt.plot(time_bh4, area4, color='k', label="Pretracker 1")	#"Theta=-0.1")
+	    plt.plot(time_bh5, area5, color='darkviolet', label="Pretracker 2")	#"Theta=0.1")
 	
 	starty,endy = plt.gca().get_ylim()
 	if locate_merger==True:	
@@ -649,9 +734,9 @@ def Area_Mass_Plots(wfdir, outdir, extra_surf=False, locate_merger=False):
  	    plt.text( t_merger,starty+0.001,'AH3', horizontalalignment='right', fontsize=12)
 	plt.xlabel("Time (in M)")
 	plt.ylabel("Area")
-	plt.xlim(0,70)
+	#plt.xlim(0,70)
 	plt.grid(True)
-	lgd = plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
+	lgd = plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=4, mode="expand", borderaxespad=0.)
 	plt.tight_layout()
 	plt.savefig(os.path.join(figdir, "Area.png"), dpi=500, bbox_extra_artists=(lgd,), bbox_inches='tight')
 	plt.close()
@@ -695,11 +780,21 @@ def ExpansionPlots(wfdir, outdir, extra_surf=False, locate_merger=False):
 	time_bh2, theta_l2, theta_n2 = np.genfromtxt(bh_diag1, usecols = (1,28,29,), unpack=True, comments ='#')
 	time_bh3, theta_l3, theta_n3 = np.genfromtxt(bh_diag2, usecols = (1,28,29,), unpack=True, comments ='#')
 
-	if extra_surf:	
+	if extra_surf==1:
+	    bh_diag3 = os.path.join(datadir,'BH_diagnostics.ah4.gp')
+	    time_bh4, theta_l4, theta_n4 = np.genfromtxt(bh_diag3, usecols = (1,28,29,), unpack=True, comments ='#')
+	elif extra_surf==2:	
 	    bh_diag3 = os.path.join(datadir,'BH_diagnostics.ah4.gp')
 	    bh_diag4 = os.path.join(datadir,'BH_diagnostics.ah5.gp')
 	    time_bh4, theta_l4, theta_n4 = np.genfromtxt(bh_diag3, usecols = (1,28,29,), unpack=True, comments ='#')
 	    time_bh5, theta_l5, theta_n5 = np.genfromtxt(bh_diag4, usecols = (1,28,29,), unpack=True, comments ='#')
+	elif extra_surf==3:	
+	    bh_diag3 = os.path.join(datadir,'BH_diagnostics.ah4.gp')
+	    bh_diag4 = os.path.join(datadir,'BH_diagnostics.ah5.gp')
+	    bh_diag5 = os.path.join(datadir,'BH_diagnostics.ah6.gp')
+	    time_bh4, theta_l4, theta_n4 = np.genfromtxt(bh_diag3, usecols = (1,28,29,), unpack=True, comments ='#')
+	    time_bh5, theta_l5, theta_n5 = np.genfromtxt(bh_diag4, usecols = (1,28,29,), unpack=True, comments ='#')
+	    time_bh6, theta_l6, theta_n6 = np.genfromtxt(bh_diag5, usecols = (1,28,29,), unpack=True, comments ='#')
 	
 
 	#Time of merger
@@ -708,9 +803,17 @@ def ExpansionPlots(wfdir, outdir, extra_surf=False, locate_merger=False):
 	plt.scatter(time_bh2, theta_l2, marker='o',color='g', s=10,  facecolors='none', label="BH2")
 	plt.scatter(time_bh1, theta_l1, marker='.', s=1, color='b',alpha=0.8, label="BH1")
 	plt.scatter(time_bh3, theta_l3, marker='.', s=1, color='r',alpha=0.8, label="BH3")
-	if extra_surf:
+	if extra_surf==1:
+	    plt.scatter(time_bh4, theta_l4, marker='.', s=1, color='k',alpha=0.8, label="Inner Horizon")
+	
+	elif extra_surf==2:
 	    plt.scatter(time_bh4, theta_l4, marker='.', s=1, color='k',alpha=0.8, label="Theta=-0.1")
 	    plt.scatter(time_bh5, theta_l5, marker='.', s=1, color='darkviolet',alpha=0.8, label="Theta=0.1")
+
+	elif extra_surf==3:
+	    plt.scatter(time_bh4, theta_l4, marker='.', s=1, color='k',alpha=0.8, label="Inner Horizon")
+	    plt.scatter(time_bh5, theta_l5, marker='.', s=1, color='darkviolet',alpha=0.8, label="Pretracker 1")
+	    plt.scatter(time_bh6, theta_l6, marker='.', s=1, color='darkviolet',alpha=0.8, label="Pretracker 2")
 
 #	plt.scatter(time_bh3, theta_l3, color='r', s=0.5, label="BH3")
 #	plt.ylim(-1,1)
@@ -722,7 +825,7 @@ def ExpansionPlots(wfdir, outdir, extra_surf=False, locate_merger=False):
 	plt.xlabel("Time (in M)")
 	plt.ylabel("Expansion (outward normal)")
 	plt.grid(True)
-	lgd = plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
+	lgd = plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=4, mode="expand", borderaxespad=0.)
 	plt.tight_layout()
 	plt.savefig(os.path.join(figdir, "OutwardExpansion.png"), dpi=500, bbox_extra_artists=(lgd,), bbox_inches='tight')
 	plt.close()
@@ -731,20 +834,28 @@ def ExpansionPlots(wfdir, outdir, extra_surf=False, locate_merger=False):
 	plt.plot(time_bh1, theta_n1 , color='b', label="BH1")
 	plt.plot(time_bh2, theta_n2, color='g', label="BH2")
 	plt.plot(time_bh3, theta_n3, color='r', label="Common Horizon")
-	if extra_surf:
-	    plt.scatter(time_bh4, theta_n4, marker='.', s=1, color='k',alpha=0.8, label="Theta=-0.1")
-	    plt.scatter(time_bh5, theta_n5, marker='.', s=1, color='darkviolet',alpha=0.8, label="Theta=0.1")
+	if extra_surf==1:
+	    plt.scatter(time_bh4, theta_n4, marker='.', s=1, color='k',alpha=0.8, label="Inner Horizon")
 	
+	elif extra_surf==2:
+	    plt.scatter(time_bh4, theta_n4, marker='.', s=1, color='k',alpha=0.8, label="Pretracker 1")	#"Theta=-0.1")
+	    plt.scatter(time_bh5, theta_n5, marker='.', s=1, color='darkviolet',alpha=0.8, label="Pretracker 2")	#"Theta=0.1")
+	
+	elif extra_surf==3:
+	    plt.scatter(time_bh4, theta_n4, marker='.', s=1, color='k',alpha=0.8, label="Inner Horizon")	#"Theta=-0.1")
+	    #plt.scatter(time_bh5, theta_n5, marker='.', s=1, color='darkviolet',alpha=0.8, label="Pretracker 1")	#"Theta=0.1")
+	    plt.scatter(time_bh6, theta_n6, marker='.', s=1, color='darkviolet',alpha=0.8, label="Pretracker 2")	#"Theta=0.1")
+
 	starty,endy = plt.gca().get_ylim()
 	if locate_merger==True:	
 	    hrzn_idx = np.amin(np.where(time_bh1>=t_merger))		
 	    plt.plot([t_merger,t_merger], [starty,endy], 'k--', linewidth=1.5)
  	    plt.text( t_merger,starty+0.001,'AH3', horizontalalignment='right', fontsize=12)
-	plt.xlim(-5, 50)
+	#plt.xlim(-5, 50)
 	plt.xlabel("Time (in M)")
 	plt.ylabel("Expansion (inward normal)")
 	plt.grid(True)
-	lgd = plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=3, mode="expand", borderaxespad=0.)
+	lgd = plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=4, mode="expand", borderaxespad=0.)
 	plt.tight_layout()
 	plt.savefig(os.path.join(figdir, "InwardExpansion.png"), dpi=500, bbox_extra_artists=(lgd,), bbox_inches='tight')
 	plt.close()
@@ -755,7 +866,7 @@ def PunctureDynamics(wfdir, outdir, locate_merger=False, extra_surf=False):
 	Trajectory(wfdir, outdir, locate_merger=locate_merger)
 	ProperDistance(wfdir, outdir, locate_merger=locate_merger)
 	TrumpetPlot(wfdir, outdir, locate_merger=locate_merger, extra_surf=extra_surf)
-	Area_Mass_Plots(wfdir, outdir, extra_surf=True, locate_merger=locate_merger)
+	Area_Mass_Plots(wfdir, outdir, extra_surf=extra_surf, locate_merger=locate_merger)
 	Spins(wfdir, outdir, locate_merger=locate_merger)
 	RadiusPlots(wfdir, outdir, locate_merger=locate_merger, extra_surf=extra_surf)
 	ExpansionPlots(wfdir, outdir, locate_merger=locate_merger, extra_surf=extra_surf)

@@ -274,6 +274,7 @@ def qnm_time(datadir, outdir):
 	phi = -np.unwrap(np.angle(real+1j*imag))
 
 	t_max_amp = time[np.where(amp==np.amax(amp))][0] # Time of max amp
+	print t_max_amp
 	t1_idx = np.amin(np.where(time>=t_max_amp+40))	 # 50M after max amplitude
 	t2_idx = np.amin(np.where(time>=t_max_amp+80))	 # 90M after max amplitude
 
