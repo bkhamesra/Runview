@@ -12,7 +12,11 @@ def output_data(parfile, data):
 		if data in line:
 			break
 	line = line.split()
-	data_value = float(line[-1])
+
+	if len(line)>0:
+  	    data_value = float(line[-1])
+	else:
+	    data_value = 0.
 	datafile.close()
 	return data_value
 

@@ -29,7 +29,8 @@ ul {{margin: 50px}}\n  </style>\n
 \n <li> Initial Separation = {}</li>
 \n <li> Spin of BH1 = {}</li>
 \n <li> Spin of BH2 = {}</li>
-\n </ul>	""".format(metadata['alternative-names'], metadata['simulation-type'], metadata['mass-ratio'], metadata['init_sep'], metadata['spin1'], metadata['spin2'])
+\n <li> Eccentricity = {}</li>
+\n </ul>	""".format(metadata['alternative-names'], metadata['simulation-type'], metadata['mass-ratio'], metadata['init_sep'], metadata['spin1'], metadata['spin2'], metadata['eccentricity'])
 
 
 	if locate_merger:

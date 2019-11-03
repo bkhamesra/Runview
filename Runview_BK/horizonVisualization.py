@@ -9,7 +9,7 @@ from matplotlib import rc
 #rc('text', usetex=True)
 
 import vtk
-import os
+import os, glob
 import sys
 
 from math import sqrt
@@ -19,6 +19,7 @@ def _blit_draw(self, artists, bg_cache):
   for a in artists:
     if a.axes not in bg_cache:
       bg_cache[a.axes] = a.figure.canvas.copy_from_bbox(a.axes.figure.bbox)
+    a.figure.canvas.draw()
     a.axes.draw_artist(a)
     updated_ax.append(a.axes)
 
@@ -35,6 +36,8 @@ horizonDirectory = os.path.join(directory, 'Horizons')
 ihspinZeroPath = os.path.join(directory, 'ihspin_hn_0.asc')
 ihspinOnePath = os.path.join(directory, 'ihspin_hn_1.asc')
 ihspinTwoPath = os.path.join(directory, 'ihspin_hn_2.asc')
+bhdiagOnePath = os.path.join(directory, 'BH_diagnostics.ah1.gp')
+bhdiagTwoPath = os.path.join(directory, 'BH_diagnostics.ah2.gp')
 
 shiftTrackerZeroFile = open(shiftTrackerZeroPath, 'r')
 iterationOne, timeOne, xOne, yOne, zOne = numpy.loadtxt(shiftTrackerZeroFile, unpack=True, usecols=(0, 1, 2, 3, 4))
@@ -150,7 +153,6 @@ def animate(index):
 
   lineThree.set_xdata(currentHorizonX)
   lineThree.set_ydata(currentHorizonY)
-
   return lineOne, lineTwo, lineThree, title
 
 
@@ -161,6 +163,7 @@ def init():
   lineThree.set_ydata(numpy.ma.array(lineThree.get_xdata(), mask=True))
 
   return lineOne, lineTwo, lineThree, title
+
 
 ani = animation.FuncAnimation(figure, animate, numpy.arange(1, len(xOne)), init_func=init, interval=1, blit=True, repeat=False)
 

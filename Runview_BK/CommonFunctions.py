@@ -22,12 +22,12 @@ def debuginfo(message):
 	caller = getframeinfo(stack()[1][0])
 	filename = caller.filename.split("/")[-1]
 
-	print "Warning: %s:%d - %s" % (filename, caller.lineno, message)
+	print("Warning: %s:%d - %s" % (filename, caller.lineno, message))
 
 def DataDir(dirpath, outdir):
 
 	filename = dirpath.split("/")[-1]
-  	outputdir = os.path.join(outdir, filename)
+	outputdir = os.path.join(outdir, filename)
 	datadir = os.path.join(outputdir,'data')
 
 	if not os.path.exists(datadir):
@@ -38,9 +38,9 @@ def DataDir(dirpath, outdir):
 def FigDir(dirpath, outdir):
 
 	filename = dirpath.split("/")[-1]
-  	outputdir = os.path.join(outdir, filename)
+	outputdir = os.path.join(outdir, filename)
 	figdir = os.path.join(outputdir,'figures')
-
+	
 	if not os.path.exists(figdir):
 		os.makedirs(figdir)
 	return figdir
@@ -53,9 +53,9 @@ def norm(vec, axis):
 
 def plot1(x,y,xlabel, ylabel, plotname, outdir):
 
-        fig,(ax) = plt.subplots(1,1,sharex=True, squeeze=True)
+	fig,(ax) = plt.subplots(1,1,sharex=True, squeeze=True)
 	ax.plot(x,y, 'b', linewidth=1)
-
+	
 	ax.set_ylabel(ylabel, fontsize = 14)
 	ax.set_xlabel(xlabel, fontsize = 14)
 	ax.ticklabel_format(axis = 'y', style = 'sci', scilimits = (1,4), fontsize=200)
@@ -68,10 +68,10 @@ def plot1(x,y,xlabel, ylabel, plotname, outdir):
 	plt.close()
 
 def plot2(x1,y1, x2, y2, xlabel, ylabel, plotname, outdir):
-        fig,(ax) = plt.subplots(1,1,sharex=True, squeeze=True)
+	fig,(ax) = plt.subplots(1,1,sharex=True, squeeze=True)
 	bh1, = ax.plot(x1, y1, 'b', linewidth=1, label="BH1")
 	bh2, = ax.plot(x2, y2, 'k--', linewidth=1, label = "BH2")
-
+	
 	ax.set_ylabel(ylabel, fontsize = 14)
 	ax.set_xlabel(xlabel, fontsize = 14)
 	ax.ticklabel_format(axis = 'y', style = 'sci', scilimits = (1,4), fontsize=20)

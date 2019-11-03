@@ -46,7 +46,6 @@ def metadata(wfdir, outdir, locate_merger):
 	
 # Required Files	
 	filename = wfdir.split("/")[-1]
-	print datadir
 	parfile = glob.glob(os.path.join(datadir, '*.par'))[0]
 		
 # Required Information from Parameter file
@@ -65,14 +64,23 @@ def metadata(wfdir, outdir, locate_merger):
 	p1 = initdata['momentum_BH1']
 	p2 = initdata['momentum_BH2']
 	r1 = initdata['pos_BH1']
-	r1 = initdata['pos_BH2']
+	r2 = initdata['pos_BH2']
+
+
+	#try:
+	#	q = float((filename.split("q")[-1]).split("_")[0])
+	#except ValueError:
+	#	q=1.
+
 	try:
 		q = float((filename.split("q")[-1]).split("_")[0])
+		m_plus = q/(1.+q) 
+		m_minus = 1./(1.+q)
 	except ValueError:
-		q=1.
+		m_plus = initdata['puncture_mass1']
+		m_minus = initdata['puncture_mass2']
+		q = int(m_plus/m_minus) #Greatest integer function
 
-	m_plus = q/(1.+q) 
-	m_minus = 1./(1.+q)
 	eta = m_plus*m_minus/(m_plus+m_minus)**2.
 
 	simtype = simulation_type(spin1,spin2) 
@@ -82,13 +90,19 @@ def metadata(wfdir, outdir, locate_merger):
 	q = m_plus/m_minus
 	eta = m_plus*m_minus/(m_plus + m_minus)**2.
 	
+	merger_attained=False
+	t_maxamp = 0.
+	tfinal = np.loadtxt(os.path.join(datadir, 'runstats.asc'), unpack=True, usecols=(1))[-1]
 	if locate_merger:
 		maxamp, t_maxamp = maxamp_time(wfdir, outdir)
 		t_hrzn = func_t_hrzn(datadir, locate_merger)
-
+		merger_attained = True
  	
-		#Computing eccentricity and mean anomaly
-	eccentricity = ecc_and_anomaly(datadir, 75.)[0]
+	#Computing eccentricity and mean anomaly - Only when there is sufficient number of orbits
+	if t_maxamp>500 and merger_attained:	#Temporary workaround....change this by computing number of orbits
+		mean_anomaly, eccentricity = ecc_and_anomaly(datadir, 75.)
+	elif tfinal>300:
+		mean_anomaly, eccentricity = ecc_and_anomaly(datadir, 75.)
 
 	#print("*(metadata) >> Final Information \n")
 	#print("*(metadata) >> Mass Ratio of system = {} \n".format(q))
@@ -124,11 +138,22 @@ def metadata(wfdir, outdir, locate_merger):
 	nr_metadata['spin2'] = spin2
 	nr_metadata['PN_approximant'] = 'None'
 	if locate_merger:
-		nr_metadata['final_horizon'] = t_hrzn
-		nr_metadata['max_amp'] = t_maxamp
-	#nr_metadata['eccentricity'] = eccentricity
-	#nr_metadata['mean_anomaly'] = mean_anomaly
-
+	    nr_metadata['final_horizon'] = t_hrzn
+	    nr_metadata['max_amp'] = t_maxamp
+	    if t_maxamp>500:
+	        nr_metadata['eccentricity'] = eccentricity
+	        nr_metadata['mean_anomaly'] = mean_anomaly
+	    else:
+	        nr_metadata['eccentricity'] = "Separation too small. Cannot be determined"
+	        nr_metadata['mean_anomaly'] = "Separation too small. Cannot be determined"
+	else:
+	    if tfinal>300:
+	        nr_metadata['eccentricity'] = eccentricity
+	        nr_metadata['mean_anomaly'] = mean_anomaly
+	    else:
+ 	        nr_metadata['eccentricity'] = "Separation too small. Cannot be determined"
+	        nr_metadata['mean_anomaly'] = "Separation too small. Cannot be determined"
+		
 	return nr_metadata, parfile
 
 
