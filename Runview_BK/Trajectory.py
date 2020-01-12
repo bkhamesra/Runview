@@ -12,12 +12,17 @@ tick_label_size = 14
 matplotlib.rcParams['xtick.labelsize'] = tick_label_size
 matplotlib.rcParams['ytick.labelsize'] = tick_label_size
 
-def func_phase(varphase):
+def func_phase(varphase, direction="normal"):
 
 	varphi = np.copy(varphase)
-	for i in range(len(varphase)):
-		if abs(varphase[i-1]-varphase[i]-2.*np.pi)<0.1:
-			varphi[i:] = varphi[i:] + 2.*np.pi
+	if direction=="normal":
+	    for i in range(len(varphase)):
+	        if abs(varphase[i-1]-varphase[i]-2.*np.pi)<0.1:
+	            varphi[i:] = varphi[i:] + 2.*np.pi
+	elif direction=="reversed":
+	    for i in range(len(varphase)):
+	        if abs(varphase[i]-varphase[i-1]-2.*np.pi)<0.1:
+	            varphi[i:] = varphi[i:] - 2.*np.pi
 	return varphi
 
 def write_sep_data(filename,hdr, outdir, data):
@@ -40,7 +45,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	r1 = np.array((x_bh1, y_bh1, z_bh1))
 	r2 = np.array((x_bh2, y_bh2, z_bh2))
 	time = np.copy(time_bh1)
-	assert (len(x_bh1)==len(x_bh2)), "Length of position data are not equal. Please check length of Shifttracker files."
+	assert (len(x_bh1)==len(x_bh2)), "Length of position data are not equal. Please check length of Shifttracker files. Len(BH1) = %d, Len(BH2) = %d"%(len(x_bh1), len(x_bh2))
 		
 	r_sep = (r1-r2).T
 	x,y,z = r_sep.T
@@ -55,6 +60,9 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	phase = np.arctan2(y, x)
 	phi = func_phase(phase)
 	logphi = np.log(phi)
+	if vy_bh1[10]<0:
+	    phi = func_phase(phase, direction="reversed")
+	    logphi = np.log(np.absolute(phi))
  	
 	#Orbital Velocity
 	v1 = np.array((vx_bh1, vy_bh1, vz_bh1))
@@ -79,6 +87,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	if locate_merger==True:
 		bhdiag3 = os.path.join(datadir, 'BH_diagnostics.ah3.gp')
 		t_hrzn3 = np.loadtxt(bhdiag3, usecols = (1,), unpack=True)[0]
+		
 		maxamp, t_maxamp = maxamp_time(wfdir, outdir)	
 		t_maxamp = t_maxamp-75.		
 		hrzn_idx = np.amin(np.where(time_bh1>=t_hrzn3))
@@ -141,8 +150,8 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	    #for xy in zip(time_arr, x_arr):
 	    #    ax1.annotate('(%s, %s)' % xy, xy=xy, textcoords='data')
 
-	ax1.set_xlabel('Time', fontsize = 18)
-	ax1.set_ylabel('X', fontsize = 18)
+	ax1.set_xlabel('Time', fontsize = 16)
+	ax1.set_ylabel('X', fontsize = 16)
 	ax1.grid(True)
 	ax1.legend()#[bh1,bh2],['bh1','bh2'],bbox_to_anchor=(1, 1), loc='upper left', ncol=1, borderpad=0.8)
 	plt.savefig(figdir + '/Trajectory_xvstime.png', dpi = 500)
@@ -164,8 +173,8 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	       #     ax2.annotate('(%s, %s)' % xy, xy=xy, textcoords='data')
 
 	#plt.xticks(np.arange(startx, endx, int(endx/10. - startx/10.)))
-	ax2.set_xlabel('Time', fontsize = 18)
-	ax2.set_ylabel('Y', fontsize=18)
+	ax2.set_xlabel('Time', fontsize = 16)
+	ax2.set_ylabel('Y', fontsize=16)
 	ax2.grid(True)
 	ax2.legend()#[bh1,bh2],['bh1','bh2'],bbox_to_anchor=(1, 1), loc='upper left', ncol=1, borderpad=0.8)
 	plt.savefig(figdir + '/Trajectory_yvstime.png', dpi = 500)
@@ -182,8 +191,8 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 		circle = plt.Circle((0,0), radius,color='orange', alpha =0.7, label="Final Apparent Horizon")
 		ax3.add_artist(circle)
 
-	ax3.set_xlabel('X', fontsize = 18)
-	ax3.set_ylabel('Y', fontsize = 18)
+	ax3.set_xlabel('X', fontsize = 16)
+	ax3.set_ylabel('Y', fontsize = 16)
 	ax3.legend()
 	plt.grid(True)
 	plt.savefig(figdir+'/Trajectory_xy.png', dpi = 500)
@@ -203,8 +212,8 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	        #for xy in zip(time_arr, sep_arr):
 	        #    plt.annotate('(%s, %s)' % xy, xy=xy, textcoords='data')
 
-	plt.xlabel('Time', fontsize = 18)
-	plt.ylabel('Separation', fontsize = 18)
+	plt.xlabel('Time', fontsize = 16)
+	plt.ylabel('Separation', fontsize = 16)
 	#plt.xticks(np.arange(startx, endx, int(endx/10.- startx/10.)))
 	plt.grid(True)
 	plt.savefig(figdir+'/Trajectory_separation.png', dpi = 500)
@@ -224,8 +233,8 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	        for xy in zip(time_arr, sep_arr):
 	            plt.annotate('(%s, %s)' % xy, xy=xy, textcoords='data')
 
-	plt.xlabel('Time', fontsize = 18)
-	plt.ylabel('Separation', fontsize = 18)
+	plt.xlabel('Time', fontsize = 16)
+	plt.ylabel('Separation', fontsize = 16)
 	#plt.xticks(np.arange(startx, endx, 10))
 	plt.grid(True)
 	plt.savefig(figdir+'/Trajectory_separation_zoom.png', dpi = 500)
@@ -239,14 +248,14 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 		plt.ylim(logsep_amp-3, logsep_hrzn+3)
 		starty,endy = plt.gca().get_ylim()
 		plt.plot([t_hrzn3,t_hrzn3], [starty,logsep_hrzn], 'g--', linewidth=1.5)
-		plt.text( t_hrzn3,starty+0.2,'AH3', horizontalalignment='right', fontsize=12)
+		plt.text( t_hrzn3,starty+0.2,'AH3', horizontalalignment='right', fontsize=10)
 		plt.plot([t_maxamp,t_maxamp], [starty,logsep_amp], 'g--', linewidth=1.5)
-		plt.text( t_maxamp,starty+0.2,'Max Amp', horizontalalignment='left', fontsize=12)
+		plt.text( t_maxamp,starty+0.2,'Max Amp', horizontalalignment='left', fontsize=10)
 	        for xy in zip(time_arr, logsep_arr):
 	            plt.annotate('(%s, %s)' % xy, xy=xy, textcoords='data')
 
-	plt.xlabel('Time', fontsize = 18)
-	plt.ylabel('log(Separation)', fontsize = 18)
+	plt.xlabel('Time', fontsize = 16)
+	plt.ylabel('log(Separation)', fontsize = 16)
 	#plt.xticks(np.arange(startx, endx, 10))
 	plt.grid(True)
 	plt.savefig(figdir+'/Trajectory_logseparation.png', dpi = 500)
@@ -268,53 +277,53 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	         #   plt.annotate('(%s, %s)' % xy, xy=xy, textcoords='data')
 
 
-	plt.xlabel('Time', fontsize=18)
-	plt.ylabel('Phase', fontsize=18)
+	plt.xlabel('Time', fontsize=16)
+	plt.ylabel('Phase', fontsize=16)
 	plt.grid(True)
 	plt.savefig(figdir+'/Trajectory_phase.png',dpi = 500)
 	plt.close()
 
 	
-	plt.plot(time_bh1, phi, color='b', lw=1)
-
-	if locate_merger==True:
-		plt.xlim(t_hrzn3-20, t_maxamp+20)
-		startx,endx = plt.gca().get_xlim()
-		plt.ylim(phi_hrzn-7, phi_hrzn+4)
-		starty,endy = plt.gca().get_ylim()
-		plt.plot([t_hrzn3,t_hrzn3], [starty,phi_hrzn], 'k--', linewidth=1.5)
-		plt.text( t_hrzn3,starty+0.2,'AH3', horizontalalignment='right', fontsize=12)
-		plt.plot([t_maxamp,t_maxamp], [starty,phi_amp], 'k--', linewidth=1.5)
-		plt.text( t_maxamp,starty+0.2,'Max Amp', horizontalalignment='left', fontsize=12)
-	        for x,y in zip(time_arr, phi_arr):
-	            plt.annotate('(%s, %s)' % (x,y), xy=(x-5,y), textcoords='data')
-
-
-	plt.xlabel('Time', fontsize=18)
-	plt.ylabel('Phase', fontsize=18)
-	plt.grid(True)
-	plt.savefig(figdir+'/Trajectory_phase_zoom.png',dpi = 500)
-	plt.close()
+#	plt.plot(time_bh1, phi, color='b', lw=1)
+#
+#	if locate_merger==True:
+#		plt.xlim(t_hrzn3-20, t_maxamp+20)
+#		startx,endx = plt.gca().get_xlim()
+#		plt.ylim(phi_hrzn-7, phi_hrzn+4)
+#		starty,endy = plt.gca().get_ylim()
+#		plt.plot([t_hrzn3,t_hrzn3], [starty,phi_hrzn], 'k--', linewidth=1.5)
+#		plt.text( t_hrzn3,starty+0.2,'AH3', horizontalalignment='right', fontsize=12)
+#		plt.plot([t_maxamp,t_maxamp], [starty,phi_amp], 'k--', linewidth=1.5)
+#		plt.text( t_maxamp,starty+0.2,'Max Amp', horizontalalignment='left', fontsize=12)
+#	        for x,y in zip(time_arr, phi_arr):
+#	            plt.annotate('(%s, %s)' % (x,y), xy=(x-5,y), textcoords='data')
+#
+#
+#	plt.xlabel('Time', fontsize=16)
+#	plt.ylabel('Phase', fontsize=16)
+#	plt.grid(True)
+#	plt.savefig(figdir+'/Trajectory_phase_zoom.png',dpi = 500)
+#	plt.close()
 	
 
-	plt.plot(time_bh1, logphi, color='b', lw=1)
-	
-
-	if locate_merger==True:
-		plt.xlim(t_hrzn3-20, t_maxamp+20)
-		startx,endx = plt.gca().get_xlim()
-		plt.ylim(logphi_hrzn-0.5, logphi_hrzn+0.5)
-		starty,endy = plt.gca().get_ylim()
-		plt.plot([t_hrzn3,t_hrzn3], [starty,logphi_hrzn], 'k--', linewidth=1.5)
-		plt.text( t_hrzn3-1,starty,'AH3', horizontalalignment='right', fontsize=12)
-		plt.plot([t_maxamp,t_maxamp], [starty,logphi_amp], 'k--', linewidth=1.5)
-		plt.text( t_maxamp+1,starty,'Max Amp', horizontalalignment='left', fontsize=12)
-	        for x,y in zip(time_arr, logphi_arr):
-	            plt.annotate('(%s, %s)' % (x,y), xy=(x-5,y+0.03), textcoords='data')
-
-
-	plt.xlabel('Time', fontsize=18)
-	plt.ylabel('log(Phase)', fontsize=18)
-	plt.grid(True)
-	plt.savefig(figdir+'/Trajectory_logphase.png',dpi = 500)
-	plt.close()
+#	plt.plot(time_bh1, logphi, color='b', lw=1)
+#	
+#
+#	if locate_merger==True:
+#		plt.xlim(t_hrzn3-20, t_maxamp+20)
+#		startx,endx = plt.gca().get_xlim()
+#		plt.ylim(logphi_hrzn-0.5, logphi_hrzn+0.5)
+#		starty,endy = plt.gca().get_ylim()
+#		plt.plot([t_hrzn3,t_hrzn3], [starty,logphi_hrzn], 'k--', linewidth=1.5)
+#		plt.text( t_hrzn3-1,starty,'AH3', horizontalalignment='right', fontsize=12)
+#		plt.plot([t_maxamp,t_maxamp], [starty,logphi_amp], 'k--', linewidth=1.5)
+#		plt.text( t_maxamp+1,starty,'Max Amp', horizontalalignment='left', fontsize=12)
+#	        for x,y in zip(time_arr, logphi_arr):
+#	            plt.annotate('(%s, %s)' % (x,y), xy=(x-5,y+0.03), textcoords='data')
+#
+#
+#	plt.xlabel('Time', fontsize=16)
+#	plt.ylabel('log(Phase)', fontsize=16)
+#	plt.grid(True)
+#	plt.savefig(figdir+'/Trajectory_logphase.png',dpi = 500)
+#	plt.close()

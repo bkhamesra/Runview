@@ -1,0 +1,21 @@
+1. Trajectory - Fails if on of the shifttracker file has larger size then other (by one)
+2. Mass Plots failing - Repeated Values Error
+3. Include the eccentricity plots.
+4. Make all plots consistent - Check Font Size, Colors, Legends
+5. Include the mass plots
+6. Overwrite does not work. As a result if an error is due to some file in data directory, it continues to exist even if you recompile everything. Solution is to delete the entire data and plot directory (not the stitched directory)
+7. hnmass files
+8. Save ShiftTracker-generate files in output directory
+9. For stampede, stdout files are .out files. Insert that logic else causses issue in building the waveform
+10. Check that ihspin and ShiftTracker should have same data in time for both BH1 and BH2
+11. In CollectFiles, the code creates empty files if it does not find one (like proper distance) which leads to error
+12. Eccentricity is incorrect in metadata. Fix this 
+13. HTML directory not getting copied if running from outside Runview_BK directory 
+14. Write different stitch file function for 2-d output as due to huge output and several comments, file reading is extremely slow. 
+
+Assumptions - 
+
+1. Length of simulation is above 100M
+2. Output 0000 has all the relevant files. 
+
+Required Packages and versions

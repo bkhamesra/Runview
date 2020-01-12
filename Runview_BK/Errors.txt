@@ -9,10 +9,15 @@
 9. For stampede, stdout files are .out files. Insert that logic else causses issue in building the waveform
 10. Check that ihspin and ShiftTracker should have same data in time for both BH1 and BH2
 11. In CollectFiles, the code creates empty files if it does not find one (like proper distance) which leads to error
+12. Eccentricity is incorrect in metadata. Fix this 
+13. HTML directory not getting copied if running from outside Runview_BK directory 
+14. Write different stitch file function for 2-d output as due to huge output and several comments, file reading is extremely slow. 
+
 
 Assumptions - 
 
 1. Length of simulation is above 100M
 2. Output 0000 has all the relevant files. 
+3. Orbits are quasi-circular with BH1 on +x axis with positive velocity. Some workarounds have been added for alternate cases, but major rewrite is required!
 
 Required Packages and versions

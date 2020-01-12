@@ -182,13 +182,22 @@ def ecc_and_anomaly(dirpath,  jkrad_time):
 	y2 = r2[1]
 
 	#Compute Mean Anomaly:
-	
 	[mean_anom, tprev, tnext] = mean_anomaly(jkrad_time, time,r1,r2, orbsep_mag)
-	tprev_idx = np.where(time==tprev)
-	tnext_idx = np.where(time==tnext)[0]
+	if tprev ==0:
+	    tprev_idx = 0
+	else:
+  	    tprev_idx = np.where(time==tprev)
+
+	tnext_idx = np.argwhere(time==tnext)
 	
+	if (type(tprev_idx) is  np.ndarray) and np.size(tprev_idx)==1:
+		tprev_idx = (tprev_idx[0])
+	
+	if (type(tnext_idx) is  np.ndarray) and np.size(tnext_idx)==1:
+		tnext_idx = np.asscalar(tnext_idx)
 	#print("*(metadata) >> Mean Anomaly = {} \n ".format( mean_anom))
 
+	#print time[tprev_idx], time[tnext_idx]
 	plt.plot(x1[:tnext_idx], y1[:tnext_idx], color='r',label="BH1")
 	plt.plot(x2[:tnext_idx], y2[:tnext_idx], color='k',label="BH2")
 	plt.legend()
@@ -198,7 +207,9 @@ def ecc_and_anomaly(dirpath,  jkrad_time):
 	#Define the cutoff index and fitting time interval (400M should be good - BBH should have 1-2 orbits)
 
 	cutoff_idx = np.amin(np.amin(np.where(time>=jkrad_time)))
-	timeidx_400 = np.amin(np.where(time>=400))
+
+	#temp change - change back 350 to 400
+	timeidx_400 = np.amin(np.where(time>=350))
 
 
 	time_fit = time[0:timeidx_400]

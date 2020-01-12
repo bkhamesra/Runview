@@ -19,11 +19,11 @@ def checkfile(wfdir, filename, pathcheck = 'Mandatory'):
 def copyfiles(wfdir, outdir, filename, pathcheck = 'Mandatory'):
 	
 	try:
-		outpath = os.path.join(outdir, filename)
-		filepath = os.path.join(wfdir, filename)
+	    outpath = os.path.join(outdir, filename)
+	    filepath = os.path.join(wfdir, filename)
 
-		if not os.path.exists(outpath):
-			copy(filepath, outpath)
+	    if not os.path.exists(outpath):
+	        copy(filepath, outpath)
 	except IOError:
 		checkfile(wfdir, filename, pathcheck)
 
@@ -32,7 +32,7 @@ def CollectFiles(dirpath, outdir):
 	
 	datadir  = DataDir(dirpath, outdir)
 	print("Relevant data will be saved at - {} \n".format(datadir))
-    	parfile = os.path.basename(sorted(glob.glob(os.path.join(dirpath, '*.par')))[0])		#(dirpath.split('/')[-1]) + ('-1.par')
+	parfile = os.path.basename(sorted(glob.glob(os.path.join(dirpath, '*.par')))[0])		#(dirpath.split('/')[-1]) + ('-1.par')
 	shifttracker0 = 'ShiftTracker0.asc'
 	shifttracker1 = 'ShiftTracker1.asc'
 	propdist = 'ProperDistance.asc'
@@ -45,13 +45,17 @@ def CollectFiles(dirpath, outdir):
 
 	psi4_ylm = "Ylm_WEYLSCAL4::Psi4_l2_m2_r75.00.asc"
 	psi4r_ylm = "Ylm_WEYLSCAL4::Psi4r_l2_m2_r75.00.asc"
+	psi4_mp = "mp_WeylScal4::Psi4i_l2_m2_r75.00.asc"
 	psi4_anal = "psi4analysis_r75.00.asc"
 	runstat = "runstats.asc"
 	bhdiag1 = "BH_diagnostics.ah1.gp"
 	bhdiag2 = "BH_diagnostics.ah2.gp"
 	bhdiag3 = "BH_diagnostics.ah3.gp"
+	bhdiag4 = "BH_diagnostics.ah4.gp"
+	bhdiag5 = "BH_diagnostics.ah5.gp"
+	bhdiag6 = "BH_diagnostics.ah6.gp"
 	filelist_mand = [parfile, shifttracker0, shifttracker1]
-	filelist_opt = [ihspin0, ihspin1, ihspin3, ihspin4, runstat, psi4_ylm,psi4r_ylm, psi4_anal, bhdiag1, bhdiag2, bhdiag3, propdist]
+	filelist_opt = [ihspin0, ihspin1, ihspin2, ihspin3, ihspin4, runstat, psi4_ylm,psi4r_ylm,psi4_mp, psi4_anal, bhdiag1, bhdiag2, bhdiag3, bhdiag4, bhdiag5, bhdiag6, propdist]
 	
 	for mfile in filelist_mand:
 		copyfiles( dirpath,datadir, mfile )
@@ -59,4 +63,8 @@ def CollectFiles(dirpath, outdir):
 	for ofile in filelist_opt:
 		copyfiles( dirpath, datadir, ofile, pathcheck = 'Optional')
 
-		
+	qlm_files = glob.glob(os.path.join(dirpath, 'qlm_*'))
+	
+	for files in qlm_files:
+	    f = files.split('/')[-1]	
+	    copyfiles(dirpath, datadir, f, pathcheck = 'Optional')
