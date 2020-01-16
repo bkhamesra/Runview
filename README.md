@@ -1,33 +1,13 @@
 # Runview
 
-Updates - May14, 2017:
-1. Current version copies the relevant files and makes plots of Trajectories (x-y, x-t, y-t, sep-t, phase-t), Psi4(real-imag, near merger, amp and phase), Energy, Angular Momentum, Momentum, Runstats
-2. To Add - 
-a) Angular Momentum Components plots
-b) Spin Plots 
-c) Mass Plots
-d) Metadata including info about final black hole
-e) Kicks
-f) Jx vs Jy, Px vs Py (experimental)
-g) Create hnmass files
-h) Animation
-g) Webpage (Info about the run, relevant plots (2 from each category), link to more/remaining plots, link to files
-h) Animation of Psi4 
+Runview is a visualization package designed for numerical relativity simulations. It aims to provide one line solution to completely integrate multiple outputs, analyse the simulation data and present the important results in a series of linked webpages. 
 
-Updates - May17, 2017:
-1. Angular Momentum, Spin and other plots updated. Working template for webpage created. Need to copy this to corresponding output directory. 
-2. To Do - 
-a) Mass Plots
-b) Kicks
-c) Metadata including info about final black hole  
-d) Create hnmass files
-e) Python script to create the webpage template
-f) Create hnmass files
-g) Animation of trajectory and Psi4 visualization
-h) Stiching all outputs
-i) Thorough testing
-j) Mixed Binary - Chris
-h) Write a bash script to execute as a command
+## Runview-v1
 
-  
+This is the current usable version of Runview which is designed primarily for  BBH simulations using GT-Maya code but can easily be adapted to Einstein Toolkit (ET) or ET-based codes. Please consult the wiki for instructions on how to use the package. In case of errors, oddities, or suggestions, do not hesitate to contact the maintainer or use the issue tracker.
+
+## Runview-v2 - Currently In Development.  
+
+This version will aim to extending the scope of Runview from Binary Black holes to any compact object simulations (Stating, Rotating or Boosted Star/Black hole, Binary black holes, Binary Neutron star, Neutron star-Black holes etc). A lot of new functionalities will also be added including checking status of ongoing simulations, construction of gravitational waveform templates for LIGO and performing match calculations
+
 
