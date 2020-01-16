@@ -1,3 +1,9 @@
+###############################################################################
+# Script - QuasiLocalMeasures.py
+# Author - Bhavesh Khamesra
+# Purpose -  Visualization of quasi local quantities like metric determinant and mass and spin multipole moments
+# Things to add -  Horizon Mass, coordinate spins, mulltipole moments
+###############################################################################
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -17,6 +23,7 @@ mpl.rcParams['ytick.labelsize'] = tick_label_size
 def QLM_DeterminantPlots(wfdir, outdir, tlast):  
     '''This function checks and produces movies of variation of metric determinant of MOTS and horizons. 
      wfdir - waveform directory, outdir - output directory, tlast - last time iteration to be plotted '''
+
     figdir = FigDir(wfdir, outdir)
     datadir = DataDir(wfdir, outdir)
 
@@ -29,7 +36,6 @@ def QLM_DeterminantPlots(wfdir, outdir, tlast):
 
 def qlm_det_plot(datadir, figdir, f):
    
-    print f 
     bh_det = os.path.join(datadir, f)
     bh_idx = int((f.split('[')[1]).split(']')[0])
 
@@ -54,7 +60,7 @@ def qlm_det_plot(datadir, figdir, f):
             plt.ylabel(r'$det(q_{ij})$')
 
             #This part of code is not functioning properly, needs to be fixed, This should add a
-            #rectangular boundary at the top aroung the timer
+            #rectangular boundary at the top around the timer
             
             starty, endy = plt.gca().get_ylim()
             startx, endx = plt.gca().get_xlim()                                                          

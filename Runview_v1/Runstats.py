@@ -1,3 +1,9 @@
+###############################################################################
+# Script - RunStats.py
+# Author - Bhavesh Khamesra
+# Purpose -  Analyse the speed and efficiency of the code
+###############################################################################
+
 import numpy as np
 import  matplotlib.pyplot as plt
 import os,glob

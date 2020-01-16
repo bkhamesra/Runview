@@ -1,3 +1,10 @@
+###############################################################################
+# Script - Mass.py
+# Author - Bhavesh Khamesra
+# Purpose -  Visualization of energy and Angular momentum carried by gravitational waves
+###############################################################################
+
+
 import numpy as np 
 import matplotlib.pyplot as plt
 import matplotlib as mpl
@@ -6,14 +13,27 @@ from CommonFunctions import *
 
 
 def write_massspin_data(outdir, filename, data):
+	''' Save Horizon Mass data into ascii file
 
-		output = open(os.path.join(outdir, filename+'.asc'),'w')
-		hdr = '# Time \t Horizon Mass \t ax \t ay \t az \n'
-		np.savetxt(output, data, header=hdr, delimiter='\t', newline='\n')
-		output.close()
+	---------- Parameters ---------------
+	outdir (type - string)  - Directory to save the file
+	filename (type - string) - Name of ascii file
+	data (type - numpy array) - Data to be saved
+	'''
+	output = open(os.path.join(outdir, filename+'.asc'),'w')
+	hdr = '# Time \t Horizon Mass \t ax \t ay \t az \n'
+	np.savetxt(output, data, header=hdr, delimiter='\t', newline='\n')
+	output.close()
 
 
 def horizon_mass(irr_m1, irr_m2, spin1, spin2):
+	''' Compute Horizon mass 
+
+	---------- Parameters ---------------
+	outdir (type - string)  - Directory to save the file
+	filename (type - string) - Name of ascii file
+	data (type - numpy array) - Data to be saved
+	'''
 	
 	spin1_mag = np.linalg.norm(spin1, axis=1)
 	spin2_mag = np.linalg.norm(spin2, axis=1)
@@ -28,6 +48,12 @@ def horizon_mass(irr_m1, irr_m2, spin1, spin2):
 
 def Mass_Plots(wfdir, outdir):
 
+        ''' Create plots of Irreducible and Horizon Mass
+
+        ----------------- Parameters -------------------
+        wfdir (type 'String') - path of Directory with relevant files
+        outdir (type 'String') - path of Output Summary directory
+        '''		
 	figdir = FigDir(wfdir, outdir)
 	datadir = DataDir(wfdir, outdir)
 

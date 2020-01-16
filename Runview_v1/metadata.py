@@ -1,3 +1,10 @@
+###############################################################################
+# Script - InitialData.py
+# Author - Bhavesh Khamesra
+# Purpose - Extract the initial data from parameter file 
+###############################################################################
+
+
 from init_data import initial_data
 import numpy as np
 import os, glob 
@@ -6,13 +13,13 @@ import time
 from CommonFunctions import *
 from Psi4 import maxamp_time
 
-def mag(vector):
-
-	magnitude = np.sqrt(vector[0]**2. + vector[1]**2. + vector[2]**2.)
-	return magnitude
-
 def simulation_name(dirpath):
 	
+        '''Get the GT simulation name, if exist
+        ----------------- Parameters -------------------
+	dirpath (type 'String') - path of waveform directory 
+        '''		
+
 	file_name = dirpath.split('/')[-1]
 	wf_junkrad = 'wf_junkrad.txt'
     
@@ -30,6 +37,10 @@ def simulation_name(dirpath):
 
 
 def simulation_type(spin1, spin2):
+	''' Classify the type of simulation based on spin - Nonspinning, Aligned Spin or Precessing
+        ----------------- Parameters -------------------
+	spin1/spin2 (type numpy array) - Initial Spins of BH1/BH2	
+	'''
 
 	if (np.count_nonzero(spin1) ==0 and np.count_nonzero(spin2)==0): 
 		simtype = 'non-spinning'

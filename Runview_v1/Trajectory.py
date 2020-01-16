@@ -1,3 +1,9 @@
+###############################################################################
+# Script -  Trajectory.py
+# Author - Bhavesh Khamesra
+# Purpose - Analyse the trajectory and visualize the orbital separation and phase plots 
+###############################################################################
+
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -13,6 +19,7 @@ matplotlib.rcParams['xtick.labelsize'] = tick_label_size
 matplotlib.rcParams['ytick.labelsize'] = tick_label_size
 
 def func_phase(varphase, direction="normal"):
+	'''Compute the orbital phase'''
 
 	varphi = np.copy(varphase)
 	if direction=="normal":
@@ -26,13 +33,14 @@ def func_phase(varphase, direction="normal"):
 	return varphi
 
 def write_sep_data(filename,hdr, outdir, data):
+	''' save output in file'''
 	output_traj = open(os.path.join(outdir, filename),'w')
 	np.savetxt(output_traj, data, header=hdr, delimiter='\t', newline='\n')
 	output_traj.close()
 	
 
 def Trajectory(wfdir, outdir, locate_merger=False):
-	
+	'''Analyse and visualize BH trajectories '''	
   	figdir = FigDir(wfdir, outdir)
 	datadir = DataDir(wfdir, outdir)
 
@@ -60,6 +68,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	phase = np.arctan2(y, x)
 	phi = func_phase(phase)
 	logphi = np.log(phi)
+	#If BH1 starts in negative y direction, then correct for sign of phase
 	if vy_bh1[10]<0:
 	    phi = func_phase(phase, direction="reversed")
 	    logphi = np.log(np.absolute(phi))
@@ -71,7 +80,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
 	vmag = norm(v_sep, 1)
 	vx,vy,vz = v_sep.T
 
-	# Derivatives
+	# Derivatives - Checks for nan and inf 
 	rdot = (vx*np.cos(phi) + vy*np.sin(phi))*np.sin(theta) + vz*np.cos(theta)
 
 	thdot = np.cos(theta)*np.cos(phi)*vx + np.cos(theta)*np.sin(phi)*vy -np.sin(theta)*vz		#z*(x*vx + y*vy) - vz*(x**2. + y**2.)

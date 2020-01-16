@@ -1,5 +1,6 @@
-# Use: This script computes the initial eccentricity for BBH. This can be extended to compute the eccentricity evolution for any compact binary system. 
+# Scipt Name - eccentricity.py
 # Author - Bhavesh Khamesra
+# Use: This script computes the initial eccentricity for BBH. This can be extended to compute the eccentricity evolution for any compact binary system. 
 
 #References - "Post-Newtonian Quasicircular Initial Orbits for Numerical Relativity", HEALY et. al (arXiv:1702.00872),
 #	      "Reducing eccentricity in black-hole binary evolutions with initial parameters", Husa et al, (PRD 77, 044037 (2008)
@@ -15,13 +16,16 @@ from scipy.optimize import leastsq
 from numpy.polynomial.polynomial import polyval
 from scipy.optimize import curve_fit
 
+
 def sinefit(time, data ):
-	
+	''' Sine fitting function of form amp*sin(omega*t + phi) + x3 '''	
+
 	mean_guess = np.mean(data)
 	std_guess = 3.*np.std(data)/(2**0.5)
 	phase_guess = 0.
 	omega_guess = 2*np.pi/100.
 	
+	#Determine the coefficients 	
 	datafit_guess1 = std_guess*np.sin(omega_guess*time+phase_guess)+mean_guess
 	optimize_func = lambda x:x[0]*np.sin(x[1]*time+x[2])+x[3]-data
 	std_est, omega_est, phase_est, mean_est = leastsq(optimize_func, [std_guess, omega_guess, phase_guess, mean_guess])[0]
@@ -30,28 +34,34 @@ def sinefit(time, data ):
 	return [datafit, datafit_guess1]
 
 def polyfit(time, data, degree ):
+	''' Polynomial fitting function of degree n ( x0 + x1*t +x2*t^2 ... + xn*t^n)  ''' 	
 
-	root_time = time	
+	root_time = time	#time**0.5  
 	polyfit = np.poly1d(np.polyfit(root_time, data,degree))	
 	return polyfit
 
 def polyfunc(time,a0,a1,a2,a3,b1,b2,b3):
+	''' Polynomial fitting function 2 of form ( x0 + x1*t + x2*t^2 + x3*t^3 + x4/t + x5/t^2 + x6/t^3  ''' 	
 	poly = a0 + a1*time**1 + a2*time**2. + a3*time**3.  + np.divide(b1,time) + np.divide(b2, time**2) + np.divide(b3,time**3)	#works better
 	return poly
 
 def polyfunc_sascha(time, a0,a1,a2,a3,a4):
+        ''' Polynomial fitting function from Sascha's paper'''
 	poly = a0 + a1*time + a2*time**2. + a3*time**3. + a4*time**4. #As used in Sascha'a paper (PHYSICAL REVIEW D 77, 044037 (2008))
 	return poly
 
 def sinefunc(time, amp1, omega1, phi01, amp2, omega2, phi02):
+	''' Sine fitting function with two frequency of form amp1*sin(omega1*t + phi1) +  amp2*sin(omega2*t + phi2) '''	
 	return amp1*np.sin(omega1*time + phi01) + amp2*np.sin(omega2*time + phi02)
 
 
-def func_fit(function,time, data):
-	fittingfunc_coeff, cov = curve_fit(function, time, data)
+def fitfunc_coeff(fitting_function,time, data):
+        ''' Determine coefficients of fitting function'''
+	fittingfunc_coeff, cov = curve_fit(fitting_function, time, data)
 	return fittingfunc_coeff
 	
 def func_max(time, data):
+	''' Find maxima of function'''
 	der = np.divide((data[1:] - data[:-1]), (time[1:] - time[:-1]))
 	i=1
 	while i<len(der):
@@ -72,6 +82,7 @@ def func_max(time, data):
 		print("*(metadata) >>  Maxima: no maxima found \n")
 			
 def func_min(time, data):
+	''' Find minima of function'''
 	der = np.divide((data[1:] - data[:-1]), (time[1:] - time[:-1]))
 	i=0
 	for i in range(len(der)):
@@ -90,6 +101,7 @@ def func_min(time, data):
 		print("*(metadata) >> Minima: no minima found \n")
 
 def mean_anomaly(t, time_arr, r1, r2, deltar_arr):
+	''' Calculate mean anomaly'''
 	
 	index_t = np.amin(np.where(time_arr>=t))	
 	
@@ -131,8 +143,9 @@ def mean_anomaly(t, time_arr, r1, r2, deltar_arr):
 		mean_anomaly = 2.*np.pi*t/time_period
 	return [mean_anomaly, T_prev, T_next]
 
+
 def import_data(dirpath):
-	
+	'''Import data from ShiftTracker Files'''	
 #Check if the necessary files exists: parfile, shifttracker, ihspin, hnmass
 	filename = dirpath.split("/")[-1]
 	parfile = (dirpath.split('/')[-1]) + ('.par')
@@ -156,7 +169,7 @@ def import_data(dirpath):
 
 
 def ecc_and_anomaly(dirpath,  jkrad_time):	
-
+	'''Compute eccentricity and mean anomaly'''
 	[time1, time2, r1,r2] = import_data(dirpath)
 
 	orbsep_vec = r2-r1
@@ -204,12 +217,12 @@ def ecc_and_anomaly(dirpath,  jkrad_time):
 	plt.savefig(dirpath + '/Orbit1.png')
 	plt.close()
 	
-	#Define the cutoff index and fitting time interval (400M should be good - BBH should have 1-2 orbits)
+	# Define the cutoff index and fitting time interval (400M should be good - BBH should have 1-2 orbits)
+	# Ideal way would be to compute time taken when two orbits are completed 
 
 	cutoff_idx = np.amin(np.amin(np.where(time>=jkrad_time)))
 
-	#temp change - change back 350 to 400
-	timeidx_400 = np.amin(np.where(time>=350))
+	timeidx_400 = np.amin(np.where(time>=400))
 
 
 	time_fit = time[0:timeidx_400]
@@ -220,7 +233,7 @@ def ecc_and_anomaly(dirpath,  jkrad_time):
 	#Fitting the decaying part of orbital separation with polynomial in t**0.5
 
 	fittingfunc_coeff = curve_fit(polyfunc, time_fit**0.5, datafit)[0]
-	Dfit_coeff = fittingfunc_coeff	#func_fit(time_fit, datafit, polyfunc)
+	Dfit_coeff = fittingfunc_coeff	#fitfunc_coeff(time_fit, datafit, polyfunc)
 	[a0,a1,a2,a3,b1,b2,b3] = Dfit_coeff
 	Dfit_data = polyfunc(time_fit**0.5, a0,a1,a2,a3,b1,b2,b3) 
 	

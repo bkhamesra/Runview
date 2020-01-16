@@ -1,3 +1,9 @@
+###############################################################################
+# Script - webpage.py
+# Author - Bhavesh Khamesra
+# Purpose - Combine the results into linked webpages. This script generates the main summary page which is linked to template HTML which details different aspects like Trajectory, Psi4, Energy and angular momentum, Spins, Momenta etc.
+###############################################################################
+
 from metadata import *
 from shutil import copytree
 from CommonFunctions import *
@@ -92,7 +98,7 @@ ul {{margin: 50px}}\n  </style>\n
 def webpage(wfdir, outdir,locate_merger):
 	
 	datadir = DataDir(wfdir, outdir) 
-	filename = open(os.path.join(datadir+'/..','webpage.html'),'w+')
+	filename = open(os.path.join(datadir+'/..','index.html'),'w+')
 
 	meta_data, parfile = metadata(wfdir, outdir,locate_merger)
 	webdata = webpage_data(meta_data, parfile, locate_merger)

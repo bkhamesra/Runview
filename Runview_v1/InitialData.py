@@ -1,15 +1,29 @@
+###############################################################################
+# Script - InitialData.py
+# Author - Bhavesh Khamesra
+# Purpose - Extract the initial data from parameter file 
+###############################################################################
+
 
 import numpy as np
 import os
 import warnings
 import time
 	
-def output_data(parfile, data):
-	
-	datafile = file(parfile)	
+def output_data(parfile, parameter_name):
+		
+        '''Extract value of parameter from parameter file
+        ----------------- Parameters -------------------
+        parfile (type 'String') - Parameter file path
+        parameter_name (type 'String') - parameter name
+        '''		
+
+	datafile = file(parfile)
+
+	#Reset to first line	
 	datafile.seek(0)
 	for line in datafile:
-		if data in line:
+		if parameter_name in line:
 			break
 	line = line.split()
 
@@ -23,6 +37,11 @@ def output_data(parfile, data):
 
 def initial_data(parfile):
 
+        ''' Extract and save relevant initial data in a dictionary
+        ----------------- Parameters -------------------
+        parfile (type 'String') - Parameter file path
+        '''		
+	
 	if not os.path.isfile(parfile) :
 		raise ValueError(" Parfile missing in the directory. Please check again. \n")
 	

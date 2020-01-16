@@ -1,4 +1,8 @@
-#ihspin0 and ihpsin3 both have the spin data but they differ in numbers and total time. Guess is one of them is using AHF while other is using sphererad (approx). So would be a good idea to check which file has more data. 
+###############################################################################
+# Script - Energy_momentum.py
+# Author - Bhavesh Khamesra
+# Purpose -  Plot Spin components for each black hole
+###############################################################################
 
 
 import numpy as np 

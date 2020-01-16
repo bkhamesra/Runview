@@ -1,3 +1,9 @@
+###############################################################################
+# Script - Runview.py
+# Author - Bhavesh Khamesra
+# Purpose - Main code which provides all arguments and calls relevant analysis functions 
+###############################################################################
+
 from Collect_Files import *
 from Trajectory import *
 from Energy_momentum import Energy_Momentum
@@ -15,6 +21,7 @@ from Animate_Trajectories import *
 
 import os, argparse
 
+#Declare arguments
 parser = argparse.ArgumentParser()
 parser.add_argument( "system-type", help='Define the system type. Possible options are BBH, NSBH, BNS. \n Usage: ./Runview BBH ...', type=str)
 parser.add_argument("source_dir", help='Specify the location of source directory inside which all the outputs of simulation exists. \n Usage: <path to source directory>', type=str)
@@ -44,10 +51,12 @@ remotepath = args.sync
 dirpath    = args.source_dir
 outdir     =  args.output
 
-#print sync
-#if sync==True:
+#remote syncing is temporarily deactivated 
+if sync==True:
+     raise NameError, "Remote Sync is not supported currently. Please use rsync before using Runview to sync the data."
 #    sync(remotepath, dirpath)	
 
+#Stitch Data
 if stitchdata:
     if extra_surf>0:
 	StitchData(dirpath, save_hrzn=AHF, extra_surf=extra_surf)
@@ -56,6 +65,7 @@ if stitchdata:
 	StitchData(dirpath, save_hrzn=AHF)
 	dirpath=os.path.join(dirpath,(os.path.basename(dirpath)+'-all'))
 
+#Collect necessary files in Summary - data directory
 CollectFiles(dirpath, outdir)	
 
 if puncdyn==True:
@@ -71,5 +81,5 @@ else:
 	#Mass_Plots(dirpath, outdir)
 	webpage(dirpath, outdir, locate_merger=findmerger)
 
-if AHF:
-	animate_trajectories(dirpath, outdir)
+#if AHF:
+#	animate_trajectories(dirpath, outdir)
