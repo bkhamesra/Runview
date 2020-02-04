@@ -24,9 +24,9 @@ def checkfile(wfdir, filename, pathcheck = 'Mandatory'):
     message = "%s missing in the Waveform Directory. Please Check again" %(filename)	
     
     if (not(os.path.isfile(path))) and (pathcheck=='Mandatory'):
-    	raise ValueError(message)
+        raise ValueError(message)
     elif not(os.path.isfile(path)) and pathcheck=='Optional':
-    	debuginfo(message)
+        debuginfo(message)
 
 
 def copyfiles(wfdir, outdir, filename, pathcheck = 'Mandatory'):
@@ -37,8 +37,7 @@ def copyfiles(wfdir, outdir, filename, pathcheck = 'Mandatory'):
        outdir (type 'String') - path where you wish to copy the files
        filename (type 'String') - Name of file to be checked
        pathcheck (type 'String') - 'Mandatory' if filel is definitely required else 'Optional' 
-    '''		
-	
+    '''			
     
     try:
         outpath = os.path.join(outdir, filename)
@@ -47,11 +46,11 @@ def copyfiles(wfdir, outdir, filename, pathcheck = 'Mandatory'):
         if not os.path.exists(outpath):
             copy(filepath, outpath)
     except IOError:
-    	checkfile(wfdir, filename, pathcheck)
+        checkfile(wfdir, filename, pathcheck)
 
 
 def CollectFiles(dirpath, outdir):
-	''' Collect Relevant files from Stitched output directory to Summary Data directory
+    ''' Collect Relevant files from Stitched output directory to Summary Data directory
 
        ----------------- Parameters -------------------
        dirpath - Path of waveform/simulation directory

@@ -23,31 +23,32 @@ mpl.rcParams['ytick.labelsize'] = tick_label_size
 def QLM_DeterminantPlots(wfdir, outdir, tlast):  
     '''This function checks and produces movies of variation of metric determinant of MOTS and horizons. 
      wfdir - waveform directory, outdir - output directory, tlast - last time iteration to be plotted '''
-
+    
     figdir = FigDir(wfdir, outdir)
     datadir = DataDir(wfdir, outdir)
-
+    
     files = sorted(glob.glob(os.path.join(datadir, 'qlm_3det*.x.asc')))
     if not(len(files)>0):
-	raise NameError("Files not found. Surface Determinant plots cannot be produced")
+        raise NameError("Files not found. Surface Determinant plots cannot be produced")
     
     for f in files: 
-	qlm_det_plot(datadir, figdir,  f)
+        qlm_det_plot(datadir, figdir,  f)
 
 def qlm_det_plot(datadir, figdir, f):
    
     bh_det = os.path.join(datadir, f)
     bh_idx = int((f.split('[')[1]).split(']')[0])
-
+    
     if os.path.exists(f):
         bh_det_dir = os.path.join(figdir, 'QLM_Det_BH%d'%bh_idx)
-	if not(os.path.exists(bh_det_dir)):
-	    os.makedirs(bh_det_dir)
+    
+    if not(os.path.exists(bh_det_dir)):
+        os.makedirs(bh_det_dir)
         t, x, det = np.loadtxt( bh_det, unpack=True, usecols=(8,9,12))
         t_uniq = np.unique(t)
         t_uniq = t_uniq[t_uniq<tlast]
         idx = [np.amin(np.where(t==ti)) for ti in t_uniq]
-	
+    
         for n, j in enumerate(idx):
             plt.figure(figsize=(15,6))
             xvar, detvar = x[idx[j]:idx[j+1]-1], det[idx[j]:idx[j+1]-1]
@@ -58,7 +59,7 @@ def qlm_det_plot(datadir, figdir, f):
             plt.plot(xarr, detarr,  c='#1f77b4')                                                                
             plt.xlabel('x')                                                                              
             plt.ylabel(r'$det(q_{ij})$')
-
+    
             #This part of code is not functioning properly, needs to be fixed, This should add a
             #rectangular boundary at the top around the timer
             
@@ -73,5 +74,3 @@ def qlm_det_plot(datadir, figdir, f):
             plt.close()
             
         
-
-   

@@ -42,7 +42,7 @@ def CombineData(wfdir, outdir, filename, time_clm):
     hdr = '############################################################################### \n'
     filepath = sorted(glob.glob(wfdir + '/output-0???/*/' + filename))
     with open(filepath[0], 'r') as hdr_file:
-	for line in hdr_file:
+        for line in hdr_file:
             if line[0]=='#':
                 hdr = hdr+ line
 
@@ -50,10 +50,13 @@ def CombineData(wfdir, outdir, filename, time_clm):
     for files in filepath:
         print ("Stitching file - {}".format(os.path.basename(files)))
         data = np.genfromtxt(files)
-	if len(data)<1: continue
+        if len(data)<1: 
+            continue
 
-	#Avoid duplication of the common datapoints 
-        if (files==filepath[0]):idx = np.where(data[:,time_clm]>time[-1])
+	    #Avoid duplication of the common datapoints 
+        if (files==filepath[0]):
+            idx = np.where(data[:,time_clm]>time[-1])
+
         data = data[idx]
         time = np.append(time, data[:,time_clm])
         data_save = np.vstack((data_save, data))

@@ -12,12 +12,12 @@ from Psi4 import Psi4_Plots
 from Spins import Spins
 from webpage import webpage 
 from webpage_puncdyn import webpage_pd 
-from hnmass import Mass_Plots
+from Mass import Mass_Plots
 from StitchFiles import StitchData
 from PunctureDynamics import PunctureDynamics
 #from RemoteSync import sync 
 
-from Animate_Trajectories import *
+#from Animate_Trajectories import *
 
 import os, argparse
 
@@ -53,33 +53,33 @@ outdir     =  args.output
 
 #remote syncing is temporarily deactivated 
 if sync==True:
-     raise NameError, "Remote Sync is not supported currently. Please use rsync before using Runview to sync the data."
+     raise NameError ("Remote Sync is not supported currently. Please use rsync before using Runview to sync the data.")
 #    sync(remotepath, dirpath)	
 
 #Stitch Data
 if stitchdata:
     if extra_surf>0:
-	StitchData(dirpath, save_hrzn=AHF, extra_surf=extra_surf)
-	dirpath=os.path.join(dirpath,(os.path.basename(dirpath)+'-all'))
+        StitchData(dirpath, save_hrzn=AHF, extra_surf=extra_surf)
+        dirpath=os.path.join(dirpath,(os.path.basename(dirpath)+'-all'))
     else:   
-	StitchData(dirpath, save_hrzn=AHF)
-	dirpath=os.path.join(dirpath,(os.path.basename(dirpath)+'-all'))
+        StitchData(dirpath, save_hrzn=AHF)
+        dirpath=os.path.join(dirpath,(os.path.basename(dirpath)+'-all'))
 
 #Collect necessary files in Summary - data directory
 CollectFiles(dirpath, outdir)	
 
 if puncdyn==True:
-	PunctureDynamics(dirpath, outdir, locate_merger=findmerger, extra_surf=extra_surf)
-	runstats(dirpath, outdir)
-	webpage_pd(dirpath, outdir, locate_merger=findmerger)
+    PunctureDynamics(dirpath, outdir, locate_merger=findmerger, extra_surf=extra_surf)
+    runstats(dirpath, outdir)
+    webpage_pd(dirpath, outdir, locate_merger=findmerger)
 else:
-	Trajectory(dirpath, outdir, locate_merger=findmerger)
-	Energy_Momentum(dirpath, outdir)
-	runstats(dirpath, outdir)
-	Psi4_Plots(dirpath, outdir, locate_merger=findmerger, locate_qnm=findqnm)
-	Spins(dirpath, outdir)
-	#Mass_Plots(dirpath, outdir)
-	webpage(dirpath, outdir, locate_merger=findmerger)
+    Trajectory(dirpath, outdir, locate_merger=findmerger)
+    Energy_Momentum(dirpath, outdir)
+    runstats(dirpath, outdir)
+    Psi4_Plots(dirpath, outdir, locate_merger=findmerger, locate_qnm=findqnm)
+    Spins(dirpath, outdir)
+    #Mass_Plots(dirpath, outdir)
+    webpage(dirpath, outdir, locate_merger=findmerger)
 
 #if AHF:
 #	animate_trajectories(dirpath, outdir)
