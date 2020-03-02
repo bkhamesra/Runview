@@ -41,32 +41,35 @@ def CombineData(wfdir, outdir, filename, time_clm):
     '''		
     hdr = '############################################################################### \n'
     filepath = sorted(glob.glob(wfdir + '/output-0???/*/' + filename))
+
+    if len(filepath)==0: return
+
     with open(filepath[0], 'r') as hdr_file:
         for line in hdr_file:
             if line[0]=='#':
                 hdr = hdr+ line
 
-    data_save, time = np.array(()), np.array(())
     for files in filepath:
         print ("Stitching file - {}".format(os.path.basename(files)))
-        data = np.genfromtxt(files)
-        if len(data)<1: 
-            continue
-
-	    #Avoid duplication of the common datapoints 
-        if (files==filepath[0]):
+        if files==filepath[0]:
+            data = np.genfromtxt(files)
+            time = data[:,time_clm]
+            data_save = data
+        
+        else:
+            data = np.genfromtxt(files)
             idx = np.where(data[:,time_clm]>time[-1])
-
-        data = data[idx]
-        time = np.append(time, data[:,time_clm])
-        data_save = np.vstack((data_save, data))
+            data = data[idx]
+            time = np.append(time, data[:,time_clm])
+            data_save = np.vstack((data_save, data))
 
     try:
         if len(filepath)>0:
             shtr_output = open(os.path.join(outdir, '%s'%filename),'w')
             np.savetxt(shtr_output, data_save, header=hdr, delimiter='\t', newline='\n')
             shtr_output.close()
-    except NameError:
+    except (NameError, IndexError) as error:
+        print(error)
         return
 
 def StitchData(wfdir, save_hrzn=True):

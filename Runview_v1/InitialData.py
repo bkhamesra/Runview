@@ -18,7 +18,7 @@ def output_data(parfile, parameter_name):
     parameter_name (type 'String') - parameter name
     '''		
     
-    datafile = file(parfile)
+    datafile = open(parfile, 'r')
     
     #Reset to first line	
     datafile.seek(0)

@@ -11,10 +11,8 @@ from Runstats import runstats
 from Psi4 import Psi4_Plots
 from Spins import Spins
 from webpage import webpage 
-from webpage_puncdyn import webpage_pd 
 from Mass import Mass_Plots
 from StitchFiles import StitchData
-from PunctureDynamics import PunctureDynamics
 #from RemoteSync import sync 
 
 #from Animate_Trajectories import *
@@ -33,7 +31,7 @@ parser.add_argument("--stitch_data", help='Use this option to stitch multiple ou
 parser.add_argument("--find_merger", help='Use this option to track the merger and final black hole. \n Usage: --find_merger', action="store_true")
 parser.add_argument("--find_qnm", help='Use this option to find the quasinormal modes using Psi4. \n Usage: --find_qnm', action="store_true")
 parser.add_argument("-pd","--puncture_dynamics", help='Creates the necessary plots for puncture dynamics project. \n Usage: --puncture_dynamics', action="store_true")
-parser.add_argument( "--extra_surface", help='Specify the number of extra surfaces apart. . \n Usage:--extra_surface <number of extra surface>', type=int)
+#parser.add_argument( "--extra_surface", help='Specify the number of extra surfaces apart. . \n Usage:--extra_surface <number of extra surface>', type=int)
 #parser.add_argument( "extra_surf", help='Specify the number of extra surfaces apart. . \n Usage:--extra_surface <number>', type=int)
 
 
@@ -45,11 +43,11 @@ sync       = args.sync
 verbose    = args.verbosity
 findmerger = args.find_merger
 findqnm    = args.find_qnm
-puncdyn    = args.puncture_dynamics
-extra_surf = args.extra_surface
+#extra_surf = args.extra_surface
 remotepath = args.sync
 dirpath    = args.source_dir
 outdir     =  args.output
+
 
 #remote syncing is temporarily deactivated 
 if sync==True:
@@ -58,28 +56,19 @@ if sync==True:
 
 #Stitch Data
 if stitchdata:
-    if extra_surf>0:
-        StitchData(dirpath, save_hrzn=AHF, extra_surf=extra_surf)
-        dirpath=os.path.join(dirpath,(os.path.basename(dirpath)+'-all'))
-    else:   
-        StitchData(dirpath, save_hrzn=AHF)
-        dirpath=os.path.join(dirpath,(os.path.basename(dirpath)+'-all'))
+    StitchData(dirpath, save_hrzn=AHF) #, extra_surf=extra_surf)
+    dirpath=os.path.join(dirpath,(os.path.basename(dirpath)+'-all'))
 
 #Collect necessary files in Summary - data directory
 CollectFiles(dirpath, outdir)	
 
-if puncdyn==True:
-    PunctureDynamics(dirpath, outdir, locate_merger=findmerger, extra_surf=extra_surf)
-    runstats(dirpath, outdir)
-    webpage_pd(dirpath, outdir, locate_merger=findmerger)
-else:
-    Trajectory(dirpath, outdir, locate_merger=findmerger)
-    Energy_Momentum(dirpath, outdir)
-    runstats(dirpath, outdir)
-    Psi4_Plots(dirpath, outdir, locate_merger=findmerger, locate_qnm=findqnm)
-    Spins(dirpath, outdir)
-    #Mass_Plots(dirpath, outdir)
-    webpage(dirpath, outdir, locate_merger=findmerger)
+Trajectory(dirpath, outdir, locate_merger=findmerger)
+Energy_Momentum(dirpath, outdir)
+runstats(dirpath, outdir)
+Psi4_Plots(dirpath, outdir, locate_merger=findmerger, locate_qnm=findqnm)
+Spins(dirpath, outdir)
+#Mass_Plots(dirpath, outdir)
+webpage(dirpath, outdir, locate_merger=findmerger)
 
 #if AHF:
 #	animate_trajectories(dirpath, outdir)

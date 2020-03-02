@@ -120,14 +120,15 @@ def Trajectory(wfdir, outdir, locate_merger=False):
         phi_amp = phi[maxamp_idx]
         logphi_amp = logphi[maxamp_idx]
         logsep_amp = log_sep[maxamp_idx]
-        
-        time_arr = np.around(np.array((t_hrzn3, t_maxamp)),2)
-        x_arr = np.around(np.array((x_hrzn, x_amp)),2)
-        y_arr = np.around(np.array((y_hrzn, y_amp)),2)
-        sep_arr = np.around(np.array((sep_hrzn, sep_amp)),2)
-        logsep_arr = np.around(np.array((logsep_hrzn, logsep_amp)),2)
-        phi_arr = np.around(np.array((phi_hrzn, phi_amp)),2)
-        logphi_arr = np.around(np.array((logphi_hrzn, logphi_amp)),2)
+       
+        print(t_hrzn3, t_maxamp) 
+        time_arr = np.around([t_hrzn3, t_maxamp],decimals=2)
+        x_arr = np.around([x_hrzn, x_amp],decimals=2)
+        y_arr = np.around([y_hrzn, y_amp],decimals=2)
+        sep_arr = np.around([sep_hrzn, sep_amp],decimals=2)
+        logsep_arr = np.around([logsep_hrzn, logsep_amp],decimals=2)
+        phi_arr = np.around([phi_hrzn, phi_amp],decimals=2)
+        logphi_arr = np.around([logphi_hrzn, logphi_amp],decimals=2)
         radius = (x_hrzn**2. + y_hrzn**2.)**0.5
         print("Final Horizon Detected at %f and Max Amplitude at %f"%(t_hrzn3, t_maxamp))
     

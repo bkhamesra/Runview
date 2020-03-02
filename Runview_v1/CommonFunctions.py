@@ -104,7 +104,7 @@ def plot1(x,y,xlabel, ylabel, plotname, outdir):
     
     ax.set_ylabel(ylabel, fontsize = 14)
     ax.set_xlabel(xlabel, fontsize = 14)
-    ax.ticklabel_format(axis = 'y', style = 'sci', scilimits = (1,4), fontsize=200)
+    ax.ticklabel_format(axis = 'y', style = 'sci', scilimits = (1,4))
     startx,endx = ax.get_xlim()
     #plt.xticks(np.arange(startx, endx, int(endx/10. - startx/10. )))
     
@@ -131,7 +131,7 @@ def plot2(x1,y1, x2, y2, xlabel, ylabel, plotname, outdir):
     
     ax.set_ylabel(ylabel, fontsize = 14)
     ax.set_xlabel(xlabel, fontsize = 14)
-    ax.ticklabel_format(axis = 'y', style = 'sci', scilimits = (1,4), fontsize=20)
+    ax.ticklabel_format(axis = 'y', style = 'sci', scilimits = (1,4))
     startx,endx = ax.get_xlim()
     #plt.xticks(np.arange(startx, endx, int(endx/10.-startx/10.)))
     
