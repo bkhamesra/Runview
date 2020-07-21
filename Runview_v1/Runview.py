@@ -12,7 +12,7 @@ from Psi4 import Psi4_Plots
 from Spins import Spins
 from webpage import webpage 
 from Mass import Mass_Plots
-from StitchFiles import StitchData
+from StitchFiles import StitchFiles
 #from RemoteSync import sync 
 
 #from Animate_Trajectories import *
@@ -56,7 +56,7 @@ if sync==True:
 
 #Stitch Data
 if stitchdata:
-    StitchData(dirpath, save_hrzn=AHF) #, extra_surf=extra_surf)
+    StitchFiles(dirpath, save_hrzn=AHF) #, extra_surf=extra_surf)
     dirpath=os.path.join(dirpath,(os.path.basename(dirpath)+'-all'))
 
 #Collect necessary files in Summary - data directory
@@ -67,7 +67,7 @@ Energy_Momentum(dirpath, outdir)
 runstats(dirpath, outdir)
 Psi4_Plots(dirpath, outdir, locate_merger=findmerger, locate_qnm=findqnm)
 Spins(dirpath, outdir)
-#Mass_Plots(dirpath, outdir)
+Mass_Plots(dirpath, outdir)
 webpage(dirpath, outdir, locate_merger=findmerger)
 
 #if AHF:

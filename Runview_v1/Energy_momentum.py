@@ -27,7 +27,7 @@ def Energy_Momentum(wfdir, outdir):
     figdir = FigDir(wfdir, outdir)
     datadir = DataDir(wfdir, outdir)
     
-    psi4analysis = os.path.join(datadir,"psi4analysis_r75.00.asc")
+    psi4analysis = os.path.join(datadir,"psi4analysis_r80.00.asc")
     if not(os.path.exists(psi4analysis)):
         debuginfo("%s file not found"%os.path.basename(psi4analysis))
         return None

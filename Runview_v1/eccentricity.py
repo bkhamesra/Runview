@@ -1,4 +1,4 @@
-# Scipt Name - eccentricity.py
+# Scipt- eccentricity.py
 # Author - Bhavesh Khamesra
 # Use: This script computes the initial eccentricity for BBH. This can be extended to compute the eccentricity evolution for any compact binary system. 
 
@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 from scipy.optimize import leastsq
 from numpy.polynomial.polynomial import polyval
 from scipy.optimize import curve_fit
-
+import os
 
 def sinefit(time, data ):
     ''' Sine fitting function of form amp*sin(omega*t + phi) + x3 '''   
@@ -170,6 +170,7 @@ def import_data(dirpath):
 
 def ecc_and_anomaly(dirpath,  jkrad_time):  
     '''Compute eccentricity and mean anomaly'''
+    figdir = os.path.join(dirpath, '../figures')
     [time1, time2, r1,r2] = import_data(dirpath)
 
     orbsep_vec = r2-r1
@@ -287,7 +288,7 @@ def ecc_and_anomaly(dirpath,  jkrad_time):
     
     print("*(metadata) >> Eccentricity: max = %0.2g found at time = %0.2g and min = %0.2g found at time = %0.2g \n"%(maxima, tmax, minima, tmin))
     
-    ecc_init = (abs(maxima) + abs(minima))/2.
+    ecc_init = max(abs(maxima), abs(minima))
     print(" *(metadata) >> Initial Eccentricity = %0.2g \n"%(ecc_init)) 
 
     return [mean_anom, ecc_init]

@@ -103,38 +103,39 @@ def Mass_Plots(wfdir, outdir):
         #   idx_ih1, idx_ih2 = -1, -1
         
         #try:
-        #   max_t1_idx = np.amin(np.where(time_ih1>=time_bh1[-1]))
+        #   max_t1_idx = np.amin(np.where(t_ih1>=time_bh1[-1]))
         #except ValueError:
-        #   max_t1_idx = len(time_ih1)
+        #   max_t1_idx = len(t_ih1)
         #try:
-        #   max_t2_idx = np.amin(np.where(time_ih2>=time_bh2[-1]))
+        #   max_t2_idx = np.amin(np.where(t_ih2>=time_bh2[-1]))
         #except ValueError:
-        #   max_t2_idx = len(time_ih2)
+        #   max_t2_idx = len(t_ih2)
         
 
         #Check if and when the spin-time is larger than minimum of bh-diag final time and crop it if true
-        max_t1_idx = np.amin(np.where(time_ih1>=min(time_bh1[-1], time_ih1[-1])))
-        max_t2_idx = np.amin(np.where(time_ih2>=min(time_bh2[-1], time_ih2[-1])))
+        max_t1_idx = np.amin(np.where(t_ih1>=min(time_bh1[-1], t_ih1[-1])))
+        max_t2_idx = np.amin(np.where(t_ih2>=min(time_bh2[-1], t_ih2[-1])))
 
-        t1_cutoff = time_ih1[:max_t1_idx]
-        t2_cutoff = time_ih2[:max_t2_idx]
+        t1_cutoff = t_ih1[:max_t1_idx]
+        t2_cutoff = t_ih2[:max_t2_idx]
             
         #Find the data in BH-Diag for the same spin-time. 
         match_time1_idx = np.empty(len(t1_cutoff))
         match_time2_idx = np.empty(len(t2_cutoff))
+       
         for i,j in zip(range(len(t1_cutoff)), range(len(t2_cutoff))):
             match_time1_idx[i] = np.amin(np.where(time_bh1>=t1_cutoff[i]))      
             match_time2_idx[j] = np.amin(np.where(time_bh2>=t2_cutoff[j]))      
         
-        
+        print(match_time1_idx)  
         match_time1 = time_bh1[match_time1_idx.astype(int)]
         match_time2 = time_bh2[match_time2_idx.astype(int)]
         dtime_bh1 = match_time1 - time_bh1[match_time1_idx.astype(int)-1]
         dtime_bh2 = match_time2 - time_bh2[match_time2_idx.astype(int)-1]
 
         time1_diff = time_bh1[match_time1_idx.astype(int)] - t1_cutoff
-        dtime_ih1 = time_ih1[1:] - time_ih1[:-1]
-        dtime_ih2 = time_ih2[1:] - time_ih2[:-1]
+        dt_ih1 = t_ih1[1:] - t_ih1[:-1]
+        dt_ih2 = t_ih2[1:] - t_ih2[:-1]
         #if np.size(np.where((match_time1[1:] - match_time1[:-1])==0))>0:
         #   raise ValueError ("Repeated Value of time encountered in horizon mass computation \n")
         #if np.any((time1_diff[1:]>dtime_bh1[1:])):

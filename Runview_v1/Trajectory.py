@@ -93,15 +93,24 @@ def Trajectory(wfdir, outdir, locate_merger=False):
     use_idx = np.sort(np.intersect1d(noinf_idx, nonan_idx))
     
     #Horizon Location
+    find_commonhzn = False
     if locate_merger==True:
         bhdiag3 = os.path.join(datadir, 'BH_diagnostics.ah3.gp')
         t_hrzn3 = np.loadtxt(bhdiag3, usecols = (1,), unpack=True)[0]
         
         maxamp, t_maxamp = maxamp_time(wfdir, outdir)	
         t_maxamp = t_maxamp-75.		
+
+	#CAH always found before max amp
+        if t_hrzn3<t_maxamp: 
+            find_commonhzn=True
+        else: 
+            find_commonhzn=False
+
         hrzn_idx = np.amin(np.where(time_bh1>=t_hrzn3))
         maxamp_idx = np.amin(np.where(time_bh1>=t_maxamp))
         
+	
         x_bh1_hrzn, y_bh1_hrzn = x_bh1[hrzn_idx], y_bh1[hrzn_idx]
         x_bh1_amp, y_bh1_amp = x_bh1[maxamp_idx], y_bh1[maxamp_idx]
         x_bh2_hrzn, y_bh2_hrzn = x_bh2[hrzn_idx], y_bh2[hrzn_idx]
@@ -121,7 +130,7 @@ def Trajectory(wfdir, outdir, locate_merger=False):
         logphi_amp = logphi[maxamp_idx]
         logsep_amp = log_sep[maxamp_idx]
        
-        print(t_hrzn3, t_maxamp) 
+        #print(t_hrzn3, t_maxamp) 
         time_arr = np.around([t_hrzn3, t_maxamp],decimals=2)
         x_arr = np.around([x_hrzn, x_amp],decimals=2)
         y_arr = np.around([y_hrzn, y_amp],decimals=2)
@@ -151,12 +160,13 @@ def Trajectory(wfdir, outdir, locate_merger=False):
     startx,endx = ax1.get_xlim()
     starty,endy = ax1.get_ylim()
     #plt.xticks(np.arange(startx, endx, int(endx/10. - startx/10.)))
-    
-    if locate_merger==True:
+   
+    if find_commonhzn: 
         ax1.plot([t_hrzn3,t_hrzn3], [starty,x_hrzn], 'g--', linewidth=1.5)
-        ax1.text( t_hrzn3,starty+0.2,'AH3', horizontalalignment='right', fontsize=12)
+        ax1.text( t_hrzn3,starty+0.1,'AH3', horizontalalignment='left', fontsize=12)
+    if locate_merger==True:
         ax1.plot([t_maxamp,t_maxamp], [starty,x_amp], 'g--', linewidth=1.5)
-        ax1.text( t_maxamp,starty+0.2,'Max Amp', horizontalalignment='left', fontsize=12)
+        ax1.text( t_maxamp,starty+0.1,'Max Amp', horizontalalignment='right', fontsize=12)
         #for xy in zip(time_arr, x_arr):
         #    ax1.annotate('(%s, %s)' % xy, xy=xy, textcoords='data')
     
@@ -173,12 +183,13 @@ def Trajectory(wfdir, outdir, locate_merger=False):
     ax2.plot(time_bh2, y_bh2, 'k--', linewidth=1, label = "bh2")
     startx,endx = ax2.get_xlim()
     starty,endy = ax2.get_ylim()
-    
-    if locate_merger==True:
+   
+    if find_commonhzn: 
         ax2.plot([t_hrzn3,t_hrzn3], [starty,y_hrzn], 'g--', linewidth=1.5)
-        ax2.text( t_hrzn3,starty+0.2,'AH3', horizontalalignment='right', fontsize=12)
+        ax2.text( t_hrzn3,starty+0.1,'AH3', horizontalalignment='left', fontsize=12)
+    if locate_merger==True:
         ax2.plot([t_maxamp,t_maxamp], [starty,y_amp], 'g--', linewidth=1.5)
-        ax2.text( t_maxamp,starty+0.2,'Max Amp', horizontalalignment='left', fontsize=12)
+        ax2.text( t_maxamp,starty+0.1,'Max Amp', horizontalalignment='right', fontsize=12)
         #for xy in zip(time_arr, y_arr):
         #    ax2.annotate('(%s, %s)' % xy, xy=xy, textcoords='data')
     
@@ -213,12 +224,13 @@ def Trajectory(wfdir, outdir, locate_merger=False):
     plt.plot(time_bh1, separation, color='b', linewidth=1)
     startx,endx = plt.gca().get_xlim()
     starty,endy = plt.gca().get_ylim()
-    
-    if locate_merger==True:
+   
+    if find_commonhzn: 
         plt.plot([t_hrzn3,t_hrzn3], [starty,sep_hrzn], 'g--', linewidth=1.5)
-        plt.text( t_hrzn3,starty+0.2,'AH3', horizontalalignment='right', fontsize=12)
+        plt.text( t_hrzn3,starty+0.1,'AH3', horizontalalignment='left', fontsize=12)
+    if locate_merger==True:
         plt.plot([t_maxamp,t_maxamp], [starty,sep_amp], 'g--', linewidth=1.5)
-        plt.text( t_maxamp,starty+0.2,'Max Amp', horizontalalignment='left', fontsize=12)
+        plt.text( t_maxamp,starty+0.1,'Max Amp', horizontalalignment='right', fontsize=12)
         #for xy in zip(time_arr, sep_arr):
         #    plt.annotate('(%s, %s)' % xy, xy=xy, textcoords='data')
     
@@ -236,10 +248,11 @@ def Trajectory(wfdir, outdir, locate_merger=False):
         startx,endx = plt.gca().get_xlim()
         #plt.ylim(sep_amp-1, sep_hrzn+3)
         starty,endy = plt.gca().get_ylim()
-        plt.plot([t_hrzn3,t_hrzn3], [starty,sep_hrzn], 'g--', linewidth=1.5)
-        plt.text( t_hrzn3,starty+0.2,'AH3', horizontalalignment='right', fontsize=12)
+        if find_commonhzn:
+            plt.plot([t_hrzn3,t_hrzn3], [starty,sep_hrzn], 'g--', linewidth=1.5)
+            plt.text( t_hrzn3,starty+0.1,'AH3', horizontalalignment='left', fontsize=12)
         plt.plot([t_maxamp,t_maxamp], [starty,sep_amp], 'g--', linewidth=1.5)
-        plt.text( t_maxamp,starty+0.2,'Max Amp', horizontalalignment='left', fontsize=12)
+        plt.text( t_maxamp,starty+0.1,'Max Amp', horizontalalignment='right', fontsize=12)
         for xy in zip(time_arr, sep_arr):
             plt.annotate('(%s, %s)' % xy, xy=xy, textcoords='data')
     
@@ -257,10 +270,11 @@ def Trajectory(wfdir, outdir, locate_merger=False):
         startx,endx = plt.gca().get_xlim()
         plt.ylim(logsep_amp-3, logsep_hrzn+3)
         starty,endy = plt.gca().get_ylim()
-        plt.plot([t_hrzn3,t_hrzn3], [starty,logsep_hrzn], 'g--', linewidth=1.5)
-        plt.text( t_hrzn3,starty+0.2,'AH3', horizontalalignment='right', fontsize=10)
+        if find_commonhzn:
+            plt.plot([t_hrzn3,t_hrzn3], [starty,logsep_hrzn], 'g--', linewidth=1.5)
+            plt.text( t_hrzn3,starty+0.1,'AH3', horizontalalignment='left', fontsize=10)
         plt.plot([t_maxamp,t_maxamp], [starty,logsep_amp], 'g--', linewidth=1.5)
-        plt.text( t_maxamp,starty+0.2,'Max Amp', horizontalalignment='left', fontsize=10)
+        plt.text( t_maxamp,starty+0.1,'Max Amp', horizontalalignment='right', fontsize=10)
         for xy in zip(time_arr, logsep_arr):
                 plt.annotate('(%s, %s)' % xy, xy=xy, textcoords='data')
     
@@ -277,12 +291,13 @@ def Trajectory(wfdir, outdir, locate_merger=False):
     plt.plot(time_bh1, phi, color='b', lw=1)
     startx,endx = plt.gca().get_xlim()
     starty,endy = plt.gca().get_ylim()
-    
-    if locate_merger==True:
+   
+    if find_commonhzn: 
         plt.plot([t_hrzn3,t_hrzn3], [starty,phi_hrzn], 'k--', linewidth=1.5)
-        plt.text( t_hrzn3,starty+0.2,'AH3', horizontalalignment='right', fontsize=12)
+        plt.text( t_hrzn3,starty+0.1,'AH3', horizontalalignment='left', fontsize=12)
+    if locate_merger==True:
         plt.plot([t_maxamp,t_maxamp], [starty,phi_amp], 'k--', linewidth=1.5)
-        plt.text( t_maxamp,starty+0.2,'Max Amp', horizontalalignment='left', fontsize=12)
+        plt.text( t_maxamp,starty+0.1,'Max Amp', horizontalalignment='right', fontsize=12)
         #for xy in zip(time_arr, phi_arr):
         #   plt.annotate('(%s, %s)' % xy, xy=xy, textcoords='data')
     

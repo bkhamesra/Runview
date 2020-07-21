@@ -30,9 +30,9 @@ def maxamp_time(wfdir, outdir):
     	
     #Extract Psi4 info
     
-    psi4 = "Ylm_WEYLSCAL4::Psi4_l2_m2_r75.00.asc"
-    psi4r = "Ylm_WEYLSCAL4::Psi4r_l2_m2_r75.00.asc"
-    psi4_mp = "mp_WeylScal4::Psi4i_l2_m2_r75.00.asc"
+    psi4 = "Ylm_WEYLSCAL4::Psi4_l2_m2_r80.00.asc"
+    psi4r = "Ylm_WEYLSCAL4::Psi4r_l2_m2_r80.00.asc"
+    psi4_mp = "mp_WeylScal4::Psi4i_l2_m2_r80.00.asc"
     if not(os.path.exists(os.path.join(datadir, psi4))):
         psi4 = psi4r
     if not(os.path.exists(os.path.join(datadir, psi4))):
@@ -48,6 +48,7 @@ def maxamp_time(wfdir, outdir):
     amp = abs(real+1.j *imag)		
     max_amp = np.amax(amp)
     t_maxamp = time[np.where(amp==max_amp)]
+    if not np.isscalar(t_maxamp): t_maxamp=t_maxamp[0]
     return max_amp, t_maxamp
 
 	
@@ -67,9 +68,9 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
     	
     #Extract Psi4 info
     
-    psi4 = "Ylm_WEYLSCAL4::Psi4_l2_m2_r75.00.asc"
-    psi4r = "Ylm_WEYLSCAL4::Psi4r_l2_m2_r75.00.asc"
-    psi4_mp = "mp_WeylScal4::Psi4i_l2_m2_r75.00.asc"
+    psi4 = "Ylm_WEYLSCAL4::Psi4_l2_m2_r80.00.asc"
+    psi4r = "Ylm_WEYLSCAL4::Psi4r_l2_m2_r80.00.asc"
+    psi4_mp = "mp_WeylScal4::Psi4i_l2_m2_r80.00.asc"
     if not(os.path.exists(os.path.join(datadir, psi4))):
         psi4 = psi4r
     
@@ -90,7 +91,7 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
     phi = -np.unwrap(np.angle(real-1j*imag))
     r =float( ((psi4.split('r'))[-1]).split('.asc')[0])
     
-    psi4_output = open(os.path.join(datadir,'Psi4_l2m2_r75.txt'), 'w')
+    psi4_output = open(os.path.join(datadir,'Psi4_l2m2_r80.txt'), 'w')
     hdr = '#Time \t Real \t Imaginary \t Amplitude \t Phase \n'
     data = np.column_stack((time, real, imag, amp, phi))
     np.savetxt(psi4_output, data, header=hdr, delimiter='\t', newline='\n')
@@ -116,9 +117,9 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
     max_amp_index = np.where(amp == max_amp)[0]
     
     t_max_amp = time[np.where(amp==np.amax(amp))][0]
-    phi_at_maxamp = phi[np.where(time==t_max_amp)]
-    real_at_maxamp = real[np.where(time==t_max_amp)]
-    imag_at_maxamp = imag[np.where(time==t_max_amp)]
+    phi_at_maxamp = phi[np.where(time==t_max_amp)][0]
+    real_at_maxamp = real[np.where(time==t_max_amp)][0]
+    imag_at_maxamp = imag[np.where(time==t_max_amp)][0]
     
     if locate_qnm:	
     
@@ -131,7 +132,7 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
         
         phi_fit = np.poly1d( np.polyfit(time[t1_idx:t2_idx], phi[t1_idx:t2_idx], 1))
         logamp_max = log_amp[max_amp_index]
-        
+        if not np.isscalar(logamp_max): logamp_max=logamp_max[0]  
         #Quasi Normal Modes
         
         amp_diff = np.divide(np.absolute(log_amp - logamp_fit(time)),np.absolute(log_amp))
@@ -150,11 +151,15 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
     
     
     #Horizon Info:
+    find_commonhzn = False
     if locate_merger:
     
         #Horizon
         t_hrzn = func_t_hrzn(datadir, locate_merger)
         t_hrzn = t_hrzn+75.
+
+        if t_hrzn<t_max_amp:find_commonhzn=True
+
         idx_hrzn = np.amin( np.where(time>=t_hrzn))
         real_hrzn, imag_hrzn = real[idx_hrzn], imag[idx_hrzn]
         amp_hrzn, phi_hrzn = amp[idx_hrzn], phi[idx_hrzn] 
@@ -194,12 +199,14 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
     plt.xlim(t_max_amp-150,t_max_amp+100)
     starty,endy = plt.gca().get_ylim()
     startx,endx = plt.gca().get_xlim()
-    
+   
     if locate_merger:
         plt.plot([t_max_amp,t_max_amp], [starty,max_amp], 'k--', linewidth =1.5)
         plt.text(t_max_amp,max_amp+0.00003,'Max Amplitude', horizontalalignment='center', fontsize=12)
+    if find_commonhzn: 
         plt.plot([t_hrzn,t_hrzn], [starty,amp_hrzn], 'k--', linewidth =1.5)
         plt.text(t_hrzn,amp_hrzn+0.00005,'CAH', horizontalalignment='right', fontsize=12)
+    if locate_qnm:
         plt.plot([t_qnm_amp,t_qnm_amp], [starty,amp_qnm], 'k--', linewidth =1.5)
         plt.text(t_qnm_amp,amp_qnm+0.00005,'QNM', horizontalalignment='left', fontsize=12)
     
@@ -224,8 +231,10 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
     if locate_merger:
         plt.plot([t_max_amp,t_max_amp], [starty,max_amp], 'k--', linewidth =1.5)
         plt.text(t_max_amp,max_amp+0.00003,'Max Amplitude', horizontalalignment='center', fontsize=10)
+    if find_commonhzn: 
         plt.plot([t_hrzn,t_hrzn], [starty,amp_hrzn], 'k--', linewidth =1.5)
         plt.text(t_hrzn,amp_hrzn,'CAH', horizontalalignment='right', fontsize=10)
+    if locate_qnm:
         plt.plot([t_qnm_amp,t_qnm_amp], [starty,amp_qnm], 'k--', linewidth =1.5)
         plt.text(t_qnm_amp,amp_qnm,'QNM', horizontalalignment='left', fontsize=10)
         #for xy in zip(t_qnm_amparr, amp_arr):
@@ -245,14 +254,16 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
     
     plt.plot(time,amp, 'b', linewidth=1, label="Amplitude")
     if locate_merger:
-        plt.xlim(t_hrzn-20, time[qnm_amp_idx]+20)
+        plt.xlim(t_max_amp-50, time[qnm_amp_idx]+20)
         startx,endx = plt.gca().get_xlim()
         starty,endy = plt.gca().get_ylim()
         
         plt.plot([t_max_amp,t_max_amp], [starty,max_amp], 'k--', linewidth =1.5)
         plt.text(t_max_amp,max_amp+0.00004,'Max Amplitude', horizontalalignment='center', fontsize=12)
+    if find_commonhzn: 
         plt.plot([t_hrzn,t_hrzn], [starty,amp_hrzn], 'k--', linewidth =1.5)
         plt.text(t_hrzn,amp_hrzn+0.00004,'CAH', horizontalalignment='right', fontsize=12)
+    if locate_qnm:
         plt.plot([t_qnm_amp,t_qnm_amp], [starty,amp_qnm], 'k--', linewidth =1.5)
         plt.text(t_qnm_amp,amp_qnm+0.00004,'QNM', horizontalalignment='left', fontsize=12)
         
@@ -281,8 +292,10 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
         startx,endx = plt.gca().get_xlim()
         plt.plot([t_max_amp,t_max_amp], [starty,phi_at_maxamp], 'k--', linewidth =1.5)
         plt.text(t_max_amp,phi_at_maxamp+0.00003,'Max \n Amp', horizontalalignment='center', fontsize=10)	
+    if find_commonhzn: 
         plt.plot([t_hrzn,t_hrzn], [starty,phi_hrzn], 'k--', linewidth =1.5)
         plt.text(t_hrzn,starty+5,'CAH', horizontalalignment='right', fontsize=10)
+    if locate_qnm:
         plt.plot([t_qnm_phi,t_qnm_phi], [starty,phi_qnm], 'k--', linewidth =1.5)
         plt.text(t_qnm_phi,starty+5,'QNM', horizontalalignment='left', fontsize=10)
         plt.ylim(starty, endy)
@@ -301,14 +314,16 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
     plt.plot(time, phi, 'b' )
     
     if locate_merger:
-        plt.xlim(t_hrzn-20, t_qnm_phi+50)
-        plt.ylim(phi_hrzn - 20, phi_qnm + 30)
+        plt.xlim(t_max_amp-20, t_qnm_phi+50)
+        plt.ylim(phi_at_maxamp - 30, phi_qnm + 30)
         starty,endy = plt.gca().get_ylim()
         startx,endx = plt.gca().get_xlim()
         plt.plot([t_max_amp,t_max_amp], [starty,phi_at_maxamp], 'k--', linewidth =1.5)
         plt.text(t_max_amp,phi_at_maxamp+1,'Max Amp', horizontalalignment='center', fontsize=12)	
+    if find_commonhzn: 
         plt.plot([t_hrzn,t_hrzn], [starty,phi_hrzn], 'k--', linewidth =1.5)
         plt.text(t_hrzn,phi_hrzn+1,'CAH', horizontalalignment='right', fontsize=12)
+    if locate_qnm:
         plt.plot([t_qnm_phi,t_qnm_phi], [starty,phi_qnm], 'k--', linewidth =1.5)
         plt.text(t_qnm_phi,phi_qnm+1,'QNM', horizontalalignment='left', fontsize=12)
         #plt.annotate('(%.2f, %.2g)' % (t_hrzn,phi_hrzn), xy=(t_hrzn,phi_hrzn), xytext=(t_hrzn-7,phi_hrzn+1), textcoords='data')
@@ -357,14 +372,16 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
         ax1.plot(time, phi, 'b', label="Phase")
         ax1.plot(time, phi_fit(time), 'r--', linewidth=1, label="Linear Fit")
         if locate_merger:
-            ax1.set_xlim(t_hrzn-100, t_max_amp+100)
-            ax1.set_ylim(phi_hrzn-100, phi_at_maxamp+100)
+            ax1.set_xlim(t_max_amp-120, t_max_amp+100)
+            ax1.set_ylim(phi_at_maxamp-120, phi_at_maxamp+100)
             starty,endy = ax1.get_ylim()
             startx,endx = ax1.get_xlim()
             ax1.plot([t_max_amp,t_max_amp], [starty,phi_at_maxamp], 'k--', linewidth =1.5)
             ax1.text(t_max_amp,phi_at_maxamp+3,'Max Amp', horizontalalignment='center', fontsize=10)	
+        if find_commonhzn: 
             ax1.plot([t_hrzn,t_hrzn], [starty,phi_hrzn], 'k--', linewidth =1.5)
             ax1.text(t_hrzn-1,starty+3,'CAH', horizontalalignment='right', fontsize=10)
+        if locate_qnm:
             ax1.plot([t_qnm_phi,t_qnm_phi], [starty,phi_qnm], 'k--', linewidth =1.5)
             ax1.text(t_qnm_phi+1,starty+3,'QNM', horizontalalignment='left', fontsize=10)	
     
@@ -378,14 +395,16 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
         ax2.plot(time, log_amp, 'b', label="log(Amp)")
         ax2.plot(time, logamp_fit(time), 'r--', linewidth=1, label="Linear Fit")
         if locate_merger:
-            ax2.set_xlim(t_hrzn-100, t_max_amp+100)
-            ax2.set_ylim(logamp_hrzn-10, logamp_max+5)
+            ax2.set_xlim(t_max_amp-120, t_max_amp+100)
+            ax2.set_ylim(logamp_max-10, logamp_max+5)
             starty,endy = ax2.get_ylim()
             startx,endx = ax2.get_xlim()
             ax2.plot([t_max_amp,t_max_amp], [starty,logamp_max], 'k--', linewidth =1.5)
             ax2.text(t_max_amp,logamp_max+1,'Max Amp', horizontalalignment='center', fontsize=10)
+        if find_commonhzn: 
             ax2.plot([t_hrzn,t_hrzn], [starty,logamp_hrzn], 'k--', linewidth =1.5)
             ax2.text(t_hrzn-1,starty+0.1,'CAH', horizontalalignment='right', fontsize=10)
+        if locate_qnm:
             ax2.plot([t_qnm_amp,t_qnm_amp], [starty,logamp_hrzn], 'k--', linewidth =1.5)
             ax2.text(t_qnm_amp+1,starty+0.1,'QNM', horizontalalignment='left', fontsize=10)
         ax2.set_xlabel("Time")
@@ -421,14 +440,16 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
         fig, (ax1,ax2) = plt.subplots(2,1,sharex=True)
         ax1.plot(time, phi - phi_fit(time), 'b')
         if locate_merger:
-            ax1.set_xlim(t_hrzn-100, t_max_amp+100)
+            ax1.set_xlim(t_max_amp-120, t_max_amp+100)
             ax1.set_ylim(-5, 5)
             starty,endy = ax1.get_ylim()
             startx,endx = ax1.get_xlim()
             ax1.plot([t_max_amp,t_max_amp], [starty,phi_at_maxamp - phi_fit(t_max_amp)], 'k--', linewidth =1.5)
             ax1.text(t_max_amp,phi_at_maxamp - phi_fit(t_max_amp)+0.5,'Max Amp', horizontalalignment='center', fontsize=10)	
+        if find_commonhzn: 
             ax1.plot([t_hrzn,t_hrzn], [starty,phi_hrzn - phi_fit(t_hrzn)], 'k--', linewidth =1.5)
             ax1.text(t_hrzn-1,starty+0.5,'CAH', horizontalalignment='right', fontsize=10)
+        if locate_qnm:
             ax1.plot([t_qnm_phi,t_qnm_phi], [starty,phi_qnm - phi_fit(t_qnm_phi)], 'k--', linewidth =1.5)
             ax1.text(t_qnm_phi+1,starty+0.5,'QNM', horizontalalignment='left', fontsize=10)	
         
@@ -441,14 +462,16 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
         
         ax2.plot(time, log_amp - logamp_fit(time), 'b')
         if locate_merger:
-            ax2.set_xlim(t_hrzn-30, t_max_amp+100)
+            ax2.set_xlim(t_max_amp-50, t_max_amp+100)
             ax2.set_ylim(-5, 5)
             starty,endy = ax2.get_ylim()
             startx,endx = ax2.get_xlim()
             ax2.plot([t_max_amp,t_max_amp], [starty,logamp_max - logamp_fit(t_max_amp)], 'k--', linewidth =1.5)
             ax2.text(t_max_amp,logamp_max- logamp_fit(t_max_amp)+1,'Max Amp', horizontalalignment='center', fontsize=10)
+        if find_commonhzn: 
             ax2.plot([t_hrzn,t_hrzn], [starty,logamp_hrzn-logamp_fit(t_hrzn)], 'k--', linewidth =1.5)
             ax2.text(t_hrzn-1,starty+0.1,'CAH', horizontalalignment='right', fontsize=10)
+        if locate_qnm:
             ax2.plot([t_qnm_amp,t_qnm_amp], [starty,logamp_qnm-logamp_fit(t_qnm_amp)], 'k--', linewidth =1.5)
             ax2.text(t_qnm_amp+1,starty+0.1,'QNM', horizontalalignment='left', fontsize=10)
         ax2.set_xlabel("Time", fontsize=14)
@@ -465,11 +488,13 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
         plt.plot(time, np.exp(logamp_fit(time)), 'r--', label="Exponential Fit")
         if locate_merger:
             plt.ylim(0, max_amp+0.00001)
-            plt.xlim(t_hrzn-50, t_max_amp+100)
+            plt.xlim(t_max_amp-70, t_max_amp+100)
             plt.plot([t_max_amp,t_max_amp], [0,max_amp], 'k--', linewidth =1.5)
             plt.text(t_max_amp,max_amp+0.00003,'Max Amplitude', horizontalalignment='center', fontsize=9)
+        if find_commonhzn: 
             plt.plot([t_hrzn,t_hrzn], [0,amp_hrzn], 'k--', linewidth=1.5)
             plt.text( t_hrzn,amp_hrzn,'CAH', horizontalalignment='right', fontsize=9)
+        if locate_qnm:
             plt.plot([t_qnm_amp,t_qnm_amp], [0,amp_hrzn], 'k--', linewidth=1.5)
             plt.text( t_qnm_amp,amp_qnm,'QNM', horizontalalignment='left', fontsize=9)
         plt.xlabel("Time")
@@ -484,11 +509,13 @@ def Psi4_Plots(wfdir, outdir, locate_merger=False, locate_qnm=False):
         plt.plot(time, np.absolute(amp - np.exp(logamp_fit(time))), 'b')
         if locate_merger:
             plt.ylim(0, max_amp+0.00001)
-            plt.xlim(t_hrzn-50, t_max_amp+100)
+            plt.xlim(t_max_amp-70, t_max_amp+100)
             plt.plot([t_max_amp,t_max_amp], [0,max_amp], 'k--', linewidth =1.5)
             plt.text(t_max_amp,max_amp+0.00003,'Max Amplitude', horizontalalignment='center', fontsize=9)
+        if find_commonhzn: 
             plt.plot([t_hrzn,t_hrzn], [0,amp_hrzn], 'k--', linewidth=1.5)
             plt.text( t_hrzn,amp_hrzn,'CAH', horizontalalignment='right', fontsize=9)
+        if locate_qnm:
             plt.plot([t_qnm_amp,t_qnm_amp], [0,amp_hrzn], 'k--', linewidth=1.5)
             plt.text( t_qnm_amp,amp_qnm,'QNM', horizontalalignment='left', fontsize=9)
         plt.xlabel("Time")

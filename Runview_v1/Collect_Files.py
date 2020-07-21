@@ -43,8 +43,8 @@ def copyfiles(wfdir, outdir, filename, pathcheck = 'Mandatory'):
         outpath = os.path.join(outdir, filename)
         filepath = os.path.join(wfdir, filename)
     
-        if not os.path.exists(outpath):
-            copy(filepath, outpath)
+        #if not os.path.exists(outpath):
+        copy(filepath, outpath)
     except IOError:
         checkfile(wfdir, filename, pathcheck)
 
@@ -69,10 +69,10 @@ def CollectFiles(dirpath, outdir):
     ihspin3 = 'ihspin_hn_3.asc'
     ihspin4 = 'ihspin_hn_4.asc'
     
-    psi4_ylm = "Ylm_WEYLSCAL4::Psi4_l2_m2_r75.00.asc"
-    psi4r_ylm = "Ylm_WEYLSCAL4::Psi4r_l2_m2_r75.00.asc"
-    psi4_mp = "mp_WeylScal4::Psi4i_l2_m2_r75.00.asc"
-    psi4_anal = "psi4analysis_r75.00.asc"
+    psi4_ylm = "Ylm_WEYLSCAL4::Psi4_l2_m2_r80.00.asc"
+    psi4r_ylm = "Ylm_WEYLSCAL4::Psi4r_l2_m2_r80.00.asc"
+    psi4_mp = "mp_WeylScal4::Psi4i_l2_m2_r80.00.asc"
+    psi4_anal = "psi4analysis_r80.00.asc"
     runstat = "runstats.asc"
     bhdiag1 = "BH_diagnostics.ah1.gp"
     bhdiag2 = "BH_diagnostics.ah2.gp"
