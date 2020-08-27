@@ -1,4 +1,4 @@
-1. Trajectory - Fails if on of the shifttracker file has larger size then other (by one)
+1. Trajectory - Fails if on of the shifttracker file has larger size than other (by one)
 2. Mass Plots failing - Repeated Values Error
 3. Include the eccentricity plots.
 4. Make all plots consistent - Check Font Size, Colors, Legends

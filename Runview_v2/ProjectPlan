@@ -1,0 +1,28 @@
+Script Capabilities - 
+
+1. Downloading data - Should be able to download the data while simulations are running. 
+2. Stitching Files - Create a directory within simulation which can stitch the data from different outputs.  
+3. Reading the data - Read different formats of data and different data files. 
+4. Analyzing the data - Analyse the data and compute all relevant quantities. 
+	a. Trajectory - separation, phase, frequency, angular coordinates, angular velocities, orbital velocity, all quantities in physical units, eccentricity, mean anomaly, 
+	b. Psi4 - amplitude, strain, frequency, energy, angular momentum, momentum, derivatives, strain, Luminosity, Matches, LIGO waveforms
+	c. Spins - angular spin coordinates
+	d. Masses - Horizon mass
+	e. Kicks
+	f. Hydro - 
+5. Visualization - 
+	a. 1d-data plots - x vs y line plot, x vs y scatter plots, semilog, loglog, multi x-y
+	b. 2d-data plots - Use yt, single iteration plots, multi-iteration plots, displaying cell edges
+	c. 3d-data plots - Use yt, projection plots of xy, yz, xz slice plots, visit 3d plots
+	d. Movies 
+
+6. Additional tools
+	a. Mathematical Tools - Fourier Transforms
+	b. Coversion to physical units
+	c. Output data functions
+	d. Extrapolation to infinity
+
+Strategy and Challenges - 
+1. Downloading data - rsync
+2. Stitching Files - Search for files. If single files for each iteration, then just collect the data. If 0-d or 1-d output, then stitch the files. If 2d output in h5 format, look up the ways to stitch the data. 
+3. Create class objects for different types of output - 0d, 1d, 2d and 3d. Then create child classes for each filetype
